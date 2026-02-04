@@ -293,12 +293,15 @@
     </div>
 
     <script type="module">
+        const API_BASE = 'https://us-central1-property-7050c.cloudfunctions.net/app/api';
+
         // State
         const state = {
             propertyId: null,
-            context: null, // kitchen, tv, thermostat, etc.
+            context: null,
             phoneLastFour: null,
-            isVerified: false
+            isVerified: false,
+            guestName: null
         };
 
         // DOM elements
@@ -319,7 +322,6 @@
             state.propertyId = params.get('p') || params.get('propertyId');
             state.context = params.get('c') || params.get('context') || 'general';
 
-            // Update context badge
             const contextLabels = {
                 general: 'General',
                 kitchen: 'Kitchen',
@@ -351,18 +353,37 @@
             verifyError.textContent = '';
 
             try {
-                // TODO: Call Firebase function to verify
-                // For now, simulate success
-                await new Promise(r => setTimeout(r, 1000));
+                const res = await fetch(`${API_BASE}/ai/guest/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        propertyId: state.propertyId,
+                        phoneLastFour: code
+                    })
+                });
 
-                state.phoneLastFour = code;
-                state.isVerified = true;
+                const data = await res.json();
 
-                verifyScreen.classList.add('hidden');
-                chatScreen.classList.add('active');
-                messageInput.focus();
+                if (data.success && data.verified) {
+                    state.phoneLastFour = code;
+                    state.isVerified = true;
+                    state.guestName = data.data?.guestName || 'Guest';
+
+                    verifyScreen.classList.add('hidden');
+                    chatScreen.classList.add('active');
+
+                    // Welcome message
+                    const welcomeMsg = `Hi${state.guestName ? ' ' + state.guestName.split(' ')[0] : ''}! I'm your AI concierge. Ask me anything about your stay.`;
+                    chatContainer.querySelector('.message').textContent = welcomeMsg;
+
+                    messageInput.focus();
+                } else {
+                    verifyError.textContent = data.message || 'No booking found. Check your phone number.';
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Verify';
+                }
             } catch (err) {
-                verifyError.textContent = 'Verification failed. Please try again.';
+                verifyError.textContent = 'Connection error. Please try again.';
                 verifyBtn.disabled = false;
                 verifyBtn.textContent = 'Verify';
             }
@@ -375,24 +396,34 @@
             const message = messageInput.value.trim();
             if (!message) return;
 
-            // Add user message
             addMessage(message, 'user');
             messageInput.value = '';
             sendBtn.disabled = true;
 
-            // Add thinking indicator
             const thinkingEl = addMessage('Thinking', 'bot thinking');
 
             try {
-                // TODO: Call Firebase function for AI response
-                // For now, simulate response
-                await new Promise(r => setTimeout(r, 1500));
+                const res = await fetch(`${API_BASE}/ai/guest/ask`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        propertyId: state.propertyId,
+                        question: message,
+                        context: state.context
+                    })
+                });
 
+                const data = await res.json();
                 thinkingEl.remove();
-                addMessage('I\'m a demo bot! In the real version, I\'d answer questions about your stay based on the property\'s info.', 'bot');
+
+                if (data.success && data.data?.answer) {
+                    addMessage(data.data.answer, 'bot');
+                } else {
+                    addMessage('Sorry, I couldn\'t get an answer. Please try again.', 'bot');
+                }
             } catch (err) {
                 thinkingEl.remove();
-                addMessage('Sorry, I had trouble connecting. Please try again.', 'bot');
+                addMessage('Connection error. Please try again.', 'bot');
             }
 
             sendBtn.disabled = false;
@@ -408,7 +439,6 @@
             return div;
         }
 
-        // Phone input - numbers only
         phoneInput.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/\D/g, '');
         });
