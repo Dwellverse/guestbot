@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a"/>
+      <stop offset="100%" style="stop-color:#111111"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle gradient overlay -->
+  <ellipse cx="200" cy="100" rx="400" ry="300" fill="#10b981" opacity="0.08"/>
+  <ellipse cx="1000" cy="530" rx="300" ry="200" fill="#3b82f6" opacity="0.05"/>
+
+  <!-- Logo circle -->
+  <circle cx="600" cy="220" r="80" fill="url(#accent)"/>
+  <circle cx="570" cy="200" r="14" fill="#fff"/>
+  <circle cx="630" cy="200" r="14" fill="#fff"/>
+  <circle cx="570" cy="200" r="7" fill="#000"/>
+  <circle cx="630" cy="200" r="7" fill="#000"/>
+  <path d="M 555 240 Q 600 270 645 240" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round"/>
+
+  <!-- Title -->
+  <text x="600" y="370" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="72" font-weight="700" fill="#ffffff" text-anchor="middle">GuestBot</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="440" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="32" font-weight="400" fill="#a3a3a3" text-anchor="middle">AI Concierge for Vacation Rentals</text>
+
+  <!-- Tagline -->
+  <text x="600" y="520" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="24" font-weight="500" fill="#10b981" text-anchor="middle">QR Codes + AI = Happy Guests</text>
+</svg>

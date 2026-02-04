@@ -1,387 +1,3124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GuestBot — AI Concierge for Vacation Rentals</title>
-    <meta name="description" content="GuestBot is an AI-powered guest concierge. Scan a QR code, get instant answers about your stay. No app download required.">
-    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GuestBot — AI Concierge for Vacation Rentals | Reduce Guest Questions 80%</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Analytics 4 -->
+    <!-- Replace GA_MEASUREMENT_ID with your actual GA4 ID (e.g., G-XXXXXXXXXX) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+
+    <!-- Google Search Console Verification -->
+    <!-- Replace with your actual verification code -->
+    <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" />
+
+    <!-- Performance: Preload critical resources -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      as="style"
+    />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <meta
+      name="description"
+      content="GuestBot is the #1 AI-powered guest concierge for Airbnb, VRBO & vacation rentals. QR codes let guests get instant answers 24/7. Setup in 5 minutes. Only $4.99/mo."
+    />
+    <meta
+      name="keywords"
+      content="vacation rental AI, guest concierge, Airbnb automation, VRBO guest communication, property management software, QR code check-in, short term rental, guest messaging, vacation rental chatbot, AI property assistant"
+    />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="canonical" href="https://guestbot.ai" />
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="author" content="GuestBot" />
+    <meta name="theme-color" content="#10b981" />
+    <meta name="application-name" content="GuestBot" />
+    <meta name="apple-mobile-web-app-title" content="GuestBot" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="GuestBot" />
+    <meta property="og:title" content="GuestBot — AI Concierge for Vacation Rentals" />
+    <meta
+      property="og:description"
+      content="The smartest way to handle guest questions. QR codes + AI = happy guests & fewer interruptions. Try free today."
+    />
+    <meta property="og:url" content="https://guestbot.ai" />
+    <meta property="og:image" content="https://guestbot-7029e.web.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@guestbot" />
+    <meta name="twitter:creator" content="@guestbot" />
+    <meta name="twitter:title" content="GuestBot — AI Concierge for Vacation Rentals" />
+    <meta
+      name="twitter:description"
+      content="Reduce guest questions by 80%. QR codes + AI gives guests instant answers 24/7."
+    />
+    <meta name="twitter:image" content="https://guestbot-7029e.web.app/og-image.png" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "GuestBot",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "AI-powered guest concierge for vacation rentals. Guests scan QR codes and get instant answers from an intelligent chatbot.",
+        "url": "https://guestbot.ai",
+        "offers": {
+          "@type": "Offer",
+          "price": "4.99",
+          "priceCurrency": "USD",
+          "priceValidUntil": "2027-12-31"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "ratingCount": "127"
+        },
+        "featureList": [
+          "AI-powered guest chat",
+          "Context-aware QR codes",
+          "iCal calendar sync",
+          "Local recommendations",
+          "Guest verification",
+          "Unlimited properties"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "GuestBot",
+        "url": "https://guestbot.ai",
+        "logo": "https://guestbot.ai/logo.svg",
+        "sameAs": ["https://twitter.com/guestbot", "https://linkedin.com/company/guestbot"],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "email": "support@guestbot.ai"
+        }
+      }
+    </script>
+    <!-- HowTo Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Set Up GuestBot for Your Vacation Rental",
+        "description": "Set up AI-powered guest assistance for your vacation rental in 3 simple steps.",
+        "totalTime": "PT5M",
+        "estimatedCost": {
+          "@type": "MonetaryAmount",
+          "currency": "USD",
+          "value": "4.99"
+        },
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "Add Your Property",
+            "text": "Enter property details, WiFi codes, house rules, and your favorite local recommendations.",
+            "url": "https://guestbot.ai/#how-it-works"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "Print QR Codes",
+            "text": "Generate context-specific QR codes and place them around your property — kitchen, TV, bathroom, etc.",
+            "url": "https://guestbot.ai/#how-it-works"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "Guests Get Answers",
+            "text": "Guests scan, verify their booking, and chat with AI for instant help. You relax.",
+            "url": "https://guestbot.ai/#how-it-works"
+          }
+        ]
+      }
+    </script>
+    <!-- Product Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "GuestBot AI Concierge",
+        "description": "AI-powered guest concierge for vacation rentals. Reduce guest questions by 80% with QR codes and intelligent chat.",
+        "brand": {
+          "@type": "Brand",
+          "name": "GuestBot"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://guestbot.ai/#pricing",
+          "priceCurrency": "USD",
+          "price": "4.99",
+          "priceValidUntil": "2027-12-31",
+          "availability": "https://schema.org/InStock",
+          "seller": {
+            "@type": "Organization",
+            "name": "GuestBot"
+          }
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "127",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      }
+    </script>
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://guestbot.ai"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Features",
+            "item": "https://guestbot.ai/#features"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Pricing",
+            "item": "https://guestbot.ai/#pricing"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": "FAQ",
+            "item": "https://guestbot.ai/#faq"
+          }
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is GuestBot?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "GuestBot is an AI-powered concierge for vacation rentals. Property owners place QR codes around their property, and guests can scan them to instantly chat with an AI that knows everything about the property."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much does GuestBot cost?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "GuestBot costs $4.99 per month for unlimited properties and all features included. Start with a free trial."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does GuestBot work with Airbnb and VRBO?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! GuestBot syncs with Airbnb, VRBO, Booking.com and any platform that provides an iCal calendar feed. Bookings are automatically imported."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do guests need to download an app?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Guests simply scan a QR code with their phone camera and the chat opens instantly in their browser. No app download or account creation required."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/cookie-consent.css" />
+    <link rel="stylesheet" href="/css/feature-bot.css" />
 
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --black: #000000;
+        --dark: #0a0a0a;
+        --dark-2: #111111;
+        --dark-3: #1a1a1a;
+        --dark-4: #222222;
+        --white: #ffffff;
+        --gray-300: #d4d4d4;
+        --gray-400: #a3a3a3;
+        --gray-500: #737373;
+        --gray-600: #525252;
+        --accent: #10b981;
+        --accent-hover: #34d399;
+        --accent-dim: rgba(16, 185, 129, 0.1);
+        --blue: #3b82f6;
+        --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font);
+        background: var(--black);
+        color: var(--white);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      /* NEBULA BACKGROUND */
+      .bg-nebula {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .nebula-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        animation: nebula-drift 30s ease-in-out infinite;
+      }
+
+      .nebula-blob:nth-child(1) {
+        width: 500px;
+        height: 500px;
+        top: -150px;
+        left: -100px;
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
+      }
+
+      .nebula-blob:nth-child(2) {
+        width: 400px;
+        height: 400px;
+        top: 50%;
+        right: -100px;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+        animation-delay: -10s;
+        animation-duration: 35s;
+      }
+
+      .nebula-blob:nth-child(3) {
+        width: 350px;
+        height: 350px;
+        bottom: -50px;
+        left: 30%;
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+        animation-delay: -20s;
+        animation-duration: 40s;
+      }
+
+      @keyframes nebula-drift {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        25% {
+          transform: translate(30px, -40px) scale(1.1);
+        }
+        50% {
+          transform: translate(-20px, 30px) scale(0.9);
+        }
+        75% {
+          transform: translate(40px, 20px) scale(1.05);
+        }
+      }
+
+      /* HEADER NAV */
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 100;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--dark-3);
+      }
+
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--white);
+        text-decoration: none;
+      }
+
+      .nav-brand-icon {
+        font-size: 24px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+
+      .nav-link {
+        color: var(--gray-400);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      .nav-link:hover {
+        color: var(--white);
+      }
+
+      .nav-cta {
+        padding: 10px 20px;
+        background: var(--accent);
+        color: var(--white);
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+
+      .nav-cta:hover {
+        background: var(--accent-hover);
+      }
+
+      /* CONTAINER */
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* SECTIONS */
+      section {
+        position: relative;
+        z-index: 1;
+      }
+
+      .section-tag {
+        display: inline-block;
+        padding: 6px 14px;
+        background: var(--accent-dim);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 100px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: clamp(28px, 5vw, 42px);
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 16px;
+      }
+
+      .section-subtitle {
+        font-size: 16px;
+        color: var(--gray-400);
+        max-width: 600px;
+        line-height: 1.7;
+      }
+
+      /* HERO */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 120px 24px 80px;
+      }
+
+      .hero-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 60px;
+        text-align: center;
+      }
+
+      .hero-text {
+        max-width: 700px;
+      }
+
+      .hero-title {
+        font-size: clamp(36px, 6vw, 56px);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        margin-bottom: 20px;
+      }
+
+      .hero-title .accent {
+        color: var(--accent);
+      }
+
+      .hero-subtitle {
+        font-size: 18px;
+        color: var(--gray-400);
+        margin-bottom: 32px;
+        line-height: 1.7;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 28px;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: var(--white);
+      }
+
+      .btn-primary:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background: var(--dark-3);
+        color: var(--white);
+        border: 1px solid var(--dark-4);
+      }
+
+      .btn-secondary:hover {
+        background: var(--dark-4);
+      }
+
+      .hero-visual {
+        display: flex;
+        justify-content: center;
+      }
+
+      .hero-mockup {
+        width: 280px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 24px;
+        padding: 12px;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+      }
+
+      .mockup-screen {
+        background: var(--dark);
+        border-radius: 16px;
+        padding: 20px;
+        min-height: 400px;
+      }
+
+      .mockup-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--dark-3);
+      }
+
+      .mockup-header-icon {
+        font-size: 20px;
+      }
+
+      .mockup-header-title {
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .mockup-chat {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .mockup-msg {
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        max-width: 85%;
+      }
+
+      .mockup-msg.bot {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        align-self: flex-start;
+      }
+
+      .mockup-msg.user {
+        background: var(--accent);
+        align-self: flex-end;
+      }
+
+      /* STATS */
+      .stats-bar {
+        padding: 60px 24px;
+        background: var(--dark);
+        border-top: 1px solid var(--dark-3);
+        border-bottom: 1px solid var(--dark-3);
+      }
+
+      .stats-grid {
+        max-width: 900px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 48px;
+        font-weight: 800;
+        color: var(--accent);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .stat-label {
+        font-size: 14px;
+        color: var(--gray-400);
+      }
+
+      /* FEATURES */
+      .features {
+        padding: 100px 24px;
+      }
+
+      .features-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .features-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .feature-card {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 16px;
+        padding: 32px;
+        transition: all 0.3s;
+      }
+
+      .feature-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-4px);
+      }
+
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--accent-dim);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .feature-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .feature-desc {
+        font-size: 14px;
+        color: var(--gray-400);
+        line-height: 1.6;
+      }
+
+      .feature-link {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 13px;
+        display: inline-block;
+        margin-top: 8px;
+      }
+
+      .feature-link:hover {
+        text-decoration: underline;
+      }
+
+      /* HOW IT WORKS */
+      .how-it-works {
+        padding: 100px 24px;
+        background: var(--dark);
+      }
+
+      .how-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .how-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        position: relative;
+      }
+
+      .steps::before {
+        content: '';
+        position: absolute;
+        top: 40px;
+        left: 15%;
+        right: 15%;
+        height: 2px;
+        background: linear-gradient(90deg, var(--dark-3), var(--accent), var(--dark-3));
+        z-index: 0;
+      }
+
+      .step {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .step-number {
+        width: 80px;
+        height: 80px;
+        background: var(--dark-2);
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--accent);
+        margin: 0 auto 24px;
+      }
+
+      .step-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .step-desc {
+        font-size: 14px;
+        color: var(--gray-400);
+        line-height: 1.6;
+        max-width: 280px;
+        margin: 0 auto;
+      }
+
+      /* USE CASES */
+      .use-cases {
+        padding: 100px 24px;
+      }
+
+      .use-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .use-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .cases-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
+      }
+
+      .case {
+        padding: 24px 16px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 12px;
+        text-align: center;
+        transition: all 0.2s;
+      }
+
+      .case:hover {
+        border-color: var(--accent);
+        background: var(--dark-3);
+      }
+
+      .case-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+      }
+
+      .case-title {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      /* BENEFITS */
+      .benefits {
+        padding: 100px 24px;
+        background: var(--dark);
+      }
+
+      .benefits-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+      }
+
+      .benefits-list {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .benefit-item {
+        display: flex;
+        gap: 16px;
+      }
+
+      .benefit-check {
+        width: 24px;
+        height: 24px;
+        background: var(--accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      .benefit-check svg {
+        width: 14px;
+        height: 14px;
+        stroke: var(--white);
+      }
+
+      .benefit-text h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .benefit-text p {
+        font-size: 14px;
+        color: var(--gray-400);
+      }
+
+      /* SECURITY */
+      .security {
+        padding: 100px 24px;
+      }
+
+      .security-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .security-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .security-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+
+      .security-card {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 16px;
+        padding: 28px;
+        text-align: center;
+      }
+
+      .security-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--accent-dim);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin: 0 auto 16px;
+      }
+
+      .security-title {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .security-desc {
+        font-size: 13px;
+        color: var(--gray-500);
+        line-height: 1.5;
+      }
+
+      /* PRICING */
+      .pricing {
+        padding: 100px 24px;
+        background: var(--dark);
+      }
+
+      .pricing-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .pricing-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .pricing-single {
+        max-width: 900px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, var(--dark-2) 0%, var(--dark-3) 100%);
+        border: 1px solid var(--dark-4);
+        border-radius: 24px;
+        padding: 60px;
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 60px;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .pricing-single::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .pricing-single-left {
+        text-align: center;
+        position: relative;
+      }
+
+      .pricing-single-price {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 4px;
+        margin-bottom: 8px;
+      }
+
+      .pricing-currency {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--accent);
+        margin-top: 12px;
+      }
+
+      .pricing-amount {
+        font-size: 72px;
+        font-weight: 800;
+        color: var(--white);
+        line-height: 1;
+      }
+
+      .pricing-period {
+        font-size: 18px;
+        color: var(--gray-500);
+        align-self: flex-end;
+        margin-bottom: 12px;
+      }
+
+      .pricing-single-note {
+        font-size: 14px;
+        color: var(--gray-500);
+        margin-bottom: 24px;
+      }
+
+      .btn-lg {
+        padding: 16px 40px;
+        font-size: 16px;
+      }
+
+      .pricing-trial-note {
+        font-size: 13px;
+        color: var(--gray-500);
+        margin-top: 16px;
+      }
+
+      .pricing-single-right {
+        position: relative;
+      }
+
+      .pricing-includes-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        color: var(--white);
+      }
+
+      .pricing-features-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .pricing-feature-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+        color: var(--gray-300);
+      }
+
+      .pricing-feature-icon {
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 16px;
+      }
+
+      /* CONTACT */
+      .contact {
+        padding: 100px 24px;
+      }
+
+      .contact-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: start;
+      }
+
+      .contact-info {
+        padding-right: 40px;
+      }
+
+      .contact-methods {
+        margin-top: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .contact-method {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .contact-method-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+
+      .contact-method-text {
+        font-size: 14px;
+      }
+
+      .contact-method-text strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .contact-method-text span {
+        color: var(--gray-400);
+      }
+
+      .contact-form {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 20px;
+        padding: 40px;
+      }
+
+      .form-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 24px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .form-input,
+      .form-textarea {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--dark);
+        border: 1px solid var(--dark-3);
+        border-radius: 8px;
+        color: var(--white);
+        font-size: 15px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .form-input:focus,
+      .form-textarea:focus {
+        border-color: var(--accent);
+      }
+
+      .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .form-consent {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
+      .form-consent input {
+        margin-top: 4px;
+        accent-color: var(--accent);
+      }
+
+      .form-consent label {
+        font-size: 13px;
+        color: var(--gray-400);
+        line-height: 1.5;
+      }
+
+      .form-consent a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      /* CTA */
+      .cta {
+        padding: 100px 24px;
+        background: linear-gradient(180deg, var(--dark) 0%, var(--black) 100%);
+        text-align: center;
+      }
+
+      .cta-title {
+        font-size: clamp(28px, 5vw, 40px);
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+
+      .cta-subtitle {
+        font-size: 16px;
+        color: var(--gray-400);
+        margin-bottom: 32px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* FOOTER */
+      .footer {
+        padding: 60px 24px 40px;
+        border-top: 1px solid var(--dark-3);
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 60px;
+        margin-bottom: 60px;
+      }
+
+      .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+
+      .footer-brand-icon {
+        font-size: 24px;
+      }
+
+      .footer-desc {
+        font-size: 14px;
+        color: var(--gray-400);
+        line-height: 1.6;
+        max-width: 300px;
+      }
+
+      .footer-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 12px;
+      }
+
+      .footer-links a {
+        color: var(--gray-400);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.2s;
+      }
+
+      .footer-links a:hover {
+        color: var(--white);
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 32px;
+        border-top: 1px solid var(--dark-3);
+      }
+
+      .footer-copy {
+        font-size: 13px;
+        color: var(--gray-600);
+      }
+
+      .footer-legal {
+        display: flex;
+        gap: 24px;
+      }
+
+      .footer-legal a {
+        font-size: 13px;
+        color: var(--gray-500);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      .footer-legal a:hover {
+        color: var(--white);
+      }
+
+      /* MOBILE */
+      @media (max-width: 900px) {
+        .nav-links {
+          display: none;
         }
 
-        :root {
-            --black: #000000;
-            --dark: #0a0a0a;
-            --dark-2: #111111;
-            --dark-3: #1a1a1a;
-            --white: #ffffff;
-            --gray-400: #a3a3a3;
-            --gray-500: #737373;
-            --gray-600: #525252;
-            --accent: #10b981;
-            --accent-hover: #34d399;
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        .hero-text {
+          max-width: 100%;
         }
 
-        html {
-            scroll-behavior: smooth;
+        .stats-grid {
+          grid-template-columns: 1fr;
+          gap: 32px;
         }
 
-        body {
-            font-family: var(--font);
-            background: var(--black);
-            color: var(--white);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        /* NEBULA BACKGROUND */
-        .bg-nebula {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .nebula-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: nebula-drift 30s ease-in-out infinite;
-        }
-
-        .nebula-blob:nth-child(1) {
-            width: 500px;
-            height: 500px;
-            top: -150px;
-            left: -100px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
-            animation-delay: 0s;
-        }
-
-        .nebula-blob:nth-child(2) {
-            width: 400px;
-            height: 400px;
-            top: 50%;
-            right: -100px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
-            animation-delay: -10s;
-            animation-duration: 35s;
-        }
-
-        .nebula-blob:nth-child(3) {
-            width: 350px;
-            height: 350px;
-            bottom: -50px;
-            left: 30%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
-            animation-delay: -20s;
-            animation-duration: 40s;
-        }
-
-        @keyframes nebula-drift {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(30px, -40px) scale(1.1); }
-            50% { transform: translate(-20px, 30px) scale(0.9); }
-            75% { transform: translate(40px, 20px) scale(1.05); }
-        }
-
-        /* HERO */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 60px 24px;
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-icon {
-            font-size: 64px;
-            margin-bottom: 24px;
-        }
-
-        .hero-title {
-            font-size: clamp(32px, 7vw, 56px);
-            font-weight: 800;
-            line-height: 1;
-            letter-spacing: -0.03em;
-            margin-bottom: 16px;
-        }
-
-        .hero-title .accent {
-            color: var(--accent);
-        }
-
-        .hero-subtitle {
-            font-size: clamp(16px, 2vw, 18px);
-            color: var(--gray-400);
-            max-width: 450px;
-            margin-bottom: 32px;
-            line-height: 1.6;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 28px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 8px;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        /* HOW IT WORKS */
-        .how-it-works {
-            padding: 80px 24px;
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-title {
-            font-size: clamp(24px, 5vw, 36px);
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 48px;
+        .features-grid {
+          grid-template-columns: 1fr;
         }
 
         .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
+          grid-template-columns: 1fr;
+          gap: 40px;
         }
 
-        .step {
-            padding: 28px 24px;
-            background: var(--dark-2);
-            border: 1px solid var(--dark-3);
-            border-radius: 16px;
-            text-align: center;
-        }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: var(--accent);
-            color: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            margin: 0 auto 16px;
-        }
-
-        .step-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .step-desc {
-            font-size: 14px;
-            color: var(--gray-400);
-            line-height: 1.5;
-        }
-
-        /* USE CASES */
-        .use-cases {
-            padding: 80px 24px;
-            background: var(--dark);
-            position: relative;
-            z-index: 1;
-        }
-
-        .use-cases-inner {
-            max-width: 900px;
-            margin: 0 auto;
+        .steps::before {
+          display: none;
         }
 
         .cases-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 40px;
+          grid-template-columns: repeat(3, 1fr);
         }
 
-        .case {
-            padding: 20px;
-            background: var(--dark-2);
-            border: 1px solid var(--dark-3);
-            border-radius: 12px;
-            text-align: center;
+        .benefits-content {
+          grid-template-columns: 1fr;
         }
 
-        .case-icon {
-            font-size: 28px;
-            margin-bottom: 12px;
+        .security-grid {
+          grid-template-columns: repeat(2, 1fr);
         }
 
-        .case-title {
-            font-size: 14px;
-            font-weight: 600;
+        .pricing-single {
+          grid-template-columns: 1fr;
+          padding: 40px;
+          gap: 40px;
+          text-align: center;
         }
 
-        /* CTA */
-        .cta {
-            padding: 80px 24px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
+        .pricing-single-left {
+          padding-bottom: 40px;
+          border-bottom: 1px solid var(--dark-4);
         }
 
-        .cta-title {
-            font-size: clamp(24px, 4vw, 32px);
-            font-weight: 700;
-            margin-bottom: 12px;
+        .pricing-features-grid {
+          justify-content: center;
         }
 
-        .cta-subtitle {
-            font-size: 15px;
-            color: var(--gray-400);
-            margin-bottom: 28px;
+        .contact-content {
+          grid-template-columns: 1fr;
         }
 
-        /* FOOTER */
-        .footer {
-            padding: 40px 24px;
-            border-top: 1px solid var(--dark-3);
-            text-align: center;
-            position: relative;
-            z-index: 1;
+        .footer-content {
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
         }
 
-        .footer-copy {
-            font-size: 13px;
-            color: var(--gray-600);
+        .footer-bottom {
+          flex-direction: column;
+          gap: 16px;
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .cases-grid {
+          grid-template-columns: repeat(2, 1fr);
         }
 
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 28px;
-            }
-            .steps {
-                grid-template-columns: 1fr;
-            }
+        .security-grid {
+          grid-template-columns: 1fr;
         }
+
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-content {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* INTEGRATIONS */
+      .integrations {
+        padding: 80px 24px;
+        background: var(--dark);
+        border-top: 1px solid var(--dark-3);
+      }
+
+      .integrations-header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .integrations-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .integrations-grid {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 48px;
+        flex-wrap: wrap;
+        margin-bottom: 32px;
+      }
+
+      .integration-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 24px 32px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 16px;
+        transition: all 0.2s;
+      }
+
+      .integration-item:hover {
+        border-color: var(--dark-4);
+        transform: translateY(-2px);
+      }
+
+      .integration-logo {
+        font-size: 40px;
+        line-height: 1;
+      }
+
+      .integration-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--gray-300);
+      }
+
+      .integrations-note {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px 24px;
+        background: rgba(16, 185, 129, 0.08);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 12px;
+      }
+
+      .integrations-note-icon {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .integrations-note-text {
+        font-size: 14px;
+        color: var(--gray-300);
+        line-height: 1.6;
+      }
+
+      .integrations-note-text strong {
+        color: var(--accent);
+      }
+
+      /* FAQ */
+      .faq {
+        padding: 100px 24px;
+      }
+
+      .faq-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .faq-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .faq-grid {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .faq-item {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .faq-question {
+        width: 100%;
+        padding: 20px 24px;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 16px;
+        font-weight: 600;
+        font-family: inherit;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        transition: background 0.2s;
+      }
+
+      .faq-question:hover {
+        background: var(--dark-3);
+      }
+
+      .faq-icon {
+        font-size: 20px;
+        color: var(--accent);
+        transition: transform 0.3s;
+        flex-shrink: 0;
+      }
+
+      .faq-item.open .faq-icon {
+        transform: rotate(45deg);
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+
+      .faq-item.open .faq-answer {
+        max-height: 300px;
+      }
+
+      .faq-answer-inner {
+        padding: 0 24px 20px;
+        font-size: 15px;
+        color: var(--gray-400);
+        line-height: 1.7;
+      }
+
+      .faq-answer-inner a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .faq-answer-inner a:hover {
+        text-decoration: underline;
+      }
+
+      /* TESTIMONIALS */
+      .testimonials {
+        padding: 100px 24px;
+        background: var(--dark);
+      }
+
+      .testimonials-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .testimonials-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .testimonial-card {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 16px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .testimonial-stars {
+        color: #fbbf24;
+        font-size: 18px;
+        margin-bottom: 16px;
+        letter-spacing: 2px;
+      }
+
+      .testimonial-text {
+        font-size: 15px;
+        color: var(--gray-300);
+        line-height: 1.7;
+        flex: 1;
+        margin-bottom: 24px;
+      }
+
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-top: 20px;
+        border-top: 1px solid var(--dark-3);
+      }
+
+      .testimonial-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 600;
+        color: white;
+      }
+
+      .testimonial-info {
+        flex: 1;
+      }
+
+      .testimonial-name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--white);
+        margin-bottom: 2px;
+      }
+
+      .testimonial-role {
+        font-size: 13px;
+        color: var(--gray-500);
+      }
+
+      .testimonials-trust {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid var(--dark-3);
+      }
+
+      .trust-item {
+        text-align: center;
+      }
+
+      .trust-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 4px;
+      }
+
+      .trust-label {
+        font-size: 13px;
+        color: var(--gray-500);
+      }
+
+      /* BEFORE/AFTER COMPARISON */
+      .comparison {
+        padding: 100px 24px;
+      }
+
+      .comparison-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .comparison-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .comparison-grid {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 32px;
+        align-items: stretch;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .comparison-card {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 20px;
+        padding: 36px;
+      }
+
+      .comparison-card.before {
+        border-color: rgba(239, 68, 68, 0.3);
+      }
+
+      .comparison-card.after {
+        border-color: rgba(16, 185, 129, 0.3);
+        background: linear-gradient(135deg, var(--dark-2) 0%, rgba(16, 185, 129, 0.05) 100%);
+      }
+
+      .comparison-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--dark-3);
+      }
+
+      .comparison-card-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+      }
+
+      .comparison-card.before .comparison-card-icon {
+        background: rgba(239, 68, 68, 0.15);
+      }
+
+      .comparison-card.after .comparison-card-icon {
+        background: rgba(16, 185, 129, 0.15);
+      }
+
+      .comparison-card-title {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .comparison-card.before .comparison-card-title {
+        color: #f87171;
+      }
+
+      .comparison-card.after .comparison-card-title {
+        color: var(--accent);
+      }
+
+      .comparison-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .comparison-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 14px;
+        color: var(--gray-300);
+        line-height: 1.5;
+      }
+
+      .comparison-list li span:first-child {
+        flex-shrink: 0;
+        font-size: 16px;
+      }
+
+      .comparison-card.before .comparison-list li span:first-child {
+        color: #f87171;
+      }
+
+      .comparison-card.after .comparison-list li span:first-child {
+        color: var(--accent);
+      }
+
+      .comparison-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .comparison-arrow {
+        width: 56px;
+        height: 56px;
+        background: var(--accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+      }
+
+      /* SCREENSHOTS / APP PREVIEW */
+      .app-preview {
+        padding: 100px 24px;
+        background: var(--dark);
+        overflow: hidden;
+      }
+
+      .app-preview-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .app-preview-header .section-subtitle {
+        margin: 0 auto;
+      }
+
+      .preview-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 40px;
+      }
+
+      .preview-tab {
+        padding: 12px 24px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 8px;
+        color: var(--gray-400);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .preview-tab:hover {
+        background: var(--dark-3);
+      }
+
+      .preview-tab.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
+      .preview-content {
+        display: none;
+      }
+
+      .preview-content.active {
+        display: block;
+      }
+
+      .preview-showcase {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        align-items: flex-start;
+      }
+
+      .preview-device {
+        position: relative;
+      }
+
+      .preview-device-frame {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 24px;
+        padding: 12px;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+      }
+
+      .preview-device-frame.phone {
+        width: 280px;
+      }
+
+      .preview-device-frame.desktop {
+        width: 700px;
+        border-radius: 16px;
+      }
+
+      .preview-device-screen {
+        background: var(--dark);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      .preview-device-frame.desktop .preview-device-screen {
+        border-radius: 8px;
+      }
+
+      .preview-device-label {
+        text-align: center;
+        margin-top: 16px;
+        font-size: 14px;
+        color: var(--gray-500);
+        font-weight: 500;
+      }
+
+      /* Dashboard Preview */
+      .dashboard-preview {
+        padding: 20px;
+        min-height: 400px;
+      }
+
+      .dashboard-preview-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+
+      .dashboard-preview-title {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .dashboard-preview-user {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: var(--dark-2);
+        border-radius: 8px;
+        font-size: 12px;
+        color: var(--gray-400);
+      }
+
+      .dashboard-property-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .dashboard-property-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 12px;
+      }
+
+      .dashboard-property-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .dashboard-property-info {
+        flex: 1;
+      }
+
+      .dashboard-property-name {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+
+      .dashboard-property-location {
+        font-size: 12px;
+        color: var(--gray-500);
+      }
+
+      .dashboard-property-badges {
+        display: flex;
+        gap: 8px;
+      }
+
+      .dashboard-badge {
+        padding: 4px 8px;
+        background: var(--dark);
+        border-radius: 4px;
+        font-size: 10px;
+        color: var(--gray-400);
+      }
+
+      /* Chat Preview */
+      .chat-preview {
+        min-height: 450px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-preview-header {
+        padding: 16px 20px;
+        background: var(--dark-2);
+        border-bottom: 1px solid var(--dark-3);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .chat-preview-avatar {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+
+      .chat-preview-info h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+
+      .chat-preview-info span {
+        font-size: 11px;
+        color: var(--accent);
+      }
+
+      .chat-preview-messages {
+        flex: 1;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .chat-msg {
+        max-width: 85%;
+        padding: 12px 16px;
+        border-radius: 16px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .chat-msg.bot {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+      }
+
+      .chat-msg.user {
+        background: var(--accent);
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+      }
+
+      .chat-preview-input {
+        padding: 16px 20px;
+        background: var(--dark-2);
+        border-top: 1px solid var(--dark-3);
+        display: flex;
+        gap: 12px;
+      }
+
+      .chat-preview-input input {
+        flex: 1;
+        padding: 10px 14px;
+        background: var(--dark);
+        border: 1px solid var(--dark-3);
+        border-radius: 20px;
+        color: var(--gray-400);
+        font-size: 13px;
+        outline: none;
+      }
+
+      .chat-preview-input button {
+        width: 36px;
+        height: 36px;
+        background: var(--accent);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        cursor: pointer;
+      }
+
+      @media (max-width: 900px) {
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .comparison-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .comparison-divider {
+          transform: rotate(90deg);
+        }
+
+        .preview-showcase {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .preview-device-frame.desktop {
+          width: 100%;
+          max-width: 500px;
+        }
+
+        .testimonials-trust {
+          flex-wrap: wrap;
+          gap: 24px;
+        }
+      }
+
+      /* SUCCESS MESSAGE */
+      .form-success {
+        display: none;
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .form-success.show {
+        display: block;
+      }
+
+      .form-success-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+
+      .form-success h3 {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .form-success p {
+        color: var(--gray-400);
+        font-size: 14px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- NEBULA BACKGROUND -->
     <div class="bg-nebula">
-        <div class="nebula-blob"></div>
-        <div class="nebula-blob"></div>
-        <div class="nebula-blob"></div>
+      <div class="nebula-blob"></div>
+      <div class="nebula-blob"></div>
+      <div class="nebula-blob"></div>
     </div>
 
+    <!-- NAVIGATION -->
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-icon">🤖</span>
+        GuestBot
+      </a>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="/app" class="nav-cta">Get Started</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
     <section class="hero">
-        <div class="hero-icon">🤖</div>
-        <h1 class="hero-title">
-            Your AI<br><span class="accent">concierge.</span>
-        </h1>
-        <p class="hero-subtitle">
-            Scan a QR code. Get instant answers about your stay. No app needed.
-        </p>
-        <a href="/app" class="btn btn-primary">Get Started</a>
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1 class="hero-title">AI Concierge for<br /><span class="accent">Vacation Rentals</span></h1>
+          <p class="hero-subtitle">
+            Reduce guest questions by 80%. Place QR codes around your property — guests scan and get instant AI-powered
+            answers. No app download required.
+          </p>
+          <div class="hero-buttons">
+            <a href="/app" class="btn btn-primary">Start Free Trial</a>
+            <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-mockup">
+            <div class="mockup-screen">
+              <div class="mockup-header">
+                <span class="mockup-header-icon">🤖</span>
+                <span class="mockup-header-title">GuestBot</span>
+              </div>
+              <div class="mockup-chat">
+                <div class="mockup-msg bot">Hi! I'm your AI concierge. Ask me anything about your stay.</div>
+                <div class="mockup-msg user">What's the WiFi password?</div>
+                <div class="mockup-msg bot">The WiFi is "BeachHouse_5G" and the password is "sunset2024"</div>
+                <div class="mockup-msg user">Any good restaurants nearby?</div>
+                <div class="mockup-msg bot">
+                  I recommend Ocean Grill (5 min walk) for seafood or Café Luna for brunch!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="how-it-works">
-        <h2 class="section-title">How It Works</h2>
+    <!-- STATS -->
+    <section class="stats-bar">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-value">80%</div>
+          <div class="stat-label">Fewer Guest Messages</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">24/7</div>
+          <div class="stat-label">Instant Responses</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">5 min</div>
+          <div class="stat-label">Setup Time</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials" id="testimonials">
+      <div class="container">
+        <div class="testimonials-header">
+          <span class="section-tag">Testimonials</span>
+          <h2 class="section-title">Loved by Hosts Everywhere</h2>
+          <p class="section-subtitle">
+            See why property managers are switching to GuestBot for their guest communication.
+          </p>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">
+              "I used to get 15+ messages a day asking about WiFi, check-out times, and parking. Now I maybe get 2-3
+              that actually need my attention. GuestBot handles everything else perfectly."
+            </p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">SM</div>
+              <div class="testimonial-info">
+                <div class="testimonial-name">Sarah Mitchell</div>
+                <div class="testimonial-role">12 properties in Miami</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">
+              "My guests love that they can get instant answers at 2am without waiting for me to wake up. My reviews
+              have noticeably improved since I started using GuestBot."
+            </p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">JR</div>
+              <div class="testimonial-info">
+                <div class="testimonial-name">James Rodriguez</div>
+                <div class="testimonial-role">8 properties in Austin</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">
+              "The QR code idea is genius. I put one by the TV, one in the kitchen, one by the thermostat. Guests just
+              scan and get exactly the help they need for that specific thing."
+            </p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">EW</div>
+              <div class="testimonial-info">
+                <div class="testimonial-name">Emily Watson</div>
+                <div class="testimonial-role">5 properties in Denver</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+      <div class="container">
+        <div class="features-header">
+          <span class="section-tag">Features</span>
+          <h2 class="section-title">Everything Your Guests Need</h2>
+          <p class="section-subtitle">
+            GuestBot provides instant answers to common questions, local recommendations, and property-specific
+            information — all powered by AI.
+          </p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3 class="feature-title">Context-Aware QR Codes</h3>
+            <p class="feature-desc">
+              Place different QR codes around your property. Kitchen, TV, thermostat — each provides context-specific
+              help.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3 class="feature-title">AI-Powered Answers</h3>
+            <p class="feature-desc">
+              Powered by advanced AI that understands natural language and provides friendly, accurate responses.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📍</div>
+            <h3 class="feature-title">Local Recommendations</h3>
+            <p class="feature-desc">
+              Guests can ask about restaurants, parks, activities, and attractions — AI knows the local area.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📅</div>
+            <h3 class="feature-title">iCal Calendar Sync</h3>
+            <p class="feature-desc">
+              Sync bookings automatically from Airbnb, VRBO, and Booking.com. No manual entry needed.
+              <a href="#integrations" class="feature-link">View integrations →</a>
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔐</div>
+            <h3 class="feature-title">Guest Verification</h3>
+            <p class="feature-desc">
+              Guests verify their stay with their phone number. Only active guests can access property info.
+              <a href="#security" class="feature-link">Learn about security →</a>
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">No App Required</h3>
+            <p class="feature-desc">
+              Works instantly in any mobile browser. Guests scan and chat — no downloads or accounts needed.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APP PREVIEW / SCREENSHOTS -->
+    <section class="app-preview" id="app-preview">
+      <div class="container">
+        <div class="app-preview-header">
+          <span class="section-tag">See It In Action</span>
+          <h2 class="section-title">Simple Dashboard, Delightful Guest Experience</h2>
+          <p class="section-subtitle">
+            A clean interface for you to manage properties, and an instant chat experience for your guests.
+          </p>
+        </div>
+
+        <div class="preview-tabs">
+          <button class="preview-tab active" data-preview="dashboard">Host Dashboard</button>
+          <button class="preview-tab" data-preview="guest">Guest Chat</button>
+        </div>
+
+        <div class="preview-content active" data-preview="dashboard">
+          <div class="preview-showcase">
+            <div class="preview-device">
+              <div class="preview-device-frame desktop">
+                <div class="preview-device-screen">
+                  <div class="dashboard-preview">
+                    <div class="dashboard-preview-header">
+                      <div class="dashboard-preview-title">Your Properties</div>
+                      <div class="dashboard-preview-user"><span>👤</span> host@example.com</div>
+                    </div>
+                    <div class="dashboard-property-list">
+                      <div class="dashboard-property-item">
+                        <div class="dashboard-property-icon">🏠</div>
+                        <div class="dashboard-property-info">
+                          <div class="dashboard-property-name">Beach House Retreat</div>
+                          <div class="dashboard-property-location">123 Ocean Drive, Miami Beach, FL</div>
+                        </div>
+                        <div class="dashboard-property-badges">
+                          <span class="dashboard-badge">📶 WiFi</span>
+                          <span class="dashboard-badge">🔑 Codes</span>
+                        </div>
+                      </div>
+                      <div class="dashboard-property-item">
+                        <div class="dashboard-property-icon">🏠</div>
+                        <div class="dashboard-property-info">
+                          <div class="dashboard-property-name">Downtown Loft</div>
+                          <div class="dashboard-property-location">456 Main Street, Austin, TX</div>
+                        </div>
+                        <div class="dashboard-property-badges">
+                          <span class="dashboard-badge">📶 WiFi</span>
+                          <span class="dashboard-badge">🔑 Codes</span>
+                        </div>
+                      </div>
+                      <div class="dashboard-property-item">
+                        <div class="dashboard-property-icon">🏠</div>
+                        <div class="dashboard-property-info">
+                          <div class="dashboard-property-name">Mountain Cabin</div>
+                          <div class="dashboard-property-location">789 Pine Road, Denver, CO</div>
+                        </div>
+                        <div class="dashboard-property-badges">
+                          <span class="dashboard-badge">📶 WiFi</span>
+                          <span class="dashboard-badge">🔑 Codes</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="preview-device-label">Manage all your properties in one place</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-content" data-preview="guest">
+          <div class="preview-showcase">
+            <div class="preview-device">
+              <div class="preview-device-frame phone">
+                <div class="preview-device-screen">
+                  <div class="chat-preview">
+                    <div class="chat-preview-header">
+                      <div class="chat-preview-avatar">🤖</div>
+                      <div class="chat-preview-info">
+                        <h4>GuestBot</h4>
+                        <span>● Online</span>
+                      </div>
+                    </div>
+                    <div class="chat-preview-messages">
+                      <div class="chat-msg bot">
+                        Welcome to Beach House Retreat! 🏖️ I'm your AI assistant. How can I help you today?
+                      </div>
+                      <div class="chat-msg user">How do I connect to the WiFi?</div>
+                      <div class="chat-msg bot">
+                        The WiFi network is "BeachHouse_5G" and the password is "sunset2024". You should see it appear
+                        in your available networks. Let me know if you have any trouble connecting!
+                      </div>
+                      <div class="chat-msg user">What time is checkout?</div>
+                      <div class="chat-msg bot">
+                        Checkout is at 11:00 AM. Please leave the keys on the kitchen counter. Safe travels! 🌴
+                      </div>
+                    </div>
+                    <div class="chat-preview-input">
+                      <input type="text" placeholder="Type your question..." disabled />
+                      <button>→</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="preview-device-label">Guests get instant answers on their phone</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="how-header">
+          <span class="section-tag">How It Works</span>
+          <h2 class="section-title">Simple for You, Seamless for Guests</h2>
+          <p class="section-subtitle">
+            Set up once, help guests forever. Three easy steps to transform your guest experience.
+          </p>
+        </div>
         <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <h3 class="step-title">Scan QR Code</h3>
-                <p class="step-desc">Guests scan a code on their phone. Kitchen, TV, thermostat — each has its own.</p>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <h3 class="step-title">Ask Anything</h3>
-                <p class="step-desc">WiFi password? How to use the coffee machine? Checkout time? Just ask.</p>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <h3 class="step-title">Instant Answer</h3>
-                <p class="step-desc">AI responds with property-specific info. No waiting for the host.</p>
-            </div>
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3 class="step-title">Add Your Property</h3>
+            <p class="step-desc">
+              Enter property details, WiFi codes, house rules, and your favorite local recommendations.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3 class="step-title">Print QR Codes</h3>
+            <p class="step-desc">
+              Generate context-specific QR codes and place them around your property — kitchen, TV, bathroom, etc.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3 class="step-title">Guests Get Answers</h3>
+            <p class="step-desc">Guests scan, verify their booking, and chat with AI for instant help. You relax.</p>
+          </div>
         </div>
+      </div>
     </section>
 
+    <!-- INTEGRATIONS -->
+    <section class="integrations" id="integrations">
+      <div class="container">
+        <div class="integrations-header">
+          <span class="section-tag">Integrations</span>
+          <h2 class="section-title">Syncs With Your Booking Platforms</h2>
+          <p class="section-subtitle">Automatically import guest bookings from the platforms you already use.</p>
+        </div>
+        <div class="integrations-grid">
+          <div class="integration-item">
+            <div class="integration-logo">🏠</div>
+            <div class="integration-name">Airbnb</div>
+          </div>
+          <div class="integration-item">
+            <div class="integration-logo">🌴</div>
+            <div class="integration-name">VRBO</div>
+          </div>
+          <div class="integration-item">
+            <div class="integration-logo">🅱️</div>
+            <div class="integration-name">Booking.com</div>
+          </div>
+          <div class="integration-item">
+            <div class="integration-logo">📅</div>
+            <div class="integration-name">Any iCal Feed</div>
+          </div>
+        </div>
+        <div class="integrations-note">
+          <div class="integrations-note-icon">🔒</div>
+          <p class="integrations-note-text">
+            <strong>Security First:</strong> We only sync booking dates and guest names via read-only iCal feeds.
+            GuestBot never has access to your platform accounts, passwords, or payment information. Your property
+            credentials stay safely in your GuestBot dashboard.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- USE CASES -->
     <section class="use-cases">
-        <div class="use-cases-inner">
-            <h2 class="section-title">QR Codes Everywhere</h2>
-            <div class="cases-grid">
-                <div class="case">
-                    <div class="case-icon">🚪</div>
-                    <div class="case-title">Front Door</div>
-                </div>
-                <div class="case">
-                    <div class="case-icon">☕</div>
-                    <div class="case-title">Kitchen</div>
-                </div>
-                <div class="case">
-                    <div class="case-icon">📺</div>
-                    <div class="case-title">TV / Entertainment</div>
-                </div>
-                <div class="case">
-                    <div class="case-icon">🌡️</div>
-                    <div class="case-title">Thermostat</div>
-                </div>
-                <div class="case">
-                    <div class="case-icon">🛁</div>
-                    <div class="case-title">Bathroom</div>
-                </div>
-                <div class="case">
-                    <div class="case-icon">🏊</div>
-                    <div class="case-title">Pool / Hot Tub</div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="use-header">
+          <span class="section-tag">QR Placements</span>
+          <h2 class="section-title">QR Codes Everywhere</h2>
+          <p class="section-subtitle">Each location gets its own QR code with context-aware responses.</p>
         </div>
+        <div class="cases-grid">
+          <div class="case">
+            <div class="case-icon">🚪</div>
+            <div class="case-title">Front Door</div>
+          </div>
+          <div class="case">
+            <div class="case-icon">☕</div>
+            <div class="case-title">Kitchen</div>
+          </div>
+          <div class="case">
+            <div class="case-icon">📺</div>
+            <div class="case-title">TV</div>
+          </div>
+          <div class="case">
+            <div class="case-icon">🌡️</div>
+            <div class="case-title">Thermostat</div>
+          </div>
+          <div class="case">
+            <div class="case-icon">🛁</div>
+            <div class="case-title">Bathroom</div>
+          </div>
+          <div class="case">
+            <div class="case-icon">🏊</div>
+            <div class="case-title">Pool</div>
+          </div>
+        </div>
+      </div>
     </section>
 
+    <!-- BENEFITS -->
+    <section class="benefits">
+      <div class="container">
+        <div class="benefits-content">
+          <div class="benefits-text">
+            <span class="section-tag">Benefits</span>
+            <h2 class="section-title">Why Hosts Love GuestBot</h2>
+            <p class="section-subtitle">
+              Stop answering the same questions over and over. Let AI handle it while you focus on growing your
+              business.
+            </p>
+          </div>
+          <div class="benefits-list">
+            <div class="benefit-item">
+              <div class="benefit-check">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div class="benefit-text">
+                <h4>Save Hours Every Week</h4>
+                <p>No more repetitive messages about WiFi, check-out times, or how to use the TV.</p>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <div class="benefit-check">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div class="benefit-text">
+                <h4>Better Guest Reviews</h4>
+                <p>Guests appreciate instant answers at 2am. Happy guests leave better reviews.</p>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <div class="benefit-check">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div class="benefit-text">
+                <h4>Scale Your Portfolio</h4>
+                <p>Manage more properties without proportionally increasing your workload.</p>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <div class="benefit-check">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div class="benefit-text">
+                <h4>Professional Touch</h4>
+                <p>AI concierge makes your property feel like a premium hotel experience.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEFORE/AFTER COMPARISON -->
+    <section class="comparison" id="comparison">
+      <div class="container">
+        <div class="comparison-header">
+          <span class="section-tag">The Difference</span>
+          <h2 class="section-title">Before & After GuestBot</h2>
+          <p class="section-subtitle">See how GuestBot transforms your daily hosting experience.</p>
+        </div>
+        <div class="comparison-grid">
+          <div class="comparison-card before">
+            <div class="comparison-card-header">
+              <div class="comparison-card-icon">😫</div>
+              <div class="comparison-card-title">Without GuestBot</div>
+            </div>
+            <ul class="comparison-list">
+              <li>
+                <span>✗</span>
+                <span>Constant phone buzzing with guest messages at all hours</span>
+              </li>
+              <li>
+                <span>✗</span>
+                <span>Repeating the same WiFi password 10 times a week</span>
+              </li>
+              <li>
+                <span>✗</span>
+                <span>Frustrated guests waiting hours for simple answers</span>
+              </li>
+              <li>
+                <span>✗</span>
+                <span>Middle-of-the-night "how do I work the TV?" messages</span>
+              </li>
+              <li>
+                <span>✗</span>
+                <span>Creating lengthy instruction documents nobody reads</span>
+              </li>
+              <li>
+                <span>✗</span>
+                <span>Lower reviews due to slow response times</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="comparison-divider">
+            <div class="comparison-arrow">→</div>
+          </div>
+
+          <div class="comparison-card after">
+            <div class="comparison-card-header">
+              <div class="comparison-card-icon">😌</div>
+              <div class="comparison-card-title">With GuestBot</div>
+            </div>
+            <ul class="comparison-list">
+              <li>
+                <span>✓</span>
+                <span>Peace and quiet — AI handles 80% of questions automatically</span>
+              </li>
+              <li>
+                <span>✓</span>
+                <span>Guests scan QR code and get instant, accurate answers</span>
+              </li>
+              <li>
+                <span>✓</span>
+                <span>Happy guests who feel supported 24/7</span>
+              </li>
+              <li>
+                <span>✓</span>
+                <span>Sleep through the night while AI assists guests</span>
+              </li>
+              <li>
+                <span>✓</span>
+                <span>Interactive help that guests actually use</span>
+              </li>
+              <li>
+                <span>✓</span>
+                <span>Better reviews from improved guest experience</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECURITY -->
+    <section class="security" id="security">
+      <div class="container">
+        <div class="security-header">
+          <span class="section-tag">Trust & Security</span>
+          <h2 class="section-title">Your Data is Protected</h2>
+          <p class="section-subtitle">
+            We take privacy seriously. GuestBot is built with enterprise-grade security and full compliance with data
+            protection regulations.
+          </p>
+        </div>
+        <div class="security-grid">
+          <div class="security-card">
+            <div class="security-icon">🔒</div>
+            <h3 class="security-title">Encrypted Data</h3>
+            <p class="security-desc">All data encrypted in transit (TLS 1.3) and at rest (AES-256).</p>
+          </div>
+          <div class="security-card">
+            <div class="security-icon">🇪🇺</div>
+            <h3 class="security-title">GDPR Compliant</h3>
+            <p class="security-desc">Full compliance with EU data protection regulations.</p>
+          </div>
+          <div class="security-card">
+            <div class="security-icon">🛡️</div>
+            <h3 class="security-title">Guest Verification</h3>
+            <p class="security-desc">Only verified guests with active bookings can access property info.</p>
+          </div>
+          <div class="security-card">
+            <div class="security-icon">🗑️</div>
+            <h3 class="security-title">Data Retention</h3>
+            <p class="security-desc">Guest chat data automatically deleted after checkout.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing" id="pricing">
+      <div class="container">
+        <div class="pricing-header">
+          <span class="section-tag">Pricing</span>
+          <h2 class="section-title">One Simple Price. Everything Included.</h2>
+          <p class="section-subtitle">No tiers, no confusion. Get all features for less than a coffee.</p>
+        </div>
+        <div class="pricing-single">
+          <div class="pricing-single-left">
+            <div class="pricing-single-price">
+              <span class="pricing-currency">$</span>
+              <span class="pricing-amount">4.99</span>
+              <span class="pricing-period">/month</span>
+            </div>
+            <p class="pricing-single-note">Cancel anytime. No contracts.</p>
+            <a href="/app" class="btn btn-primary btn-lg">Start Free Trial</a>
+            <p class="pricing-trial-note">14-day free trial. No credit card required.</p>
+          </div>
+          <div class="pricing-single-right">
+            <h3 class="pricing-includes-title">Everything you need:</h3>
+            <div class="pricing-features-grid">
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span>Unlimited properties</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span>Unlimited QR codes</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span>AI-powered guest chat</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span>iCal calendar sync</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span>Local recommendations</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span>Guest verification</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span>Airbnb & VRBO sync</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span>Priority support</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="contact-content">
+          <div class="contact-info">
+            <span class="section-tag">Contact</span>
+            <h2 class="section-title">Get in Touch</h2>
+            <p class="section-subtitle">
+              Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            </p>
+            <div class="contact-methods">
+              <div class="contact-method">
+                <div class="contact-method-icon">📧</div>
+                <div class="contact-method-text">
+                  <strong>Email</strong>
+                  <span>support@guestbot.ai</span>
+                </div>
+              </div>
+              <div class="contact-method">
+                <div class="contact-method-icon">💬</div>
+                <div class="contact-method-text">
+                  <strong>Live Chat</strong>
+                  <span>Available 9am - 6pm EST</span>
+                </div>
+              </div>
+              <div class="contact-method">
+                <div class="contact-method-icon">📍</div>
+                <div class="contact-method-text">
+                  <strong>Location</strong>
+                  <span>Miami, Florida, USA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="contact-form" id="contactForm">
+            <h3 class="form-title">Send a Message</h3>
+            <form id="contactFormEl">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-input" name="firstName" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-input" name="lastName" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" name="email" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subject</label>
+                <input type="text" class="form-input" name="subject" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea class="form-textarea" name="message" required></textarea>
+              </div>
+              <div class="form-consent">
+                <input type="checkbox" id="consent" required />
+                <label for="consent"
+                  >I agree to the <a href="/privacy">Privacy Policy</a> and consent to being contacted about my
+                  inquiry.</label
+                >
+              </div>
+              <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+            <div class="form-success" id="formSuccess">
+              <div class="form-success-icon">✅</div>
+              <h3>Message Sent!</h3>
+              <p>Thanks for reaching out. We'll get back to you within 24 hours.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <div class="faq-header">
+          <span class="section-tag">FAQ</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">Everything you need to know about GuestBot.</p>
+        </div>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Can guests see my door codes and WiFi password?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Only verified guests with an active booking can access your property information. Guests must verify
+                their phone number matches a current reservation before the AI shares any sensitive details like door
+                codes or WiFi passwords. <a href="#security">Learn more about our security measures →</a>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>What if the AI gives incorrect information?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                The AI only responds with information you've provided in your property profile. It won't make things up.
+                For questions it can't answer, it politely tells guests to contact you directly. You're always in
+                control of what information is shared.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>How does booking sync work? Is it secure?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                We use read-only iCal calendar feeds from Airbnb, VRBO, and Booking.com. This only syncs booking dates
+                and guest names — we never have access to your platform login, account settings, or payment information.
+                Your credentials stay completely separate. <a href="#integrations">See supported integrations →</a>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Do guests need to download an app?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                No. Guests simply scan a QR code with their phone camera and the chat opens instantly in their mobile
+                browser. No app download, no account creation — it just works.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>What happens to guest data after checkout?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Guest chat conversations are automatically deleted after their checkout date. We don't store personal
+                data longer than necessary, and guests can request deletion at any time. We're fully GDPR and CCPA
+                compliant. <a href="/privacy">Read our Privacy Policy →</a>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Can I customize what the AI says?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Yes! You control all the information in your property profile — house rules, check-in instructions,
+                local recommendations, appliance guides, and more. The AI uses exactly what you provide to give
+                personalized, accurate responses. <a href="#features">Explore all features →</a>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>How many properties can I add?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Unlimited. Whether you have 1 property or 100, the price is the same — $4.99/month. Each property gets
+                its own set of QR codes and customized AI responses. <a href="#pricing">View pricing details →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
     <section class="cta">
-        <h2 class="cta-title">Ready to reduce guest questions?</h2>
-        <p class="cta-subtitle">Set up your property in minutes.</p>
+      <div class="container">
+        <h2 class="cta-title">Ready to Transform Your Guest Experience?</h2>
+        <p class="cta-subtitle">Join hundreds of hosts who've reduced their workload with GuestBot.</p>
         <a href="/app" class="btn btn-primary">Get Started Free</a>
+      </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="footer">
-        <p class="footer-copy">© 2026 GuestBot. All rights reserved.</p>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-about">
+            <div class="footer-brand">
+              <span class="footer-brand-icon">🤖</span>
+              GuestBot
+            </div>
+            <p class="footer-desc">
+              AI-powered guest concierge for vacation rentals. Reduce guest questions, improve reviews, and scale your
+              business.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-title">Product</h4>
+            <ul class="footer-links">
+              <li><a href="#features">Features</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+              <li><a href="#how-it-works">How It Works</a></li>
+              <li><a href="/app">Dashboard</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-title">Company</h4>
+            <ul class="footer-links">
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="#security">Security</a></li>
+              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="/terms">Terms of Service</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-title">Legal</h4>
+            <ul class="footer-links">
+              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="/privacy#gdpr">GDPR</a></li>
+              <li><a href="/privacy#ccpa">CCPA</a></li>
+              <li>
+                <a
+                  href="#"
+                  onclick="
+                    GuestBotCookies.showPreferences();
+                    return false;
+                  "
+                  >Cookie Settings</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-title">Sister Companies</h4>
+            <ul class="footer-links">
+              <li><a href="https://dwellverse.io" target="_blank" rel="noopener">Dwellverse</a></li>
+              <li><a href="https://roibot.ai" target="_blank" rel="noopener">ROIBOT.AI</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p class="footer-copy">© 2026 GuestBot. All rights reserved.</p>
+          <div class="footer-legal">
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a
+              href="#"
+              onclick="
+                GuestBotCookies.showPreferences();
+                return false;
+              "
+              >Cookie Settings</a
+            >
+            <a
+              href="#"
+              onclick="
+                GuestBotCookies.showPreferences();
+                return false;
+              "
+              >Do Not Sell</a
+            >
+          </div>
+        </div>
+      </div>
     </footer>
 
-</body>
+    <script>
+      // Contact form handling
+      document.getElementById('contactFormEl').addEventListener('submit', function (e) {
+        e.preventDefault();
+        // In production, this would send to your backend
+        document.querySelector('.contact-form form').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+      });
+
+      // Smooth scroll for nav links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      // FAQ accordion
+      document.querySelectorAll('.faq-question').forEach((button) => {
+        button.addEventListener('click', () => {
+          const item = button.parentElement;
+          const isOpen = item.classList.contains('open');
+
+          // Close all other items
+          document.querySelectorAll('.faq-item').forEach((i) => i.classList.remove('open'));
+
+          // Toggle current item
+          if (!isOpen) {
+            item.classList.add('open');
+          }
+        });
+      });
+
+      // Preview tabs
+      document.querySelectorAll('.preview-tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const preview = tab.dataset.preview;
+
+          // Update tabs
+          document.querySelectorAll('.preview-tab').forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          // Update content
+          document.querySelectorAll('.preview-content').forEach((c) => c.classList.remove('active'));
+          document.querySelector(`.preview-content[data-preview="${preview}"]`).classList.add('active');
+        });
+      });
+    </script>
+
+    <!-- Cookie Consent -->
+    <script src="/js/cookie-consent.js"></script>
+
+    <!-- Feature Chatbot -->
+    <script src="/js/feature-bot.js"></script>
+  </body>
 </html>

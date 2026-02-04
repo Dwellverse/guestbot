@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+coverage/
+.firebase/
+functions/node_modules/
+emulator-data/
+*.min.js
+*.min.css
+package-lock.json
+functions/package-lock.json

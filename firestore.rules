@@ -1,6 +1,12 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // Helper function to check if user owns a property
+    function ownsProperty(propertyId) {
+      return get(/databases/$(database)/documents/guestbot_properties/$(propertyId)).data.ownerId == request.auth.uid;
+    }
+
     // Users can read/write their own user doc
     match /guestbot_users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
@@ -8,15 +14,27 @@ service cloud.firestore {
 
     // Properties - owners can CRUD their own
     match /guestbot_properties/{propertyId} {
-      allow read, write: if request.auth != null &&
-        request.auth.uid == resource.data.ownerId;
+      allow read: if request.auth != null &&
+        resource.data.ownerId == request.auth.uid;
       allow create: if request.auth != null &&
-        request.auth.uid == request.resource.data.ownerId;
+        request.resource.data.ownerId == request.auth.uid;
+      allow update, delete: if request.auth != null &&
+        resource.data.ownerId == request.auth.uid;
     }
 
-    // Bookings - owners can CRUD for their properties
+    // Bookings - owners can only access bookings for their own properties
     match /guestbot_bookings/{bookingId} {
-      allow read, write: if request.auth != null;
+      // Read: user must own the property this booking belongs to
+      allow read: if request.auth != null &&
+        ownsProperty(resource.data.propertyId);
+
+      // Create: user must own the property and set correct propertyId
+      allow create: if request.auth != null &&
+        ownsProperty(request.resource.data.propertyId);
+
+      // Update/Delete: user must own the property
+      allow update, delete: if request.auth != null &&
+        ownsProperty(resource.data.propertyId);
     }
   }
 }

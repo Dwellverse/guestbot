@@ -1,39 +1,43 @@
 {
-    "firestore": {
-        "rules": "firestore.rules"
-    },
-    "functions": [
-        {
-            "source": "functions",
-            "codebase": "default"
-        }
-    ],
-    "hosting": {
-        "public": "dist",
-        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-        "rewrites": [
-            {
-                "source": "/api/verify",
-                "function": "verifyGuest"
-            },
-            {
-                "source": "/api/ask",
-                "function": "askGuestBot"
-            },
-            {
-                "source": "/app",
-                "destination": "/app.html"
-            },
-            {
-                "source": "/chat",
-                "destination": "/chat.html"
-            },
-            {
-                "source": "/c/**",
-                "destination": "/chat.html"
-            }
-        ],
-        "cleanUrls": true,
-        "trailingSlash": false
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default"
     }
+  ],
+  "hosting": {
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "/api/verify",
+        "function": "verifyGuest"
+      },
+      {
+        "source": "/api/ask",
+        "function": "askGuestBot"
+      },
+      {
+        "source": "/api/sync-ical",
+        "function": "syncIcal"
+      },
+      {
+        "source": "/app",
+        "destination": "/app.html"
+      },
+      {
+        "source": "/chat",
+        "destination": "/chat.html"
+      },
+      {
+        "source": "/c/**",
+        "destination": "/chat.html"
+      }
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false
+  }
 }
