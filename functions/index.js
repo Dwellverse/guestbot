@@ -10,7 +10,7 @@ const db = getFirestore();
 let _model = null;
 function getModel() {
     if (!_model) {
-        const PROJECT_ID = process.env.VERTEX_PROJECT_ID || 'property-7050c';
+        const PROJECT_ID = process.env.VERTEX_PROJECT_ID || 'guestbot-7029e';
         const LOCATION = process.env.VERTEX_LOCATION || 'us-central1';
         const vertexAI = new VertexAI({ project: PROJECT_ID, location: LOCATION });
         _model = vertexAI.preview.getGenerativeModel({ model: 'gemini-pro' });
