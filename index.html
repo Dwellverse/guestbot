@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuestBot — AI Concierge for Vacation Rentals</title>
+    <meta name="description" content="GuestBot is an AI-powered guest concierge. Scan a QR code, get instant answers about your stay. No app download required.">
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --dark: #0a0a0a;
+            --dark-2: #111111;
+            --dark-3: #1a1a1a;
+            --white: #ffffff;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --accent: #10b981;
+            --accent-hover: #34d399;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--black);
+            color: var(--white);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* NEBULA BACKGROUND */
+        .bg-nebula {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .nebula-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: nebula-drift 30s ease-in-out infinite;
+        }
+
+        .nebula-blob:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            top: -150px;
+            left: -100px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
+            animation-delay: 0s;
+        }
+
+        .nebula-blob:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            right: -100px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+            animation-delay: -10s;
+            animation-duration: 35s;
+        }
+
+        .nebula-blob:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            bottom: -50px;
+            left: 30%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
+            animation-delay: -20s;
+            animation-duration: 40s;
+        }
+
+        @keyframes nebula-drift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -40px) scale(1.1); }
+            50% { transform: translate(-20px, 30px) scale(0.9); }
+            75% { transform: translate(40px, 20px) scale(1.05); }
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 24px;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-size: clamp(32px, 7vw, 56px);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        .hero-title .accent {
+            color: var(--accent);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 2vw, 18px);
+            color: var(--gray-400);
+            max-width: 450px;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* HOW IT WORKS */
+        .how-it-works {
+            padding: 80px 24px;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: clamp(24px, 5vw, 36px);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .step {
+            padding: 28px 24px;
+            background: var(--dark-2);
+            border: 1px solid var(--dark-3);
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 16px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: var(--gray-400);
+            line-height: 1.5;
+        }
+
+        /* USE CASES */
+        .use-cases {
+            padding: 80px 24px;
+            background: var(--dark);
+            position: relative;
+            z-index: 1;
+        }
+
+        .use-cases-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .case {
+            padding: 20px;
+            background: var(--dark-2);
+            border: 1px solid var(--dark-3);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .case-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .case-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* CTA */
+        .cta {
+            padding: 80px 24px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .cta-subtitle {
+            font-size: 15px;
+            color: var(--gray-400);
+            margin-bottom: 28px;
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 40px 24px;
+            border-top: 1px solid var(--dark-3);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 28px;
+            }
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NEBULA BACKGROUND -->
+    <div class="bg-nebula">
+        <div class="nebula-blob"></div>
+        <div class="nebula-blob"></div>
+        <div class="nebula-blob"></div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-icon">🤖</div>
+        <h1 class="hero-title">
+            Your AI<br><span class="accent">concierge.</span>
+        </h1>
+        <p class="hero-subtitle">
+            Scan a QR code. Get instant answers about your stay. No app needed.
+        </p>
+        <button class="btn btn-primary" id="demoCta">See Demo</button>
+    </section>
+
+    <section class="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Scan QR Code</h3>
+                <p class="step-desc">Guests scan a code on their phone. Kitchen, TV, thermostat — each has its own.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Ask Anything</h3>
+                <p class="step-desc">WiFi password? How to use the coffee machine? Checkout time? Just ask.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Instant Answer</h3>
+                <p class="step-desc">AI responds with property-specific info. No waiting for the host.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="use-cases">
+        <div class="use-cases-inner">
+            <h2 class="section-title">QR Codes Everywhere</h2>
+            <div class="cases-grid">
+                <div class="case">
+                    <div class="case-icon">🚪</div>
+                    <div class="case-title">Front Door</div>
+                </div>
+                <div class="case">
+                    <div class="case-icon">☕</div>
+                    <div class="case-title">Kitchen</div>
+                </div>
+                <div class="case">
+                    <div class="case-icon">📺</div>
+                    <div class="case-title">TV / Entertainment</div>
+                </div>
+                <div class="case">
+                    <div class="case-icon">🌡️</div>
+                    <div class="case-title">Thermostat</div>
+                </div>
+                <div class="case">
+                    <div class="case-icon">🛁</div>
+                    <div class="case-title">Bathroom</div>
+                </div>
+                <div class="case">
+                    <div class="case-icon">🏊</div>
+                    <div class="case-title">Pool / Hot Tub</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2 class="cta-title">Ready to reduce guest questions?</h2>
+        <p class="cta-subtitle">Set up your property in minutes.</p>
+        <button class="btn btn-primary" id="getCta">Get Started</button>
+    </section>
+
+    <footer class="footer">
+        <p class="footer-copy">© 2026 GuestBot. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Placeholder for demo/signup functionality
+        document.getElementById('demoCta')?.addEventListener('click', () => {
+            alert('Demo coming soon!');
+        });
+        document.getElementById('getCta')?.addEventListener('click', () => {
+            alert('Signup coming soon!');
+        });
+    </script>
+</body>
+</html>
