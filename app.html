@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuestBot — Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --dark: #0a0a0a;
+            --dark-2: #111111;
+            --dark-3: #1a1a1a;
+            --dark-4: #222222;
+            --white: #ffffff;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --accent: #10b981;
+            --accent-hover: #34d399;
+            --red: #ef4444;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--black);
+            color: var(--white);
+            line-height: 1.5;
+        }
+
+        /* AUTH SCREEN */
+        .auth-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--dark-2);
+            border: 1px solid var(--dark-3);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-logo span {
+            font-size: 32px;
+        }
+
+        .auth-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            font-size: 14px;
+            color: var(--gray-400);
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--dark);
+            border: 1px solid var(--dark-3);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--white);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--dark-3);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--dark-4);
+        }
+
+        .btn-danger {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .auth-toggle {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--gray-400);
+        }
+
+        .auth-toggle a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .auth-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--red);
+            color: var(--red);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .auth-error.show {
+            display: block;
+        }
+
+        /* APP LAYOUT */
+        .app {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .app.active {
+            display: block;
+        }
+
+        .header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--dark-3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--dark);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .header-brand span {
+            font-size: 24px;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-email {
+            font-size: 14px;
+            color: var(--gray-400);
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* PROPERTY CARDS */
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .property-card {
+            background: var(--dark-2);
+            border: 1px solid var(--dark-3);
+            border-radius: 12px;
+            padding: 24px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .property-card:hover {
+            border-color: var(--accent);
+        }
+
+        .property-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .property-address {
+            font-size: 14px;
+            color: var(--gray-400);
+            margin-bottom: 16px;
+        }
+
+        .property-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .add-property-card {
+            background: var(--dark);
+            border: 2px dashed var(--dark-3);
+            border-radius: 12px;
+            padding: 48px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .add-property-card:hover {
+            border-color: var(--accent);
+        }
+
+        .add-property-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .add-property-text {
+            font-size: 15px;
+            color: var(--gray-400);
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 80px 24px;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-desc {
+            font-size: 15px;
+            color: var(--gray-400);
+            margin-bottom: 24px;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--dark-2);
+            border: 1px solid var(--dark-3);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            margin: 40px 0;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--dark-3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--dark-3);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* FORM SECTIONS */
+        .form-section {
+            margin-bottom: 28px;
+        }
+
+        .form-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--dark);
+            border: 1px solid var(--dark-3);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-textarea:focus {
+            border-color: var(--accent);
+        }
+
+        /* QR SECTION */
+        .qr-section {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .qr-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .qr-codes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .qr-item {
+            background: var(--dark-2);
+            border: 1px solid var(--dark-3);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .qr-item canvas {
+            display: block;
+            margin: 0 auto 12px;
+        }
+
+        .qr-label {
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+
+        /* BOOKINGS TABLE */
+        .bookings-section {
+            margin-top: 32px;
+        }
+
+        .bookings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .bookings-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .bookings-table th,
+        .bookings-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--dark-3);
+        }
+
+        .bookings-table th {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+        }
+
+        .bookings-table td {
+            font-size: 14px;
+        }
+
+        .booking-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .booking-status.active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent);
+        }
+
+        .booking-status.upcoming {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .booking-status.past {
+            background: var(--dark-3);
+            color: var(--gray-500);
+        }
+
+        .no-bookings {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--dark-3);
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .tab.active {
+            color: var(--white);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* LOADING */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--dark-3);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* HIDDEN UTILITY */
+        .hidden {
+            display: none !important;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .header-email {
+                display: none;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AUTH SCREEN -->
+    <div class="auth-screen" id="authScreen">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <span>🤖</span>
+            </div>
+            <h1 class="auth-title" id="authTitle">Welcome back</h1>
+            <p class="auth-subtitle" id="authSubtitle">Sign in to manage your properties</p>
+
+            <div class="auth-error" id="authError"></div>
+
+            <form id="authForm">
+                <div class="form-group hidden" id="nameGroup">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-input" id="nameInput" placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="emailInput" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="passwordInput" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="authBtn">Sign In</button>
+            </form>
+
+            <p class="auth-toggle">
+                <span id="authToggleText">Don't have an account?</span>
+                <a href="#" id="authToggleLink">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- APP -->
+    <div class="app" id="app">
+        <header class="header">
+            <div class="header-brand">
+                <span>🤖</span>
+                GuestBot
+            </div>
+            <div class="header-user">
+                <span class="header-email" id="userEmail"></span>
+                <button class="btn btn-secondary btn-sm" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="page-header">
+                <h1 class="page-title">Properties</h1>
+                <button class="btn btn-primary" id="addPropertyBtn">+ Add Property</button>
+            </div>
+
+            <div class="loading" id="propertiesLoading">
+                <div class="spinner"></div>
+            </div>
+
+            <div class="properties-grid" id="propertiesGrid"></div>
+
+            <div class="empty-state hidden" id="emptyState">
+                <div class="empty-state-icon">🏠</div>
+                <h2 class="empty-state-title">No properties yet</h2>
+                <p class="empty-state-desc">Add your first property to start using GuestBot</p>
+                <button class="btn btn-primary" id="addFirstPropertyBtn">+ Add Property</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- PROPERTY MODAL -->
+    <div class="modal-overlay" id="propertyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="propertyModalTitle">Add Property</h2>
+                <button class="modal-close" id="propertyModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <button class="tab active" data-tab="details">Details</button>
+                    <button class="tab" data-tab="access">Access Codes</button>
+                    <button class="tab" data-tab="info">Guest Info</button>
+                    <button class="tab" data-tab="bookings">Bookings</button>
+                    <button class="tab" data-tab="qr">QR Codes</button>
+                </div>
+
+                <form id="propertyForm">
+                    <input type="hidden" id="propertyId">
+
+                    <!-- DETAILS TAB -->
+                    <div class="tab-content active" data-tab="details">
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label class="form-label">Property Name</label>
+                                <input type="text" class="form-input" id="propName" placeholder="Beach House" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <input type="text" class="form-input" id="propAddress" placeholder="123 Ocean Drive">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-input" id="propCity" placeholder="Miami">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">State</label>
+                                    <input type="text" class="form-input" id="propState" placeholder="FL">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACCESS CODES TAB -->
+                    <div class="tab-content" data-tab="access">
+                        <div class="form-section">
+                            <div class="form-section-title">WiFi</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Network Name</label>
+                                    <input type="text" class="form-input" id="propWifiName" placeholder="BeachHouse_5G">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Password</label>
+                                    <input type="text" class="form-input" id="propWifiPassword" placeholder="welcome123">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div class="form-section-title">Entry Codes</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Front Door Code</label>
+                                    <input type="text" class="form-input" id="propDoorCode" placeholder="1234">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Lockbox Code</label>
+                                    <input type="text" class="form-input" id="propLockboxCode" placeholder="5678">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Gate Code</label>
+                                    <input type="text" class="form-input" id="propGateCode" placeholder="0000">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Garage Code</label>
+                                    <input type="text" class="form-input" id="propGarageCode" placeholder="9999">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GUEST INFO TAB -->
+                    <div class="tab-content" data-tab="info">
+                        <div class="form-section">
+                            <div class="form-section-title">Check-in / Check-out</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Check-in Time</label>
+                                    <input type="text" class="form-input" id="propCheckIn" placeholder="4:00 PM">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Check-out Time</label>
+                                    <input type="text" class="form-input" id="propCheckOut" placeholder="11:00 AM">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label class="form-label">House Rules</label>
+                                <textarea class="form-textarea" id="propRules" placeholder="No smoking, no parties, quiet hours 10pm-8am..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label class="form-label">Additional Info for AI</label>
+                                <textarea class="form-textarea" id="propCustomInfo" placeholder="Add any info you want the AI to know: appliance instructions, local recommendations, parking info, etc."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BOOKINGS TAB -->
+                    <div class="tab-content" data-tab="bookings">
+                        <div class="bookings-section">
+                            <div class="bookings-header">
+                                <h3 class="bookings-title">Guest Bookings</h3>
+                                <button type="button" class="btn btn-secondary btn-sm" id="addBookingBtn">+ Add Booking</button>
+                            </div>
+                            <div id="bookingsList">
+                                <div class="no-bookings">No bookings yet</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QR CODES TAB -->
+                    <div class="tab-content" data-tab="qr">
+                        <div class="qr-section">
+                            <h3 class="qr-title">Property QR Codes</h3>
+                            <p style="font-size: 14px; color: var(--gray-400); margin-bottom: 20px;">
+                                Print and place these around your property. Guests scan to chat with AI.
+                            </p>
+                            <div class="qr-codes" id="qrCodes">
+                                <p style="color: var(--gray-500);">Save property first to generate QR codes</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm hidden" id="deletePropertyBtn">Delete</button>
+                <div style="flex:1"></div>
+                <button type="button" class="btn btn-secondary" id="cancelPropertyBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="savePropertyBtn">Save Property</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOKING MODAL -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal" style="max-width: 450px;">
+            <div class="modal-header">
+                <h2 class="modal-title">Add Booking</h2>
+                <button class="modal-close" id="bookingModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label class="form-label">Guest Name</label>
+                        <input type="text" class="form-input" id="bookingGuestName" placeholder="John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Guest Phone</label>
+                        <input type="tel" class="form-input" id="bookingGuestPhone" placeholder="+1 555-123-4567" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Check-in Date</label>
+                            <input type="date" class="form-input" id="bookingCheckIn" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Check-out Date</label>
+                            <input type="date" class="form-input" id="bookingCheckOut" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelBookingBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveBookingBtn">Add Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut
+        } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
+        import {
+            getFirestore,
+            collection,
+            doc,
+            addDoc,
+            setDoc,
+            getDoc,
+            getDocs,
+            deleteDoc,
+            query,
+            where,
+            orderBy,
+            Timestamp
+        } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+
+        const app = initializeApp({
+            apiKey: 'AIzaSyDmP0KMvflAJwM1Ur2NRp5MBFXK9--EAFY',
+            authDomain: 'property-7050c.firebaseapp.com',
+            projectId: 'property-7050c',
+        });
+
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // State
+        let currentUser = null;
+        let properties = [];
+        let currentPropertyId = null;
+        let isSignUp = false;
+
+        // DOM Elements
+        const authScreen = document.getElementById('authScreen');
+        const appEl = document.getElementById('app');
+        const authForm = document.getElementById('authForm');
+        const authError = document.getElementById('authError');
+        const authTitle = document.getElementById('authTitle');
+        const authSubtitle = document.getElementById('authSubtitle');
+        const authBtn = document.getElementById('authBtn');
+        const authToggleText = document.getElementById('authToggleText');
+        const authToggleLink = document.getElementById('authToggleLink');
+        const nameGroup = document.getElementById('nameGroup');
+        const propertiesGrid = document.getElementById('propertiesGrid');
+        const propertiesLoading = document.getElementById('propertiesLoading');
+        const emptyState = document.getElementById('emptyState');
+        const propertyModal = document.getElementById('propertyModal');
+        const bookingModal = document.getElementById('bookingModal');
+
+        // Auth state
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('userEmail').textContent = user.email;
+                authScreen.style.display = 'none';
+                appEl.classList.add('active');
+                await loadProperties();
+            } else {
+                currentUser = null;
+                authScreen.style.display = 'flex';
+                appEl.classList.remove('active');
+            }
+        });
+
+        // Toggle sign up / sign in
+        authToggleLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            isSignUp = !isSignUp;
+            if (isSignUp) {
+                authTitle.textContent = 'Create account';
+                authSubtitle.textContent = 'Sign up to start using GuestBot';
+                authBtn.textContent = 'Sign Up';
+                authToggleText.textContent = 'Already have an account?';
+                authToggleLink.textContent = 'Sign in';
+                nameGroup.classList.remove('hidden');
+            } else {
+                authTitle.textContent = 'Welcome back';
+                authSubtitle.textContent = 'Sign in to manage your properties';
+                authBtn.textContent = 'Sign In';
+                authToggleText.textContent = "Don't have an account?";
+                authToggleLink.textContent = 'Sign up';
+                nameGroup.classList.add('hidden');
+            }
+            authError.classList.remove('show');
+        });
+
+        // Auth form submit
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const name = document.getElementById('nameInput').value;
+
+            authBtn.disabled = true;
+            authBtn.textContent = isSignUp ? 'Creating account...' : 'Signing in...';
+            authError.classList.remove('show');
+
+            try {
+                if (isSignUp) {
+                    const cred = await createUserWithEmailAndPassword(auth, email, password);
+                    // Create user doc
+                    await setDoc(doc(db, 'guestbot_users', cred.user.uid), {
+                        email,
+                        name,
+                        createdAt: Timestamp.now()
+                    });
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+            } catch (err) {
+                authError.textContent = err.message.replace('Firebase: ', '');
+                authError.classList.add('show');
+                authBtn.disabled = false;
+                authBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // Load properties
+        async function loadProperties() {
+            propertiesLoading.classList.remove('hidden');
+            propertiesGrid.innerHTML = '';
+            emptyState.classList.add('hidden');
+
+            try {
+                const q = query(
+                    collection(db, 'guestbot_properties'),
+                    where('ownerId', '==', currentUser.uid)
+                );
+                const snapshot = await getDocs(q);
+                properties = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+                propertiesLoading.classList.add('hidden');
+
+                if (properties.length === 0) {
+                    emptyState.classList.remove('hidden');
+                } else {
+                    renderProperties();
+                }
+            } catch (err) {
+                console.error(err);
+                propertiesLoading.classList.add('hidden');
+            }
+        }
+
+        // Render properties
+        function renderProperties() {
+            propertiesGrid.innerHTML = properties.map(p => `
+                <div class="property-card" data-id="${p.id}">
+                    <div class="property-name">${p.name || 'Unnamed Property'}</div>
+                    <div class="property-address">${p.address || ''}${p.city ? ', ' + p.city : ''}${p.state ? ', ' + p.state : ''}</div>
+                    <div class="property-stats">
+                        <span>${p.wifiName ? '📶 WiFi' : ''}</span>
+                        <span>${p.doorCode ? '🔑 Door Code' : ''}</span>
+                    </div>
+                </div>
+            `).join('') + `
+                <div class="add-property-card" id="addPropertyCard">
+                    <div class="add-property-icon">+</div>
+                    <div class="add-property-text">Add Property</div>
+                </div>
+            `;
+
+            // Property click handlers
+            document.querySelectorAll('.property-card').forEach(card => {
+                card.addEventListener('click', () => openPropertyModal(card.dataset.id));
+            });
+            document.getElementById('addPropertyCard')?.addEventListener('click', () => openPropertyModal(null));
+        }
+
+        // Open property modal
+        async function openPropertyModal(propertyId) {
+            currentPropertyId = propertyId;
+            const modal = document.getElementById('propertyModal');
+            const title = document.getElementById('propertyModalTitle');
+            const deleteBtn = document.getElementById('deletePropertyBtn');
+
+            // Reset form
+            document.getElementById('propertyForm').reset();
+            document.getElementById('propertyId').value = '';
+            document.getElementById('qrCodes').innerHTML = '<p style="color: var(--gray-500);">Save property first to generate QR codes</p>';
+            document.getElementById('bookingsList').innerHTML = '<div class="no-bookings">No bookings yet</div>';
+
+            // Reset tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelector('.tab[data-tab="details"]').classList.add('active');
+            document.querySelector('.tab-content[data-tab="details"]').classList.add('active');
+
+            if (propertyId) {
+                title.textContent = 'Edit Property';
+                deleteBtn.classList.remove('hidden');
+
+                const prop = properties.find(p => p.id === propertyId);
+                if (prop) {
+                    document.getElementById('propertyId').value = propertyId;
+                    document.getElementById('propName').value = prop.name || '';
+                    document.getElementById('propAddress').value = prop.address || '';
+                    document.getElementById('propCity').value = prop.city || '';
+                    document.getElementById('propState').value = prop.state || '';
+                    document.getElementById('propWifiName').value = prop.wifiName || '';
+                    document.getElementById('propWifiPassword').value = prop.wifiPassword || '';
+                    document.getElementById('propDoorCode').value = prop.doorCode || '';
+                    document.getElementById('propLockboxCode').value = prop.lockboxCode || '';
+                    document.getElementById('propGateCode').value = prop.gateCode || '';
+                    document.getElementById('propGarageCode').value = prop.garageCode || '';
+                    document.getElementById('propCheckIn').value = prop.checkInTime || '';
+                    document.getElementById('propCheckOut').value = prop.checkOutTime || '';
+                    document.getElementById('propRules').value = prop.houseRules || '';
+                    document.getElementById('propCustomInfo').value = prop.customInfo || '';
+
+                    generateQRCodes(propertyId);
+                    loadBookings(propertyId);
+                }
+            } else {
+                title.textContent = 'Add Property';
+                deleteBtn.classList.add('hidden');
+            }
+
+            modal.classList.add('active');
+        }
+
+        // Close property modal
+        function closePropertyModal() {
+            propertyModal.classList.remove('active');
+            currentPropertyId = null;
+        }
+
+        document.getElementById('propertyModalClose').addEventListener('click', closePropertyModal);
+        document.getElementById('cancelPropertyBtn').addEventListener('click', closePropertyModal);
+        propertyModal.addEventListener('click', (e) => {
+            if (e.target === propertyModal) closePropertyModal();
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelector(`.tab-content[data-tab="${tabName}"]`).classList.add('active');
+            });
+        });
+
+        // Save property
+        document.getElementById('savePropertyBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('savePropertyBtn');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            const data = {
+                ownerId: currentUser.uid,
+                name: document.getElementById('propName').value,
+                address: document.getElementById('propAddress').value,
+                city: document.getElementById('propCity').value,
+                state: document.getElementById('propState').value,
+                wifiName: document.getElementById('propWifiName').value,
+                wifiPassword: document.getElementById('propWifiPassword').value,
+                doorCode: document.getElementById('propDoorCode').value,
+                lockboxCode: document.getElementById('propLockboxCode').value,
+                gateCode: document.getElementById('propGateCode').value,
+                garageCode: document.getElementById('propGarageCode').value,
+                checkInTime: document.getElementById('propCheckIn').value,
+                checkOutTime: document.getElementById('propCheckOut').value,
+                houseRules: document.getElementById('propRules').value,
+                customInfo: document.getElementById('propCustomInfo').value,
+                updatedAt: Timestamp.now()
+            };
+
+            try {
+                const existingId = document.getElementById('propertyId').value;
+                if (existingId) {
+                    await setDoc(doc(db, 'guestbot_properties', existingId), data, { merge: true });
+                } else {
+                    data.createdAt = Timestamp.now();
+                    await addDoc(collection(db, 'guestbot_properties'), data);
+                }
+
+                closePropertyModal();
+                await loadProperties();
+            } catch (err) {
+                console.error(err);
+                alert('Failed to save property');
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Save Property';
+        });
+
+        // Delete property
+        document.getElementById('deletePropertyBtn').addEventListener('click', async () => {
+            if (!confirm('Delete this property? This cannot be undone.')) return;
+
+            const propertyId = document.getElementById('propertyId').value;
+            if (!propertyId) return;
+
+            try {
+                await deleteDoc(doc(db, 'guestbot_properties', propertyId));
+                closePropertyModal();
+                await loadProperties();
+            } catch (err) {
+                console.error(err);
+                alert('Failed to delete property');
+            }
+        });
+
+        // Add property buttons
+        document.getElementById('addPropertyBtn').addEventListener('click', () => openPropertyModal(null));
+        document.getElementById('addFirstPropertyBtn').addEventListener('click', () => openPropertyModal(null));
+
+        // Generate QR codes
+        function generateQRCodes(propertyId) {
+            const container = document.getElementById('qrCodes');
+            const contexts = [
+                { id: 'general', label: 'General' },
+                { id: 'kitchen', label: 'Kitchen' },
+                { id: 'tv', label: 'TV' },
+                { id: 'thermostat', label: 'Thermostat' },
+                { id: 'pool', label: 'Pool' },
+                { id: 'checkout', label: 'Checkout' }
+            ];
+
+            container.innerHTML = contexts.map(c => `
+                <div class="qr-item">
+                    <canvas id="qr-${c.id}"></canvas>
+                    <div class="qr-label">${c.label}</div>
+                </div>
+            `).join('');
+
+            contexts.forEach(c => {
+                const url = `https://guestbot-ai.web.app/chat?p=${propertyId}&c=${c.id}`;
+                QRCode.toCanvas(document.getElementById(`qr-${c.id}`), url, {
+                    width: 120,
+                    margin: 2,
+                    color: { dark: '#ffffff', light: '#111111' }
+                });
+            });
+        }
+
+        // Load bookings
+        async function loadBookings(propertyId) {
+            const container = document.getElementById('bookingsList');
+
+            try {
+                const q = query(
+                    collection(db, 'guestbot_bookings'),
+                    where('propertyId', '==', propertyId)
+                );
+                const snapshot = await getDocs(q);
+                const bookings = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+                if (bookings.length === 0) {
+                    container.innerHTML = '<div class="no-bookings">No bookings yet</div>';
+                    return;
+                }
+
+                const now = new Date();
+                container.innerHTML = `
+                    <table class="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Guest</th>
+                                <th>Phone</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${bookings.map(b => {
+                                const checkIn = b.checkIn?.toDate ? b.checkIn.toDate() : new Date(b.checkIn);
+                                const checkOut = b.checkOut?.toDate ? b.checkOut.toDate() : new Date(b.checkOut);
+                                let status = 'past';
+                                if (now >= checkIn && now <= checkOut) status = 'active';
+                                else if (now < checkIn) status = 'upcoming';
+
+                                return `
+                                    <tr>
+                                        <td>${b.guestName || '-'}</td>
+                                        <td>${b.guestPhone || '-'}</td>
+                                        <td>${checkIn.toLocaleDateString()}</td>
+                                        <td>${checkOut.toLocaleDateString()}</td>
+                                        <td><span class="booking-status ${status}">${status}</span></td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // Add booking modal
+        document.getElementById('addBookingBtn').addEventListener('click', () => {
+            document.getElementById('bookingForm').reset();
+            bookingModal.classList.add('active');
+        });
+
+        document.getElementById('bookingModalClose').addEventListener('click', () => {
+            bookingModal.classList.remove('active');
+        });
+
+        document.getElementById('cancelBookingBtn').addEventListener('click', () => {
+            bookingModal.classList.remove('active');
+        });
+
+        bookingModal.addEventListener('click', (e) => {
+            if (e.target === bookingModal) bookingModal.classList.remove('active');
+        });
+
+        // Save booking
+        document.getElementById('saveBookingBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('saveBookingBtn');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            const propertyId = document.getElementById('propertyId').value;
+            if (!propertyId) {
+                alert('Save property first');
+                btn.disabled = false;
+                btn.textContent = 'Add Booking';
+                return;
+            }
+
+            const data = {
+                propertyId,
+                guestName: document.getElementById('bookingGuestName').value,
+                guestPhone: document.getElementById('bookingGuestPhone').value.replace(/\D/g, ''),
+                checkIn: new Date(document.getElementById('bookingCheckIn').value),
+                checkOut: new Date(document.getElementById('bookingCheckOut').value),
+                createdAt: Timestamp.now()
+            };
+
+            try {
+                await addDoc(collection(db, 'guestbot_bookings'), data);
+                bookingModal.classList.remove('active');
+                loadBookings(propertyId);
+            } catch (err) {
+                console.error(err);
+                alert('Failed to save booking');
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Add Booking';
+        });
+    </script>
+</body>
+</html>

@@ -293,7 +293,7 @@
     </div>
 
     <script type="module">
-        const API_BASE = 'https://us-central1-property-7050c.cloudfunctions.net/app/api';
+        const API_BASE = '';
 
         // State
         const state = {
@@ -353,7 +353,7 @@
             verifyError.textContent = '';
 
             try {
-                const res = await fetch(`${API_BASE}/ai/guest/verify`, {
+                const res = await fetch(`${API_BASE}/api/verify`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -403,7 +403,7 @@
             const thinkingEl = addMessage('Thinking', 'bot thinking');
 
             try {
-                const res = await fetch(`${API_BASE}/ai/guest/ask`, {
+                const res = await fetch(`${API_BASE}/api/ask`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

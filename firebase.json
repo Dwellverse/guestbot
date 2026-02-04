@@ -1,9 +1,27 @@
 {
+    "functions": [
+        {
+            "source": "functions",
+            "codebase": "guestbot"
+        }
+    ],
     "hosting": {
         "target": "guestbot",
         "public": "dist",
         "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
         "rewrites": [
+            {
+                "source": "/api/verify",
+                "function": "verifyGuest"
+            },
+            {
+                "source": "/api/ask",
+                "function": "askGuestBot"
+            },
+            {
+                "source": "/app",
+                "destination": "/app.html"
+            },
             {
                 "source": "/chat",
                 "destination": "/chat.html"
