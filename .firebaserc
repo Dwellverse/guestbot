@@ -1,5 +1,15 @@
 {
-    "projects": {
-        "default": "property-7050c"
+  "projects": {
+    "default": "property-7050c"
+  },
+  "targets": {
+    "property-7050c": {
+      "hosting": {
+        "guestbot": [
+          "guestbot-ai"
+        ]
+      }
     }
+  },
+  "etags": {}
 }
