@@ -16,6 +16,7 @@ recommendations, checkout procedures.
 - **Auth**: Firebase Authentication (owners), session tokens (guests)
 - **Hosting**: Firebase Hosting
 - **CI/CD**: GitHub Actions
+- **Payments**: Stripe via Firebase "Run Payments with Stripe" extension
 - **Testing**: Jest with 70% coverage threshold
 - **Linting**: ESLint + Prettier, enforced via Husky pre-commit hooks
 - **Firebase Project**: `guestbot-7029e`
@@ -47,10 +48,11 @@ chat.html               → Guest chat interface
 terms.html / privacy.html → Legal pages
 
 js/                     → ES module source files (bundled by Vite)
-  app.js                → Dashboard SPA (Firebase Auth, property CRUD, booking management)
+  app.js                → Dashboard SPA (Firebase Auth, property CRUD, booking management, subscription UI)
   chat.js               → Guest chat (phone verification, AI interaction, SSE streaming)
   index.js              → Landing page (analytics, ROI calc, FAQ, pricing)
   i18n.js               → Internationalization system
+  subscription.js       → Client-side Stripe subscription module (checkout, portal, status)
 
 public/js/              → Non-module scripts (copied as-is to dist)
   cookie-consent.js     → GDPR cookie banner
@@ -90,15 +92,18 @@ tests/                  → Jest test suites
 - `guestbot_rate_limits` — Rate limit counters + lockouts (server only)
 - `guestbot_feedback` — Guest feedback (server write, owner read)
 - `guestbot_metrics` — Daily API usage per property (server only)
+- `products` — Stripe products/prices (public read, extension-managed)
+- `customers` — Stripe customers/subscriptions/checkout sessions (user read own, extension-managed)
 
 ## API Endpoints
 
-| Endpoint         | Method | Auth          | Rate Limit         | Purpose                   |
-| ---------------- | ------ | ------------- | ------------------ | ------------------------- |
-| `/api/verify`    | POST   | None          | 10/min/IP          | Guest phone verification  |
-| `/api/ask`       | POST   | Session token | 20/min/IP:property | AI chat question          |
-| `/api/sync-ical` | POST   | Firebase Auth | 5/min/IP           | Booking import from iCal  |
-| `/api/feedback`  | POST   | None          | 20/min/IP          | Guest feedback submission |
+| Endpoint                     | Method | Auth          | Rate Limit         | Purpose                   |
+| ---------------------------- | ------ | ------------- | ------------------ | ------------------------- |
+| `/api/verify`                | POST   | None          | 10/min/IP          | Guest phone verification  |
+| `/api/ask`                   | POST   | Session token | 20/min/IP:property | AI chat question          |
+| `/api/sync-ical`             | POST   | Firebase Auth | 5/min/IP           | Booking import from iCal  |
+| `/api/feedback`              | POST   | None          | 20/min/IP          | Guest feedback submission |
+| `/api/create-portal-session` | POST   | Firebase Auth | 5/min/IP           | Stripe billing portal     |
 
 ## Security — Do NOT Weaken
 

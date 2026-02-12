@@ -1,6 +1,6 @@
 {
   "meta.title": "GuestBot — AI Concierge for Vacation Rentals | Reduce Guest Questions 80%",
-  "meta.description": "GuestBot is the #1 AI-powered guest concierge for Airbnb, VRBO & vacation rentals. QR codes let guests get instant answers 24/7. Setup in 5 minutes. Only $4.99/mo.",
+  "meta.description": "GuestBot is the #1 AI-powered guest concierge for Airbnb, VRBO & vacation rentals. QR codes let guests get instant answers 24/7. Setup in 5 minutes. Only $5.99/mo.",
 
   "nav.features": "Features",
   "nav.how_it_works": "How It Works",
@@ -177,7 +177,7 @@
   "roi.slider_label": "How many guest messages do you get per week?",
   "roi.time_saved": "Time Saved / Month",
   "roi.value_saved": "Value of Time / Month",
-  "roi.return_label": "ROI for just $4.99/mo",
+  "roi.return_label": "ROI for just $5.99/mo",
   "roi.hrs": "hrs",
   "roi.return_suffix": "return",
 
@@ -190,7 +190,7 @@
   "pricing.save_badge": "Save 20%",
   "pricing.period": "/month",
   "pricing.note_monthly": "Cancel anytime. No contracts.",
-  "pricing.note_annual": "Billed annually at $47.88",
+  "pricing.note_annual": "Billed annually at $49.99",
   "pricing.cta": "Start Free Trial",
   "pricing.trial_note": "14-day free trial. No credit card required.",
   "pricing.includes_title": "Everything you need:",
@@ -242,7 +242,7 @@
   "faq.q6": "Can I customize what the AI says?",
   "faq.a6": "Yes! You control all the information in your property profile — house rules, check-in instructions, local recommendations, appliance guides, and more. The AI uses exactly what you provide to give personalized, accurate responses. <a href=\"#features\">Explore all features →</a>",
   "faq.q7": "How many properties can I add?",
-  "faq.a7": "Unlimited. Whether you have 1 property or 100, the price is the same — $4.99/month. Each property gets its own set of QR codes and customized AI responses. <a href=\"#pricing\">View pricing details →</a>",
+  "faq.a7": "Unlimited. Whether you have 1 property or 100, the price is the same — $5.99/month. Each property gets its own set of QR codes and customized AI responses. <a href=\"#pricing\">View pricing details →</a>",
 
   "cta.title": "Ready to Transform Your Guest Experience?",
   "cta.subtitle": "Join hundreds of hosts who've reduced their workload with GuestBot.",
@@ -313,5 +313,24 @@
   "chat.feedback_positive": "✅ Thanks!",
   "chat.feedback_negative": "📝 Thanks for the feedback",
   "chat.feedback_helpful": "Helpful",
-  "chat.feedback_not_helpful": "Not helpful"
+  "chat.feedback_not_helpful": "Not helpful",
+
+  "subscription.badge_pro": "Pro",
+  "subscription.badge_trial": "Trial",
+  "subscription.badge_free": "Free",
+  "subscription.badge_expired": "Expired",
+  "subscription.trial_active": "Free trial — {days} days remaining",
+  "subscription.trial_ending": "Trial ends tomorrow! Subscribe to keep access.",
+  "subscription.active": "GuestBot Pro",
+  "subscription.canceling": "Subscription cancels on {date}",
+  "subscription.expired": "Subscribe to manage properties and enable guest chat",
+  "subscription.subscribe_now": "Subscribe Now",
+  "subscription.start_trial": "Start Free Trial",
+  "subscription.resubscribe": "Resubscribe",
+  "subscription.manage_billing": "Manage Billing",
+  "subscription.checkout_success": "Subscription activated! Welcome to GuestBot Pro.",
+  "subscription.error_checkout": "Failed to start checkout. Please try again.",
+  "subscription.error_portal": "Failed to open billing portal. Please try again.",
+  "subscription.feature_locked": "Active subscription required",
+  "subscription.guest_unavailable": "This property is currently unavailable. Please contact the host."
 }

@@ -94,7 +94,7 @@ function updateROI(messagesPerWeek) {
   const minutesSavedPerWeek = handledPerWeek * 3;
   const hoursSavedPerMonth = (minutesSavedPerWeek * 4.33) / 60;
   const valueSaved = hoursSavedPerMonth * 25;
-  const multiplier = Math.round(valueSaved / 4.99);
+  const multiplier = Math.round(valueSaved / 5.99);
 
   if (roiSliderValue) roiSliderValue.textContent = messagesPerWeek;
   if (roiTimeSaved) roiTimeSaved.textContent = hoursSavedPerMonth.toFixed(1) + ' ' + t('roi.hrs');
@@ -117,22 +117,35 @@ const pricingSaveBadge = document.getElementById('pricingSaveBadge');
 const monthlyOption = document.querySelector('.pricing-toggle-option[data-plan="monthly"]');
 const annualOption = document.querySelector('.pricing-toggle-option[data-plan="annual"]');
 
+const pricingCta = document.getElementById('pricingCta');
+
+function updatePricingCta(isAnnual) {
+  if (pricingCta) {
+    pricingCta.href = `/app?plan=${isAnnual ? 'annual' : 'monthly'}`;
+  }
+}
+
 if (pricingToggle) {
   pricingToggle.addEventListener('click', () => {
     const isAnnual = pricingToggle.classList.toggle('annual');
 
     if (isAnnual) {
-      if (pricingAmount) pricingAmount.textContent = '3.99';
+      if (pricingAmount) pricingAmount.textContent = '4.17';
       if (pricingNote) pricingNote.textContent = t('pricing.note_annual');
       if (pricingSaveBadge) pricingSaveBadge.classList.add('show');
       if (monthlyOption) monthlyOption.classList.remove('active');
       if (annualOption) annualOption.classList.add('active');
     } else {
-      if (pricingAmount) pricingAmount.textContent = '4.99';
+      if (pricingAmount) pricingAmount.textContent = '5.99';
       if (pricingNote) pricingNote.textContent = t('pricing.note_monthly');
       if (pricingSaveBadge) pricingSaveBadge.classList.remove('show');
       if (monthlyOption) monthlyOption.classList.add('active');
       if (annualOption) annualOption.classList.remove('active');
     }
+
+    updatePricingCta(isAnnual);
   });
 }
+
+// Set initial CTA link
+updatePricingCta(false);

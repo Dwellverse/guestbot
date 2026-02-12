@@ -20,6 +20,8 @@ by Vertex AI Gemini 2.0 Flash.
 | `lib/metrics.js`            | Usage tracking                                                 | Daily counters per property. Function execution timers.                                                          |
 | `lib/logger.js`             | Structured logging                                             | Redacts tokens, phone numbers, access codes.                                                                     |
 | `lib/error-handler.js`      | Error response formatting                                      | Maps internal errors to safe client messages. Never exposes stack traces.                                        |
+| `subscription.js`           | Subscription validation helper                                 | Checks `customers/{uid}/subscriptions` for active/trialing status.                                               |
+| `subscription-sync.js`      | Subscription status denormalization                            | Firestore trigger: copies status to `guestbot_users/{uid}` for security rules.                                   |
 
 ## Request Processing Pipeline (askGuestBot)
 
@@ -35,8 +37,9 @@ Request → Rate Limiter → Input Sanitizer → Context Detector
 {
   "@google-cloud/vertexai": "^1.1.0", // Gemini 2.0 Flash
   "firebase-admin": "^13.6.1", // Firestore, Auth
-  "firebase-functions": "^7.0.5", // HTTP triggers
-  "ical.js": "^1.5.0" // iCal parsing for booking sync
+  "firebase-functions": "^7.0.5", // HTTP triggers + Firestore triggers
+  "ical.js": "^1.5.0", // iCal parsing for booking sync
+  "stripe": "^17.5.0" // Stripe billing portal
 }
 ```
 
@@ -97,6 +100,7 @@ Current test files:
 - `rate-limit.test.js` — Rate limiting, brute force lockouts
 - `ai-prompt.test.js` — Prompt building, temperature calculation
 - `input-validation.test.js` — Prompt injection detection
+- `subscription.test.js` — Subscription validation, rate limit config
 
 When adding a new module, add a matching test file. Coverage threshold is 70% (65% for branches).
 

@@ -16,8 +16,16 @@ import {
   deleteDoc,
   query,
   where,
+  onSnapshot,
   Timestamp,
 } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+import {
+  onSubscriptionChange,
+  createCheckoutSession,
+  createPortalSession,
+  getTrialDaysRemaining,
+  getPriceId,
+} from './subscription.js';
 
 const app = initializeApp({
   apiKey: 'AIzaSyA0wGXqNLsW9IoimyvlQQg4GTSoZIy9Wkk',
@@ -39,10 +47,22 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+// Firestore helpers bundle for passing to subscription module
+const firestoreHelpers = { collection, query, where, getDocs, addDoc, onSnapshot, doc };
+
 // State
 let currentUser = null;
 let properties = [];
 let isSignUp = false;
+let currentSubscription = {
+  active: false,
+  status: 'none',
+  trialEnd: null,
+  currentPeriodEnd: null,
+  cancelAtPeriodEnd: false,
+  priceId: null,
+};
+let unsubscribeSubscription = null;
 
 // DOM Elements
 const authScreen = document.getElementById('authScreen');
@@ -68,10 +88,40 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById('userAvatar').textContent = (user.email || 'U')[0].toUpperCase();
     authScreen.style.display = 'none';
     appEl.classList.add('active');
+
+    // Start subscription listener
+    if (unsubscribeSubscription) unsubscribeSubscription();
+    unsubscribeSubscription = onSubscriptionChange(
+      db,
+      user.uid,
+      (sub) => {
+        currentSubscription = sub;
+        updateSubscriptionUI(sub);
+        updateFeatureGating(sub);
+      },
+      firestoreHelpers
+    );
+
     // Load properties in background - UI is immediately usable
     loadProperties();
+
+    // Handle URL params for checkout flow
+    handleCheckoutReturn();
+    handlePlanParam();
   } else {
     currentUser = null;
+    currentSubscription = {
+      active: false,
+      status: 'none',
+      trialEnd: null,
+      currentPeriodEnd: null,
+      cancelAtPeriodEnd: false,
+      priceId: null,
+    };
+    if (unsubscribeSubscription) {
+      unsubscribeSubscription();
+      unsubscribeSubscription = null;
+    }
     authScreen.style.display = 'flex';
     appEl.classList.remove('active');
   }
@@ -600,4 +650,157 @@ document.querySelectorAll('.sync-btn').forEach((btn) => {
     btn.classList.remove('syncing');
     btn.textContent = 'Sync';
   });
+});
+
+// ============================================
+// Subscription UI
+// ============================================
+function updateSubscriptionUI(sub) {
+  const banner = document.getElementById('subscriptionBanner');
+  const bannerText = document.getElementById('subscriptionBannerText');
+  const bannerAction = document.getElementById('subscriptionBannerAction');
+  const badge = document.getElementById('headerPlanBadge');
+  const billingBtn = document.getElementById('manageBillingBtn');
+
+  if (!banner || !bannerText || !badge) return;
+
+  // Show manage billing button when user has any subscription history
+  if (billingBtn) {
+    billingBtn.style.display = sub.status !== 'none' ? '' : 'none';
+  }
+
+  // Reset
+  banner.className = 'subscription-banner';
+
+  if (sub.status === 'trialing') {
+    const daysLeft = getTrialDaysRemaining(sub.trialEnd);
+    banner.classList.add('visible', daysLeft <= 3 ? 'warning' : 'trial');
+    bannerText.textContent = `Free trial — ${daysLeft} day${daysLeft !== 1 ? 's' : ''} remaining`;
+    bannerAction.textContent = 'Subscribe Now';
+    bannerAction.onclick = () => startCheckout('monthly');
+    badge.textContent = 'Trial';
+    badge.className = 'header-plan-badge trial';
+  } else if (sub.status === 'active' && !sub.cancelAtPeriodEnd) {
+    banner.classList.remove('visible');
+    badge.textContent = 'Pro';
+    badge.className = 'header-plan-badge pro';
+  } else if (sub.status === 'active' && sub.cancelAtPeriodEnd) {
+    const endDate = sub.currentPeriodEnd ? sub.currentPeriodEnd.toLocaleDateString() : 'soon';
+    banner.classList.add('visible', 'warning');
+    bannerText.textContent = `Subscription cancels on ${endDate}`;
+    bannerAction.textContent = 'Resubscribe';
+    bannerAction.onclick = () => openBillingPortal();
+    badge.textContent = 'Pro';
+    badge.className = 'header-plan-badge pro';
+  } else {
+    // No subscription or expired
+    banner.classList.add('visible', 'expired');
+    bannerText.textContent = 'Subscribe to manage properties and enable guest chat';
+    bannerAction.textContent = 'Start Free Trial';
+    bannerAction.onclick = () => startCheckout('monthly');
+    badge.textContent = 'Free';
+    badge.className = 'header-plan-badge free';
+  }
+}
+
+function updateFeatureGating(sub) {
+  const locked = !sub.active;
+  const gatedElements = [
+    document.getElementById('addFirstPropertyBtn'),
+    document.getElementById('savePropertyBtn'),
+    document.getElementById('addBookingBtn'),
+  ];
+
+  gatedElements.forEach((el) => {
+    if (!el) return;
+    if (locked) {
+      el.dataset.originalTitle = el.textContent;
+      el.disabled = true;
+      el.title = 'Active subscription required';
+    } else {
+      el.disabled = false;
+      el.title = '';
+    }
+  });
+
+  // Disable add property card click when locked
+  const addCards = document.querySelectorAll('.add-property-card');
+  addCards.forEach((card) => {
+    card.style.pointerEvents = locked ? 'none' : '';
+    card.style.opacity = locked ? '0.5' : '';
+  });
+
+  // Disable sync buttons when locked
+  document.querySelectorAll('.sync-btn').forEach((btn) => {
+    btn.disabled = locked;
+  });
+}
+
+async function startCheckout(plan) {
+  try {
+    const priceId = await getPriceId(db, plan, firestoreHelpers);
+    const url = await createCheckoutSession(db, currentUser.uid, priceId, firestoreHelpers);
+    window.location.href = url;
+  } catch (err) {
+    console.error('Checkout error:', err);
+    alert(err.message || 'Failed to start checkout. Please try again.');
+  }
+}
+
+async function openBillingPortal() {
+  try {
+    const url = await createPortalSession(auth);
+    window.location.href = url;
+  } catch (err) {
+    console.error('Portal error:', err);
+    alert(err.message || 'Failed to open billing portal. Please try again.');
+  }
+}
+
+function handleCheckoutReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const checkout = params.get('checkout');
+  if (checkout === 'success') {
+    showToast('Subscription activated! Welcome to GuestBot Pro.');
+    // Clean URL
+    window.history.replaceState({}, '', '/app');
+  } else if (checkout === 'cancel') {
+    window.history.replaceState({}, '', '/app');
+  }
+}
+
+function handlePlanParam() {
+  const params = new URLSearchParams(window.location.search);
+  const plan = params.get('plan');
+  if (plan === 'monthly' || plan === 'annual') {
+    window.history.replaceState({}, '', '/app');
+    // Small delay to let auth and subscription state settle
+    setTimeout(() => {
+      if (!currentSubscription.active) {
+        startCheckout(plan);
+      }
+    }, 1500);
+  }
+}
+
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('visible'));
+  setTimeout(() => {
+    toast.classList.remove('visible');
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
+
+// Manage Billing button
+document.getElementById('manageBillingBtn')?.addEventListener('click', openBillingPortal);
+
+// Subscribe button in banner
+document.getElementById('subscriptionBannerAction')?.addEventListener('click', () => {
+  if (!currentSubscription.active) {
+    startCheckout('monthly');
+  }
 });

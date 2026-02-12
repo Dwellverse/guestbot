@@ -831,6 +831,107 @@
         }
       }
 
+      /* SUBSCRIPTION BANNER */
+      .subscription-banner {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 12px 32px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+        z-index: 99;
+      }
+
+      .subscription-banner.visible {
+        display: flex;
+      }
+
+      .subscription-banner.trial {
+        background: rgba(16, 185, 129, 0.1);
+        border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        color: var(--accent);
+      }
+
+      .subscription-banner.warning {
+        background: rgba(245, 158, 11, 0.1);
+        border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+        color: #f59e0b;
+      }
+
+      .subscription-banner.expired {
+        background: rgba(239, 68, 68, 0.1);
+        border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+        color: var(--red);
+      }
+
+      .subscription-banner-btn {
+        background: var(--accent) !important;
+        color: var(--white) !important;
+        padding: 6px 16px !important;
+        font-size: 13px !important;
+        white-space: nowrap;
+      }
+
+      .subscription-banner.expired .subscription-banner-btn {
+        background: var(--red) !important;
+      }
+
+      /* PLAN BADGE */
+      .header-plan-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 100px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .header-plan-badge.pro {
+        background: rgba(16, 185, 129, 0.15);
+        color: var(--accent);
+      }
+
+      .header-plan-badge.trial {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--accent);
+      }
+
+      .header-plan-badge.free {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--gray-400);
+      }
+
+      .header-plan-badge.expired {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--red);
+      }
+
+      /* TOAST */
+      .toast {
+        position: fixed;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--accent);
+        color: var(--white);
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        z-index: 10000;
+        opacity: 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
+      }
+
+      .toast.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
       /* HIDDEN UTILITY */
       .hidden {
         display: none !important;
@@ -900,9 +1001,17 @@
             <div class="header-avatar" id="userAvatar">U</div>
             <span class="header-email" id="userEmail"></span>
           </div>
+          <span class="header-plan-badge free" id="headerPlanBadge">Free</span>
+          <button class="btn btn-secondary btn-sm" id="manageBillingBtn" style="display: none">Manage Billing</button>
           <button class="btn btn-secondary btn-sm" id="logoutBtn">Logout</button>
         </div>
       </header>
+
+      <!-- Subscription Banner -->
+      <div class="subscription-banner" id="subscriptionBanner">
+        <span id="subscriptionBannerText"></span>
+        <button class="btn btn-sm subscription-banner-btn" id="subscriptionBannerAction"></button>
+      </div>
 
       <main class="main">
         <div class="main-container">

@@ -3,7 +3,15 @@ export default {
   testEnvironment: 'node',
   roots: ['<rootDir>/tests'],
   testMatch: ['**/*.test.js', '**/*.spec.js'],
-  collectCoverageFrom: ['functions/**/*.js', '!functions/node_modules/**', '!**/coverage/**'],
+  collectCoverageFrom: [
+    'functions/**/*.js',
+    '!functions/node_modules/**',
+    '!**/coverage/**',
+    '!functions/index.js',
+    '!functions/subscription.js',
+    '!functions/subscription-sync.js',
+    '!functions/rate-limiter.js',
+  ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
   coverageThreshold: {

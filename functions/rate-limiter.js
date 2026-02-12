@@ -16,6 +16,7 @@ const RATE_LIMITS = {
   verifyGuest: { windowMs: 60000, maxRequests: 10 },
   syncIcal: { windowMs: 60000, maxRequests: 5 },
   submitFeedback: { windowMs: 60000, maxRequests: 20 },
+  createPortalSession: { windowMs: 60000, maxRequests: 5 },
 };
 
 // Brute force protection settings
