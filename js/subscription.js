@@ -167,25 +167,11 @@ export function createCheckoutSession(db, uid, priceId, firestore) {
 }
 
 /**
- * Open the Stripe Customer Portal via Cloud Function.
- * @param {object} auth - Firebase Auth instance
- * @returns {Promise<string>} Portal URL
+ * Get the Stripe Customer Portal URL (static link).
+ * @returns {string} Portal URL
  */
-export async function createPortalSession(auth) {
-  const idToken = await auth.currentUser.getIdToken();
-  const res = await fetch('/api/create-portal-session', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-  });
-
-  const data = await res.json();
-  if (!data.success) {
-    throw new Error(data.message || 'Failed to open billing portal');
-  }
-  return data.url;
+export function getPortalUrl() {
+  return 'https://billing.stripe.com/p/login/fZueVe5rGdrf4W198EfQI00';
 }
 
 /**

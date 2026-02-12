@@ -22,7 +22,7 @@ import {
 import {
   onSubscriptionChange,
   createCheckoutSession,
-  createPortalSession,
+  getPortalUrl,
   getTrialDaysRemaining,
   getPriceId,
 } from './subscription.js';
@@ -747,14 +747,8 @@ async function startCheckout(plan) {
   }
 }
 
-async function openBillingPortal() {
-  try {
-    const url = await createPortalSession(auth);
-    window.location.href = url;
-  } catch (err) {
-    console.error('Portal error:', err);
-    alert(err.message || 'Failed to open billing portal. Please try again.');
-  }
+function openBillingPortal() {
+  window.open(getPortalUrl(), '_blank');
 }
 
 function handleCheckoutReturn() {

@@ -60,10 +60,6 @@
         "function": "submitFeedback"
       },
       {
-        "source": "/api/create-portal-session",
-        "function": "createPortalSession"
-      },
-      {
         "source": "/app",
         "destination": "/app.html"
       },

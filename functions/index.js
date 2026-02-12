@@ -1,6 +1,5 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { onDocumentWritten } = require('firebase-functions/v2/firestore');
-const { defineSecret } = require('firebase-functions/params');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, Timestamp } = require('firebase-admin/firestore');
 const { VertexAI, HarmCategory, HarmBlockThreshold } = require('@google-cloud/vertexai');
@@ -15,8 +14,6 @@ const { filterOutput } = require('./output-filter');
 const { validateResponse } = require('./response-validator');
 const { checkSubscription } = require('./subscription');
 const { syncSubscriptionToUser } = require('./subscription-sync');
-
-const STRIPE_SECRET_KEY = defineSecret('STRIPE_SECRET_KEY');
 
 initializeApp();
 const db = getFirestore();
@@ -854,67 +851,6 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
     });
   }
 });
-
-// ============================================
-// Create Stripe Customer Portal Session
-// ============================================
-exports.createPortalSession = onRequest(
-  { cors: false, secrets: [STRIPE_SECRET_KEY] },
-  async (req, res) => {
-    if (cors(req, res)) return;
-
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Method not allowed' });
-    }
-
-    // Verify Firebase Auth token
-    const decodedToken = await verifyAuthToken(req);
-    if (!decodedToken) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
-    }
-
-    // Rate limiting
-    const clientIP = getClientIP(req);
-    const rateCheck = checkRateLimit('createPortalSession', clientIP);
-    if (!rateCheck.allowed) {
-      return res.status(429).json({
-        success: false,
-        message: 'Too many requests. Please wait a moment.',
-      });
-    }
-
-    try {
-      // Get Stripe customer ID from the extension's customers collection
-      const customerDoc = await db.collection('customers').doc(decodedToken.uid).get();
-      if (!customerDoc.exists || !customerDoc.data().stripeId) {
-        return res.status(404).json({
-          success: false,
-          message: 'No billing account found. Please subscribe first.',
-        });
-      }
-
-      const stripe = require('stripe')(STRIPE_SECRET_KEY.value());
-      const portalSession = await stripe.billingPortal.sessions.create({
-        customer: customerDoc.data().stripeId,
-        return_url: `${req.headers.origin || 'https://guestbot.ai'}/app`,
-      });
-
-      res.json({
-        success: true,
-        url: portalSession.url,
-      });
-    } catch (error) {
-      console.error('Portal session error:', error);
-      res.status(500).json({
-        success: false,
-        message: 'Failed to open billing portal. Please try again.',
-      });
-    }
-  }
-);
 
 // ============================================
 // Subscription Sync Trigger

@@ -51,20 +51,13 @@ describe('Subscription Sync', () => {
   });
 });
 
-describe('Rate Limiter — Portal Endpoint', () => {
+describe('Rate Limiter — Endpoints', () => {
   const { RATE_LIMITS } = require('../../functions/rate-limiter');
-
-  it('has createPortalSession rate limit config', () => {
-    expect(RATE_LIMITS.createPortalSession).toBeDefined();
-    expect(RATE_LIMITS.createPortalSession.maxRequests).toBe(5);
-    expect(RATE_LIMITS.createPortalSession.windowMs).toBe(60000);
-  });
 
   it('has all expected endpoints configured', () => {
     expect(RATE_LIMITS.askGuestBot).toBeDefined();
     expect(RATE_LIMITS.verifyGuest).toBeDefined();
     expect(RATE_LIMITS.syncIcal).toBeDefined();
     expect(RATE_LIMITS.submitFeedback).toBeDefined();
-    expect(RATE_LIMITS.createPortalSession).toBeDefined();
   });
 });
