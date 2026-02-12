@@ -4,6 +4,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   onAuthStateChanged,
   signOut,
@@ -187,23 +189,39 @@ authForm.addEventListener('submit', async (e) => {
 
 // Google sign-in
 const googleProvider = new GoogleAuthProvider();
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+async function createUserDocIfNew(user) {
+  const userDoc = await getDoc(doc(db, 'guestbot_users', user.uid));
+  if (!userDoc.exists()) {
+    await setDoc(doc(db, 'guestbot_users', user.uid), {
+      email: user.email,
+      name: user.displayName || '',
+      createdAt: Timestamp.now(),
+    });
+  }
+}
+
+// Handle redirect result (for mobile)
+getRedirectResult(auth)
+  .then((result) => {
+    if (result?.user) createUserDocIfNew(result.user);
+  })
+  .catch(() => {});
+
 document.getElementById('googleSignInBtn')?.addEventListener('click', async () => {
   authError.classList.remove('show');
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    // Create user doc if new user
-    const userDoc = await getDoc(doc(db, 'guestbot_users', result.user.uid));
-    if (!userDoc.exists()) {
-      await setDoc(doc(db, 'guestbot_users', result.user.uid), {
-        email: result.user.email,
-        name: result.user.displayName || '',
-        createdAt: Timestamp.now(),
-      });
-    }
-  } catch (err) {
-    if (err.code !== 'auth/popup-closed-by-user') {
-      authError.textContent = err.message.replace('Firebase: ', '');
-      authError.classList.add('show');
+  if (isMobile) {
+    signInWithRedirect(auth, googleProvider);
+  } else {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      await createUserDocIfNew(result.user);
+    } catch (err) {
+      if (err.code !== 'auth/popup-closed-by-user') {
+        authError.textContent = err.message.replace('Firebase: ', '');
+        authError.classList.add('show');
+      }
     }
   }
 });
