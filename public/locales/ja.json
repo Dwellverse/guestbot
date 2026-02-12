@@ -1,33 +1,27 @@
 {
   "meta.title": "GuestBot — バケーションレンタル向けAIコンシェルジュ | ゲストの質問を80%削減",
   "meta.description": "GuestBotは、Airbnb、VRBO、バケーションレンタル向けのNo.1 AI搭載ゲストコンシェルジュです。QRコードでゲストが24時間365日即座に回答を得られます。5分でセットアップ完了。月額わずか$4.99。",
-
   "nav.features": "機能",
   "nav.how_it_works": "使い方",
   "nav.pricing": "料金",
   "nav.faq": "よくある質問",
   "nav.get_started": "はじめる",
   "nav.toggle_menu": "メニューの切り替え",
-
   "hero.title_line1": "バケーションレンタル向け",
   "hero.title_line2": "AIコンシェルジュ",
   "hero.subtitle": "ゲストからの質問を80%削減。物件にQRコードを設置するだけで、ゲストがスキャンしてAIから即座に回答を得られます。アプリのダウンロードは不要です。",
   "hero.cta_primary": "無料トライアルを始める",
   "hero.cta_secondary": "使い方を見る",
-
   "hero.mockup_title": "GuestBot",
   "hero.mockup_bot1": "こんにちは！AIコンシェルジュです。ご滞在について何でもお聞きください。",
   "hero.mockup_user1": "WiFiのパスワードは？",
   "hero.mockup_bot2": "WiFiネットワーク名は「BeachHouse_5G」、パスワードは「sunset2024」です。",
   "hero.mockup_user2": "近くにおすすめのレストランはありますか？",
   "hero.mockup_bot3": "シーフードならOcean Grill（徒歩5分）、ブランチならCafé Lunaがおすすめです！",
-
   "stats.fewer_messages": "ゲストメッセージの削減",
   "stats.instant_responses": "即時回答",
   "stats.setup_time": "セットアップ時間",
-
   "social_proof.label": "各プラットフォームのホストに信頼されています",
-
   "testimonials.tag": "お客様の声",
   "testimonials.title": "世界中のホストに愛されています",
   "testimonials.subtitle": "プロパティマネージャーがゲスト対応にGuestBotを選ぶ理由をご覧ください。",
@@ -40,7 +34,6 @@
   "testimonials.review3": "「QRコードのアイデアは天才的です。テレビの横、キッチン、サーモスタットの横にそれぞれ1つずつ設置しています。ゲストはスキャンするだけで、その場所に必要なヘルプを正確に得られます。」",
   "testimonials.author3": "Emily Watson",
   "testimonials.role3": "デンバーで5物件を運営",
-
   "features.tag": "機能",
   "features.title": "ゲストに必要なすべてが揃っています",
   "features.subtitle": "GuestBotはよくある質問への即時回答、地元のおすすめ情報、物件固有の情報を提供します — すべてAI搭載です。",
@@ -58,7 +51,6 @@
   "features.verify_link": "セキュリティについて →",
   "features.noapp_title": "アプリ不要",
   "features.noapp_desc": "あらゆるモバイルブラウザで即座に動作。ゲストはスキャンしてチャットするだけ — ダウンロードもアカウント作成も不要です。",
-
   "preview.tag": "実際の動作を見る",
   "preview.title": "シンプルなダッシュボード、快適なゲスト体験",
   "preview.subtitle": "物件管理のためのすっきりしたインターフェースと、ゲスト向けの即時チャット体験。",
@@ -75,7 +67,6 @@
   "preview.guest_user2": "チェックアウトは何時ですか？",
   "preview.guest_bot3": "チェックアウトは午前11時です。鍵はキッチンカウンターに置いてください。良い旅を！🌴",
   "preview.guest_input_placeholder": "質問を入力...",
-
   "how.tag": "使い方",
   "how.title": "ホストには簡単、ゲストにはシームレス",
   "how.subtitle": "一度設定するだけで、ゲストをずっとサポート。3つの簡単なステップでゲスト体験を変革します。",
@@ -85,7 +76,6 @@
   "how.step2_desc": "コンテキスト対応のQRコードを生成し、物件のあちこちに設置します — キッチン、テレビ、バスルームなど。",
   "how.step3_title": "ゲストが回答を得る",
   "how.step3_desc": "ゲストがスキャンし、予約を確認し、AIとチャットして即座にサポートを受けます。あなたはリラックス。",
-
   "integrations.tag": "連携",
   "integrations.title": "予約プラットフォームと同期",
   "integrations.subtitle": "すでにお使いのプラットフォームからゲストの予約を自動インポートします。",
@@ -94,7 +84,6 @@
   "integrations.booking": "Booking.com",
   "integrations.ical": "すべてのiCalフィード",
   "integrations.note": "<strong>セキュリティ最優先：</strong>読み取り専用のiCalフィードを介して、予約日とゲスト名のみを同期します。GuestBotがお使いのプラットフォームのアカウント、パスワード、決済情報にアクセスすることはありません。お客様の物件情報はGuestBotダッシュボード内で安全に管理されます。",
-
   "usecases.tag": "QR配置場所",
   "usecases.title": "あらゆる場所にQRコードを",
   "usecases.subtitle": "各設置場所にはコンテキスト対応の応答を持つ専用QRコードが用意されます。",
@@ -104,7 +93,6 @@
   "usecases.thermostat": "サーモスタット",
   "usecases.bathroom": "バスルーム",
   "usecases.pool": "プール",
-
   "benefits.tag": "メリット",
   "benefits.title": "ホストがGuestBotを気に入る理由",
   "benefits.subtitle": "同じ質問に何度も答えるのはもうやめましょう。AIに任せて、ビジネスの成長に集中できます。",
@@ -116,7 +104,6 @@
   "benefits.scale_desc": "作業負担を比例して増やすことなく、より多くの物件を管理できます。",
   "benefits.pro_title": "プロフェッショナルな印象",
   "benefits.pro_desc": "AIコンシェルジュがあなたの物件をプレミアムホテルのような体験にします。",
-
   "comparison.tag": "違いを実感",
   "comparison.title": "GuestBot導入の前と後",
   "comparison.subtitle": "GuestBotがあなたの日々のホスティング体験をどう変えるかご覧ください。",
@@ -134,7 +121,6 @@
   "comparison.after_4": "AIがゲストをサポートしている間、ぐっすり眠れる",
   "comparison.after_5": "ゲストが実際に使うインタラクティブなヘルプ",
   "comparison.after_6": "ゲスト体験の向上によるより良いレビュー",
-
   "security.tag": "信頼とセキュリティ",
   "security.title": "お客様のデータは保護されています",
   "security.subtitle": "プライバシーを真剣に考えています。GuestBotはエンタープライズグレードのセキュリティとデータ保護規制への完全準拠で構築されています。",
@@ -146,7 +132,6 @@
   "security.verify_desc": "アクティブな予約がある認証済みゲストのみが物件情報にアクセスできます。",
   "security.retention_title": "データ保持",
   "security.retention_desc": "ゲストのチャットデータはチェックアウト後に自動削除されます。",
-
   "roi.tag": "節約効果",
   "roi.title": "あなたの節約額を計算",
   "roi.subtitle": "GuestBotが毎月どれだけの時間とコストを節約できるかご覧ください。",
@@ -156,7 +141,6 @@
   "roi.return_label": "月額わずか$4.99での投資対効果",
   "roi.hrs": "時間",
   "roi.return_suffix": "のリターン",
-
   "pricing.tag": "料金",
   "pricing.title": "シンプルな一律価格。すべての機能を含みます。",
   "pricing.subtitle": "ティアも混乱もなし。コーヒー1杯より安い料金ですべての機能が使えます。",
@@ -178,7 +162,6 @@
   "pricing.f_verify": "ゲスト認証",
   "pricing.f_sync": "Airbnb & VRBO同期",
   "pricing.f_support": "優先サポート",
-
   "contact.tag": "お問い合わせ",
   "contact.title": "お気軽にご連絡ください",
   "contact.subtitle": "ご質問がありますか？お気軽にどうぞ。メッセージをお送りいただければ、できるだけ早くご返信いたします。",
@@ -198,7 +181,6 @@
   "contact.submit": "メッセージを送信",
   "contact.success_title": "メッセージを送信しました！",
   "contact.success_desc": "お問い合わせいただきありがとうございます。24時間以内にご返信いたします。",
-
   "faq.tag": "よくある質問",
   "faq.title": "よくある質問",
   "faq.subtitle": "GuestBotについて知っておくべきすべてのこと。",
@@ -216,11 +198,9 @@
   "faq.a6": "はい！物件プロフィール内のすべての情報を管理できます — ハウスルール、チェックイン手順、地元のおすすめ、家電の使い方ガイドなど。AIはお客様が提供した情報を正確に使用して、パーソナライズされた正確な回答を提供します。<a href=\"#features\">すべての機能を見る →</a>",
   "faq.q7": "物件はいくつまで追加できますか？",
   "faq.a7": "無制限です。1物件でも100物件でも、料金は同じ — 月額$4.99です。各物件には専用のQRコードセットとカスタマイズされたAI応答が用意されます。<a href=\"#pricing\">料金の詳細を見る →</a>",
-
   "cta.title": "ゲスト体験を変革する準備はできましたか？",
   "cta.subtitle": "GuestBotで業務負担を軽減した数百人のホストに加わりましょう。",
   "cta.button": "無料ではじめる",
-
   "footer.desc": "バケーションレンタル向けAI搭載ゲストコンシェルジュ。ゲストの質問を減らし、レビューを改善し、ビジネスを拡大しましょう。",
   "footer.product": "製品",
   "footer.product_features": "機能",
@@ -244,7 +224,6 @@
   "footer.bottom_terms": "利用規約",
   "footer.bottom_cookies": "Cookie設定",
   "footer.bottom_donotsell": "販売拒否",
-
   "chat.meta_title": "GuestBot — ゲストアシスタント",
   "chat.meta_description": "バケーションレンタルについて即座に回答を得られます。WiFi、チェックイン、設備、地元のおすすめ情報などについてお聞きください。",
   "chat.header_title": "GuestBot",
@@ -286,5 +265,32 @@
   "chat.feedback_positive": "✅ ありがとうございます！",
   "chat.feedback_negative": "📝 フィードバックありがとうございます",
   "chat.feedback_helpful": "役に立った",
-  "chat.feedback_not_helpful": "役に立たなかった"
+  "chat.feedback_not_helpful": "役に立たなかった",
+  "stats.languages": "Languages Supported",
+  "features.multilang_title": "8 Languages Built-In",
+  "features.multilang_desc": "AI automatically detects guest language and responds in English, Spanish, French, German, Portuguese, Italian, Japanese, or Chinese.",
+  "features.verified_title": "Verified Responses",
+  "features.verified_desc": "Every AI response is validated against your actual property data. No hallucinated codes or made-up information.",
+  "features.streaming_title": "Real-Time Streaming",
+  "features.streaming_desc": "Responses stream in real-time for a natural, conversational feel. No waiting for the full answer to load.",
+  "features.feedback_title": "Guest Feedback",
+  "features.feedback_desc": "Guests can rate responses with thumbs up/down. See what questions are asked most to improve your property info.",
+  "features.smart_title": "Smart Context Switching",
+  "features.smart_desc": "AI detects when guests ask about a different area and automatically adjusts. Ask about the TV from the kitchen QR — it just works.",
+  "usecases.checkout": "Checkout",
+  "security.brute_title": "Brute Force Protection",
+  "security.brute_desc": "Automatic lockout after failed verification attempts. Your property codes stay safe.",
+  "security.codes_title": "Smart Code Sharing",
+  "security.codes_desc": "WiFi and door codes only shared when contextually relevant — not dumped all at once.",
+  "security.ai_title": "AI Safety Filters",
+  "security.ai_desc": "Multi-layer protection against prompt injection and jailbreak attempts.",
+  "security.rate_title": "Rate Limiting",
+  "security.rate_desc": "Built-in protection against abuse. Guests get helpful limits, not locked out.",
+  "pricing.f_languages": "8 languages included",
+  "pricing.f_streaming": "Real-time streaming",
+  "pricing.f_feedback": "Guest feedback tracking",
+  "stats.properties": "Unlimited Properties",
+  "stats.rating": "Host Rating",
+  "preview.dashboard_subtitle": "Manage your vacation rentals and generate QR codes",
+  "usecases.garage": "Garage"
 }

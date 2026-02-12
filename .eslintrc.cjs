@@ -30,10 +30,10 @@ module.exports = {
     'no-debugger': 'error',
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
 
-    // Code style - relaxed for existing code
-    'prefer-const': 'warn',
-    'no-var': 'warn',
-    'eqeqeq': ['warn', 'always'],
+    // Code style
+    'prefer-const': 'error',
+    'no-var': 'error',
+    'eqeqeq': ['error', 'always', { null: 'ignore' }],
     'curly': 'off',
   },
   overrides: [

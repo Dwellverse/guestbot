@@ -5,7 +5,7 @@
  * Integrates with Firebase/Google Cloud Monitoring.
  */
 
-const { getFirestore, Timestamp } = require('firebase-admin/firestore');
+const { Timestamp } = require('firebase-admin/firestore');
 
 /**
  * Metrics collector for tracking function performance

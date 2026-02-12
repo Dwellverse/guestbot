@@ -296,6 +296,14 @@
       rejectAll: rejectAll,
       getConsent: getStoredConsent,
     };
+
+    // Bind click handlers for .js-cookie-settings links
+    document.querySelectorAll('.js-cookie-settings').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        showPreferenceCenter();
+      });
+    });
   }
 
   // Run when DOM is ready

@@ -7,6 +7,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyDirBeforeWrite: true,
+    sourcemap: false,
+    target: 'es2022',
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
@@ -15,6 +17,7 @@ export default defineConfig({
         privacy: resolve(__dirname, 'privacy.html'),
         terms: resolve(__dirname, 'terms.html'),
       },
+      external: [/^https:\/\/www\.gstatic\.com\//],
     },
   },
   server: {

@@ -318,14 +318,134 @@
       .quick-actions.hidden {
         display: none;
       }
+
+      /* STREAMING CURSOR */
+      .streaming-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        background: var(--accent);
+        margin-left: 2px;
+        vertical-align: text-bottom;
+        animation: blink 0.8s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      /* FEEDBACK */
+      .feedback-row {
+        display: flex;
+        gap: 4px;
+        margin-top: 8px;
+        min-height: 24px;
+      }
+
+      .feedback-btn {
+        background: none;
+        border: 1px solid var(--dark-3);
+        border-radius: 6px;
+        padding: 2px 8px;
+        cursor: pointer;
+        font-size: 12px;
+        opacity: 0.5;
+        transition: opacity 0.2s;
+      }
+
+      .feedback-btn:hover {
+        opacity: 1;
+        border-color: var(--accent);
+      }
+
+      .feedback-submitted {
+        font-size: 11px;
+        color: var(--gray-500);
+      }
+
+      /* I18N */
+      body {
+        opacity: 0;
+        transition: opacity 0.15s;
+      }
+      body.i18n-ready {
+        opacity: 1;
+      }
+      .lang-switcher {
+        position: relative;
+        margin-left: auto;
+      }
+      .lang-toggle {
+        background: none;
+        border: 1px solid var(--dark-3);
+        border-radius: 8px;
+        padding: 4px 10px;
+        color: var(--gray-400);
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-family: inherit;
+      }
+      .lang-toggle:hover {
+        border-color: var(--accent);
+        color: var(--white);
+      }
+      .lang-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 12px;
+        padding: 8px;
+        min-width: 140px;
+        z-index: 200;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+      }
+      .lang-switcher.open .lang-dropdown {
+        display: block;
+      }
+      .lang-option {
+        display: block;
+        width: 100%;
+        padding: 8px 12px;
+        background: none;
+        border: none;
+        color: var(--gray-400);
+        font-size: 13px;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: all 0.15s;
+        font-family: inherit;
+      }
+      .lang-option:hover {
+        background: var(--dark-3);
+        color: var(--white);
+      }
+      .lang-option.active {
+        color: var(--accent);
+      }
     </style>
   </head>
   <body>
     <!-- VERIFICATION SCREEN -->
     <div class="verify-screen" id="verifyScreen">
       <div class="verify-icon">🔐</div>
-      <h1 class="verify-title">Verify Your Stay</h1>
-      <p class="verify-desc">Enter the last 4 digits of the phone number on your booking.</p>
+      <h1 class="verify-title" data-i18n="chat.verify_title">Verify Your Stay</h1>
+      <p class="verify-desc" data-i18n="chat.verify_desc">
+        Enter the last 4 digits of the phone number on your booking.
+      </p>
       <input
         type="text"
         class="verify-input"
@@ -334,8 +454,9 @@
         inputmode="numeric"
         pattern="[0-9]*"
         placeholder="••••"
+        data-i18n-placeholder="chat.verify_placeholder"
       />
-      <button class="verify-btn" id="verifyBtn">Verify</button>
+      <button class="verify-btn" id="verifyBtn" data-i18n="chat.verify_btn">Verify</button>
       <p class="verify-error" id="verifyError"></p>
     </div>
 
@@ -343,215 +464,70 @@
     <div class="chat-screen" id="chatScreen">
       <header class="header">
         <span class="header-icon">🤖</span>
-        <span class="header-title">GuestBot</span>
-        <span class="header-context" id="contextBadge">General</span>
+        <span class="header-title" data-i18n="chat.header_title">GuestBot</span>
+        <span class="header-context" id="contextBadge" data-i18n="chat.context_general">General</span>
+        <div class="lang-switcher">
+          <button class="lang-toggle" aria-label="Change language">🌐</button>
+          <div class="lang-dropdown">
+            <button class="lang-option" data-lang="en">English</button>
+            <button class="lang-option" data-lang="es">Español</button>
+            <button class="lang-option" data-lang="fr">Français</button>
+            <button class="lang-option" data-lang="de">Deutsch</button>
+            <button class="lang-option" data-lang="pt">Português</button>
+            <button class="lang-option" data-lang="it">Italiano</button>
+            <button class="lang-option" data-lang="ja">日本語</button>
+            <button class="lang-option" data-lang="zh">中文</button>
+          </div>
+        </div>
       </header>
 
       <div class="chat-container" id="chatContainer">
-        <div class="message bot">Hi! I'm your AI concierge. Ask me anything about your stay.</div>
+        <div class="message bot" data-i18n="chat.welcome">
+          Hi! I'm your AI concierge. Ask me anything about your stay.
+        </div>
       </div>
 
       <div class="quick-actions" id="quickActions">
-        <button class="quick-btn" data-question="What's the WiFi password?">
-          <span class="quick-btn-icon">📶</span> WiFi Password
+        <button class="quick-btn" data-question="What's the WiFi password?" data-i18n-question="chat.quick_wifi_q">
+          <span class="quick-btn-icon">📶</span> <span data-i18n="chat.quick_wifi">WiFi Password</span>
         </button>
-        <button class="quick-btn" data-question="What time is checkout?">
-          <span class="quick-btn-icon">🕐</span> Check-out Time
+        <button class="quick-btn" data-question="What time is checkout?" data-i18n-question="chat.quick_checkout_q">
+          <span class="quick-btn-icon">🕐</span> <span data-i18n="chat.quick_checkout">Check-out Time</span>
         </button>
-        <button class="quick-btn" data-question="What's the door code?">
-          <span class="quick-btn-icon">🔑</span> Door Code
+        <button class="quick-btn" data-question="What's the door code?" data-i18n-question="chat.quick_door_q">
+          <span class="quick-btn-icon">🔑</span> <span data-i18n="chat.quick_door">Door Code</span>
         </button>
-        <button class="quick-btn" data-question="Any restaurant recommendations nearby?">
-          <span class="quick-btn-icon">🍽️</span> Restaurants
+        <button
+          class="quick-btn"
+          data-question="Any restaurant recommendations nearby?"
+          data-i18n-question="chat.quick_restaurants_q"
+        >
+          <span class="quick-btn-icon">🍽️</span> <span data-i18n="chat.quick_restaurants">Restaurants</span>
         </button>
-        <button class="quick-btn" data-question="How do I use the TV?">
-          <span class="quick-btn-icon">📺</span> TV Help
+        <button class="quick-btn" data-question="How do I use the TV?" data-i18n-question="chat.quick_tv_q">
+          <span class="quick-btn-icon">📺</span> <span data-i18n="chat.quick_tv">TV Help</span>
         </button>
-        <button class="quick-btn" data-question="What are the house rules?">
-          <span class="quick-btn-icon">📋</span> House Rules
+        <button class="quick-btn" data-question="What are the house rules?" data-i18n-question="chat.quick_rules_q">
+          <span class="quick-btn-icon">📋</span> <span data-i18n="chat.quick_rules">House Rules</span>
         </button>
       </div>
 
       <div class="input-area">
         <form class="input-form" id="chatForm">
-          <input type="text" class="input-field" id="messageInput" placeholder="Ask a question..." autocomplete="off" />
-          <button type="submit" class="send-btn" id="sendBtn">Send</button>
+          <input
+            type="text"
+            class="input-field"
+            id="messageInput"
+            placeholder="Ask a question..."
+            autocomplete="off"
+            data-i18n-placeholder="chat.input_placeholder"
+          />
+          <button type="submit" class="send-btn" id="sendBtn" data-i18n="chat.send">Send</button>
         </form>
       </div>
     </div>
 
-    <script type="module">
-      const API_BASE = '';
-
-      // State
-      const state = {
-        propertyId: null,
-        context: null,
-        phoneLastFour: null,
-        isVerified: false,
-        guestName: null,
-      };
-
-      // DOM elements
-      const verifyScreen = document.getElementById('verifyScreen');
-      const chatScreen = document.getElementById('chatScreen');
-      const phoneInput = document.getElementById('phoneInput');
-      const verifyBtn = document.getElementById('verifyBtn');
-      const verifyError = document.getElementById('verifyError');
-      const contextBadge = document.getElementById('contextBadge');
-      const chatContainer = document.getElementById('chatContainer');
-      const chatForm = document.getElementById('chatForm');
-      const messageInput = document.getElementById('messageInput');
-      const sendBtn = document.getElementById('sendBtn');
-
-      // Parse URL params
-      function init() {
-        const params = new URLSearchParams(window.location.search);
-        state.propertyId = params.get('p') || params.get('propertyId');
-        state.context = params.get('c') || params.get('context') || 'general';
-
-        const contextLabels = {
-          general: 'General',
-          kitchen: 'Kitchen',
-          tv: 'TV & Entertainment',
-          thermostat: 'Climate',
-          bathroom: 'Bathroom',
-          pool: 'Pool / Hot Tub',
-          checkout: 'Checkout',
-        };
-        contextBadge.textContent = contextLabels[state.context] || 'General';
-
-        if (!state.propertyId) {
-          verifyError.textContent = 'Invalid QR code. Please scan again.';
-          phoneInput.disabled = true;
-          verifyBtn.disabled = true;
-        }
-      }
-
-      // Verify guest
-      verifyBtn.addEventListener('click', async () => {
-        const code = phoneInput.value.trim();
-        if (code.length !== 4) {
-          verifyError.textContent = 'Please enter 4 digits.';
-          return;
-        }
-
-        verifyBtn.disabled = true;
-        verifyBtn.textContent = 'Verifying...';
-        verifyError.textContent = '';
-
-        try {
-          const res = await fetch(`${API_BASE}/api/verify`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              propertyId: state.propertyId,
-              phoneLastFour: code,
-            }),
-          });
-
-          const data = await res.json();
-
-          if (data.success && data.verified) {
-            state.phoneLastFour = code;
-            state.isVerified = true;
-            state.guestName = data.data?.guestName || 'Guest';
-
-            verifyScreen.classList.add('hidden');
-            chatScreen.classList.add('active');
-
-            // Welcome message
-            const welcomeMsg = `Hi${state.guestName ? ' ' + state.guestName.split(' ')[0] : ''}! I'm your AI concierge. Ask me anything about your stay.`;
-            chatContainer.querySelector('.message').textContent = welcomeMsg;
-
-            messageInput.focus();
-          } else {
-            verifyError.textContent = data.message || 'No booking found. Check your phone number.';
-            verifyBtn.disabled = false;
-            verifyBtn.textContent = 'Verify';
-          }
-        } catch (err) {
-          verifyError.textContent = 'Connection error. Please try again.';
-          verifyBtn.disabled = false;
-          verifyBtn.textContent = 'Verify';
-        }
-      });
-
-      // Send message
-      chatForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const message = messageInput.value.trim();
-        if (!message) return;
-
-        addMessage(message, 'user');
-        messageInput.value = '';
-        sendBtn.disabled = true;
-
-        const thinkingEl = addMessage('Thinking', 'bot thinking');
-
-        try {
-          const res = await fetch(`${API_BASE}/api/ask`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              propertyId: state.propertyId,
-              question: message,
-              context: state.context,
-            }),
-          });
-
-          const data = await res.json();
-          thinkingEl.remove();
-
-          if (data.success && data.data?.answer) {
-            addMessage(data.data.answer, 'bot');
-          } else {
-            addMessage("Sorry, I couldn't get an answer. Please try again.", 'bot');
-          }
-        } catch (err) {
-          thinkingEl.remove();
-          addMessage('Connection error. Please try again.', 'bot');
-        }
-
-        sendBtn.disabled = false;
-        messageInput.focus();
-      });
-
-      function addMessage(text, className) {
-        const div = document.createElement('div');
-        div.className = `message ${className}`;
-        div.textContent = text;
-        chatContainer.appendChild(div);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        return div;
-      }
-
-      phoneInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/\D/g, '');
-      });
-
-      // Quick action buttons
-      const quickActions = document.getElementById('quickActions');
-      document.querySelectorAll('.quick-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const question = btn.dataset.question;
-          if (question) {
-            messageInput.value = question;
-            chatForm.dispatchEvent(new Event('submit'));
-            // Hide quick actions after first use
-            quickActions.classList.add('hidden');
-          }
-        });
-      });
-
-      // Hide quick actions after any message is sent
-      chatForm.addEventListener('submit', () => {
-        quickActions.classList.add('hidden');
-      });
-
-      init();
-    </script>
+    <script type="module" src="/js/chat.js"></script>
 
     <!-- Cookie Consent -->
     <script src="/js/cookie-consent.js"></script>

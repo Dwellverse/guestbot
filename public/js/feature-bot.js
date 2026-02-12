@@ -195,9 +195,14 @@
     const msg = document.createElement('div');
     msg.className = `fb-message ${isBot ? 'fb-bot' : 'fb-user'}${animate ? ' fb-animate' : ''}`;
 
-    // Parse markdown-style bold
-    const formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    msg.innerHTML = formatted.replace(/\n/g, '<br>');
+    if (isBot) {
+      // Parse markdown-style bold for trusted bot responses only
+      const formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      msg.innerHTML = formatted.replace(/\n/g, '<br>');
+    } else {
+      // Use textContent for user messages to prevent XSS
+      msg.textContent = text;
+    }
 
     container.appendChild(msg);
     container.scrollTop = container.scrollHeight;

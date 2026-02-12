@@ -1,63 +1,19 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, Timestamp } = require('firebase-admin/firestore');
-const { VertexAI } = require('@google-cloud/vertexai');
-const fetch = require('node-fetch');
+const { VertexAI, HarmCategory, HarmBlockThreshold } = require('@google-cloud/vertexai');
+const crypto = require('crypto');
+const dns = require('dns').promises;
 const ICAL = require('ical.js');
+const { getAuth } = require('firebase-admin/auth');
+const { checkRateLimit, recordFailedAttempt, checkBruteForce } = require('./rate-limiter');
+const { sanitizeQuestion } = require('./input-sanitizer');
+const { buildPrompt } = require('./ai-prompt');
+const { filterOutput } = require('./output-filter');
+const { validateResponse } = require('./response-validator');
 
 initializeApp();
 const db = getFirestore();
-
-// ============================================
-// RATE LIMITING (In-memory, resets on cold start)
-// For production at scale, use Redis or Firestore
-// ============================================
-const rateLimitStore = new Map();
-
-const RATE_LIMITS = {
-  askGuestBot: { windowMs: 60000, maxRequests: 20 }, // 20 requests per minute
-  verifyGuest: { windowMs: 60000, maxRequests: 10 }, // 10 attempts per minute
-  syncIcal: { windowMs: 60000, maxRequests: 5 }, // 5 syncs per minute
-};
-
-function checkRateLimit(endpoint, identifier) {
-  const key = `${endpoint}:${identifier}`;
-  const now = Date.now();
-  const limit = RATE_LIMITS[endpoint];
-
-  if (!rateLimitStore.has(key)) {
-    rateLimitStore.set(key, { count: 1, windowStart: now });
-    return { allowed: true, remaining: limit.maxRequests - 1 };
-  }
-
-  const record = rateLimitStore.get(key);
-
-  // Reset window if expired
-  if (now - record.windowStart > limit.windowMs) {
-    rateLimitStore.set(key, { count: 1, windowStart: now });
-    return { allowed: true, remaining: limit.maxRequests - 1 };
-  }
-
-  // Check if over limit
-  if (record.count >= limit.maxRequests) {
-    return { allowed: false, remaining: 0 };
-  }
-
-  // Increment counter
-  record.count++;
-  return { allowed: true, remaining: limit.maxRequests - record.count };
-}
-
-// Clean up old entries periodically (prevent memory leak)
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, record] of rateLimitStore.entries()) {
-    if (now - record.windowStart > 300000) {
-      // 5 minutes
-      rateLimitStore.delete(key);
-    }
-  }
-}, 60000);
 
 // ============================================
 // SSRF PROTECTION - Block private/internal IPs
@@ -77,7 +33,7 @@ function isPrivateUrl(urlString) {
       return true;
     }
 
-    // Block private IP ranges
+    // Block private IPv4 ranges
     const ipv4Match = hostname.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
     if (ipv4Match) {
       const [, a, b, c, d] = ipv4Match.map(Number);
@@ -91,11 +47,35 @@ function isPrivateUrl(urlString) {
       // 192.168.0.0/16
       if (a === 192 && b === 168) return true;
 
-      // 169.254.0.0/16 (link-local)
+      // 169.254.0.0/16 (link-local / cloud metadata)
       if (a === 169 && b === 254) return true;
 
       // 0.0.0.0
       if (a === 0 && b === 0 && c === 0 && d === 0) return true;
+    }
+
+    // Block IPv6 private ranges
+    // Remove brackets for IPv6 addresses
+    const cleanHostname = hostname.replace(/^\[|\]$/g, '');
+
+    // IPv6 unique local (fc00::/7)
+    if (/^fc[0-9a-f]{2}:/i.test(cleanHostname) || /^fd[0-9a-f]{2}:/i.test(cleanHostname)) {
+      return true;
+    }
+
+    // IPv6 link-local (fe80::/10)
+    if (/^fe[89ab][0-9a-f]:/i.test(cleanHostname)) {
+      return true;
+    }
+
+    // IPv4-mapped IPv6 (::ffff:x.x.x.x)
+    if (/^::ffff:/i.test(cleanHostname)) {
+      return true;
+    }
+
+    // Block cloud metadata endpoints
+    if (hostname === '169.254.169.254' || hostname === 'metadata.google.internal') {
+      return true;
     }
 
     // Block internal hostnames
@@ -114,22 +94,108 @@ function isPrivateUrl(urlString) {
   }
 }
 
-// ============================================
-// Lazy-load VertexAI
-// ============================================
-let _model = null;
-function getModel() {
-  if (!_model) {
-    const PROJECT_ID = process.env.VERTEX_PROJECT_ID || process.env.GCLOUD_PROJECT;
-    const LOCATION = process.env.VERTEX_LOCATION || 'us-central1';
-    const vertexAI = new VertexAI({ project: PROJECT_ID, location: LOCATION });
-    _model = vertexAI.preview.getGenerativeModel({ model: 'gemini-pro' });
+/**
+ * Check if an IP address is private/internal
+ */
+function isPrivateIP(ip) {
+  const match = ip.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (!match) return true; // Non-IPv4, be cautious
+  const [, a, b] = match.map(Number);
+  if (a === 0 || a === 10 || a === 127) return true;
+  if (a === 172 && b >= 16 && b <= 31) return true;
+  if (a === 192 && b === 168) return true;
+  if (a === 169 && b === 254) return true;
+  return false;
+}
+
+/**
+ * Resolve hostname and check if it points to a private IP (DNS rebinding protection)
+ */
+async function resolvesToPrivateIP(hostname) {
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(hostname)) return false; // IP literals checked by isPrivateUrl
+  try {
+    const { address } = await dns.lookup(hostname);
+    return isPrivateIP(address);
+  } catch {
+    return true; // DNS resolution failed, block
   }
-  return _model;
+}
+
+/**
+ * Safe fetch with SSRF protection: validates URL, checks DNS resolution,
+ * and handles redirects safely (up to 3 hops).
+ */
+async function safeFetch(urlString, options = {}, maxRedirects = 3) {
+  let currentUrl = urlString;
+  for (let i = 0; i <= maxRedirects; i++) {
+    if (isPrivateUrl(currentUrl)) {
+      throw new Error('Blocked: private URL');
+    }
+    const parsed = new URL(currentUrl);
+    if (await resolvesToPrivateIP(parsed.hostname)) {
+      throw new Error('Blocked: resolves to private IP');
+    }
+    const response = await fetch(currentUrl, { ...options, redirect: 'manual' });
+    if ([301, 302, 303, 307, 308].includes(response.status)) {
+      const location = response.headers.get('location');
+      if (!location) throw new Error('Redirect without location header');
+      currentUrl = new URL(location, currentUrl).href;
+      continue;
+    }
+    return response;
+  }
+  throw new Error('Too many redirects');
 }
 
 // ============================================
-// CORS middleware
+// Lazy-load VertexAI with safety settings
+// ============================================
+const SAFETY_SETTINGS = [
+  {
+    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  },
+];
+
+let _vertexAI = null;
+function getVertexAI() {
+  if (!_vertexAI) {
+    const PROJECT_ID = process.env.VERTEX_PROJECT_ID || process.env.GCLOUD_PROJECT;
+    const LOCATION = process.env.VERTEX_LOCATION || 'us-central1';
+    _vertexAI = new VertexAI({ project: PROJECT_ID, location: LOCATION });
+  }
+  return _vertexAI;
+}
+
+/**
+ * Get a generative model with dynamic temperature.
+ * @param {number} temperature - Temperature for this request (0.0-1.0)
+ */
+function getModel(temperature = 0.5) {
+  return getVertexAI().preview.getGenerativeModel({
+    model: 'gemini-2.0-flash',
+    generationConfig: {
+      maxOutputTokens: 1024,
+      temperature,
+    },
+    safetySettings: SAFETY_SETTINGS,
+  });
+}
+
+// ============================================
+// CORS middleware with security headers
 // ============================================
 const cors = (req, res) => {
   const allowedOrigins = [
@@ -137,15 +203,24 @@ const cors = (req, res) => {
     'https://www.guestbot.ai',
     'https://guestbot-ai.web.app',
     'https://guestbot-7029e.web.app',
-    'http://localhost:3001',
-    'http://localhost:5173',
   ];
+
+  // Only include localhost origins when running in emulator
+  if (process.env.FUNCTIONS_EMULATOR === 'true') {
+    allowedOrigins.push('http://localhost:3001', 'http://localhost:5173');
+  }
+
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.set('Access-Control-Allow-Origin', origin);
+    res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   }
-  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  res.set('Vary', 'Origin');
+
+  // Security headers on all responses
+  res.set('X-Content-Type-Options', 'nosniff');
+  res.set('X-Frame-Options', 'DENY');
 
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
@@ -162,6 +237,23 @@ function getClientIP(req) {
     req.connection?.remoteAddress ||
     'unknown'
   );
+}
+
+/**
+ * Verify Firebase Auth ID token from Authorization header
+ * Returns decoded token or null
+ */
+async function verifyAuthToken(req) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return null;
+  }
+  const idToken = authHeader.split('Bearer ')[1];
+  try {
+    return await getAuth().verifyIdToken(idToken);
+  } catch {
+    return null;
+  }
 }
 
 // ============================================
@@ -200,6 +292,28 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
     });
   }
 
+  // Validate propertyId exists
+  const propertyDoc = await db.collection('guestbot_properties').doc(propertyId).get();
+  if (!propertyDoc.exists) {
+    // Use identical message to prevent property enumeration
+    return res.json({
+      success: true,
+      verified: false,
+      message: 'No active booking found. Please check your phone number.',
+    });
+  }
+
+  // Check brute force lockout
+  const bruteForceCheck = await checkBruteForce(clientIP, propertyId);
+  if (bruteForceCheck.locked) {
+    // Use identical message to prevent lockout enumeration
+    return res.json({
+      success: true,
+      verified: false,
+      message: 'No active booking found. Please check your phone number.',
+    });
+  }
+
   try {
     const now = new Date();
 
@@ -230,6 +344,9 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
     }
 
     if (!matchedBooking) {
+      // Record failed attempt for brute force protection
+      await recordFailedAttempt(clientIP, propertyId);
+
       return res.json({
         success: true,
         verified: false,
@@ -237,8 +354,19 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
       });
     }
 
-    const propertyDoc = await db.collection('guestbot_properties').doc(propertyId).get();
-    const property = propertyDoc.exists ? propertyDoc.data() : {};
+    const property = propertyDoc.data();
+
+    // Generate a session token for authenticated API access
+    const sessionToken = crypto.randomUUID();
+    await db
+      .collection('guestbot_sessions')
+      .doc(sessionToken)
+      .set({
+        propertyId,
+        clientIP,
+        createdAt: Timestamp.now(),
+        expiresAt: Timestamp.fromMillis(Date.now() + 30 * 60 * 1000), // 30 min
+      });
 
     res.json({
       success: true,
@@ -246,6 +374,7 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
       data: {
         guestName: matchedBooking.guestName,
         propertyName: property.name,
+        sessionToken,
       },
     });
   } catch (error) {
@@ -255,7 +384,7 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
 });
 
 // ============================================
-// Ask GuestBot AI
+// Ask GuestBot AI (with streaming support)
 // ============================================
 exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
   if (cors(req, res)) return;
@@ -275,16 +404,49 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
     });
   }
 
-  const { question, context: qrContext } = req.body;
+  // Verify session token
+  const { question, context: qrContext, history, stream: useStreaming, sessionToken } = req.body;
 
-  if (!propertyId || !question) {
+  if (!sessionToken) {
+    return res.status(401).json({
+      success: false,
+      message: 'Verification required',
+    });
+  }
+
+  const sessionDoc = await db.collection('guestbot_sessions').doc(sessionToken).get();
+  if (!sessionDoc.exists) {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid session',
+    });
+  }
+
+  const session = sessionDoc.data();
+  if (session.propertyId !== propertyId || session.expiresAt.toMillis() < Date.now()) {
+    return res.status(401).json({
+      success: false,
+      message: 'Session expired. Please verify again.',
+    });
+  }
+
+  if (!propertyId || propertyId === 'unknown' || !question) {
     return res.status(400).json({
       success: false,
       message: 'Property ID and question required',
     });
   }
 
-  if (question.length > 500) {
+  // Sanitize user input
+  const sanitized = sanitizeQuestion(question);
+  if (sanitized.rejected) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid question',
+    });
+  }
+
+  if (sanitized.sanitized.length > 500) {
     return res.status(400).json({
       success: false,
       message: 'Question too long',
@@ -301,92 +463,153 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
     }
 
     const property = propertyDoc.data();
+    const identifier = `${clientIP}:${propertyId}`;
 
-    // Context-specific prompts
-    const contextPrompts = {
-      kitchen: `Focus on: coffee machine, appliances, cooking supplies, trash/recycling, kitchen rules.`,
-      tv: `Focus on: TV operation, streaming services, sound system, WiFi for streaming.`,
-      thermostat: `Focus on: temperature adjustment, AC/heating, recommended settings.`,
-      bathroom: `Focus on: shower/tub operation, towels, toiletries location.`,
-      pool: `Focus on: pool/hot tub hours, rules, temperature controls, safety.`,
-      checkout: `Focus on: checkout time, departure tasks, key return, final cleanup.`,
-      general: `Provide general assistance about the property.`,
-    };
+    // Build structured prompt with conversation history and smart context
+    const { systemInstruction, contents, temperature, resolvedContext } = buildPrompt(
+      property,
+      sanitized.sanitized,
+      qrContext || 'general',
+      identifier,
+      history
+    );
 
-    const contextInstruction = contextPrompts[qrContext] || contextPrompts.general;
+    const model = getModel(temperature);
 
-    const location =
-      property.city && property.state
-        ? `${property.city}, ${property.state}`
-        : property.city || property.state || 'the area';
+    if (useStreaming) {
+      // SSE streaming response
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
 
-    const prompt = `You are GuestBot, an AI concierge for vacation rental guests. Be friendly, helpful, and concise.
+      // Send resolved context as first event
+      res.write(`data: ${JSON.stringify({ type: 'context', context: resolvedContext })}\n\n`);
 
-IMPORTANT - MULTI-LANGUAGE SUPPORT:
-- Detect the language of the guest's question
-- ALWAYS respond in the SAME LANGUAGE the guest used
-- If the guest writes in Spanish, respond in Spanish
-- If the guest writes in French, respond in French
-- If the guest writes in German, respond in German
-- And so on for any language
-- Keep property-specific terms (like WiFi network names, addresses) in their original form
+      const streamResult = await model.generateContentStream({
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        contents,
+      });
 
-CONTEXT: ${contextInstruction}
+      let fullText = '';
 
-PROPERTY INFO:
-- Name: ${property.name || 'Vacation Rental'}
-- Location: ${location}
-- Address: ${property.address || 'Not provided'}
-- WiFi: ${property.wifiName ? `Network: ${property.wifiName}, Password: ${property.wifiPassword || 'Ask host'}` : 'Not provided'}
-- Door Code: ${property.doorCode || 'Not provided'}
-- Lockbox: ${property.lockboxCode ? `Code: ${property.lockboxCode}${property.lockboxLocation ? `, Location: ${property.lockboxLocation}` : ''}` : 'Not provided'}
-- Gate Code: ${property.gateCode || 'Not provided'}
-- Check-in: ${property.checkInTime || 'Not specified'}
-- Check-out: ${property.checkOutTime || 'Not specified'}
-- House Rules: ${property.houseRules || 'Standard vacation rental rules'}
-- Additional Property Info: ${property.customInfo || 'None'}
-- Host's Local Recommendations: ${property.localTips || 'None provided'}
+      for await (const chunk of streamResult.stream) {
+        const chunkText = chunk.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        if (chunkText) {
+          fullText += chunkText;
+          res.write(`data: ${JSON.stringify({ type: 'chunk', text: chunkText })}\n\n`);
+        }
+      }
 
-LOCATION AWARENESS:
-You are knowledgeable about ${location} and the surrounding area. When guests ask about local attractions, restaurants, activities, or services, provide helpful recommendations based on your knowledge of this location. Include:
-- Restaurants and dining options
-- Outdoor activities, parks, hiking, beaches, nature spots
-- Family-friendly and kid activities
-- Local events and entertainment venues
-- Shopping areas
-- Nearby attractions and points of interest
+      // Post-stream: validate and filter the complete response
+      const { validated, hallucinations } = validateResponse(fullText, property);
+      const { filtered, wasFiltered } = filterOutput(validated);
 
-If the host has provided local recommendations above, prioritize those. Otherwise, use your knowledge of ${location} to suggest popular and well-regarded options.
+      if (wasFiltered || hallucinations.length > 0) {
+        // Send a correction event with the filtered/validated full response
+        res.write(`data: ${JSON.stringify({ type: 'replace', text: filtered })}\n\n`);
+      }
 
-Guest Question: ${question}
+      res.write(`data: ${JSON.stringify({ type: 'done' })}\n\n`);
+      res.end();
+    } else {
+      // Non-streaming response (backwards compatible)
+      const result = await model.generateContent({
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        contents,
+      });
 
-Provide a helpful, friendly response in the SAME LANGUAGE as the guest's question. For local recommendations, try to include specific names of places when possible. Keep responses concise but informative.`;
+      const response = await result.response;
+      const rawAnswer = response.text();
 
-    const result = await getModel().generateContent(prompt);
-    const response = await result.response;
-    const answer = response.text();
+      // Validate against property data, then filter
+      const { validated } = validateResponse(rawAnswer, property);
+      const { filtered: answer } = filterOutput(validated);
 
-    res.json({
-      success: true,
-      data: { answer },
-    });
+      res.json({
+        success: true,
+        data: { answer, context: resolvedContext },
+      });
+    }
   } catch (error) {
     console.error('AI error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Unable to process your question. Please try again.',
-    });
+    // For streaming, check if headers already sent
+    if (res.headersSent) {
+      res.write(
+        `data: ${JSON.stringify({ type: 'error', message: 'Unable to process your question.' })}\n\n`
+      );
+      res.end();
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'Unable to process your question. Please try again.',
+      });
+    }
   }
 });
 
 // ============================================
-// Sync iCal Feed
+// Submit Feedback (thumbs up/down on AI responses)
+// ============================================
+exports.submitFeedback = onRequest({ cors: false }, async (req, res) => {
+  if (cors(req, res)) return;
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const clientIP = getClientIP(req);
+  const rateCheck = checkRateLimit('submitFeedback', `${clientIP}:feedback`);
+  if (!rateCheck.allowed) {
+    return res.status(429).json({ success: false, message: 'Too many requests.' });
+  }
+
+  const { propertyId, question, rating } = req.body;
+
+  if (!propertyId || !question || !['positive', 'negative'].includes(rating)) {
+    return res.status(400).json({
+      success: false,
+      message: 'propertyId, question, and rating (positive/negative) required',
+    });
+  }
+
+  try {
+    // Verify property exists (return success regardless to prevent enumeration)
+    const propertyDoc = await db.collection('guestbot_properties').doc(propertyId).get();
+    if (!propertyDoc.exists) {
+      return res.json({ success: true });
+    }
+
+    await db.collection('guestbot_feedback').add({
+      propertyId,
+      question: String(question).substring(0, 200), // Truncate for storage
+      rating,
+      createdAt: Timestamp.now(),
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Feedback error:', error);
+    res.status(500).json({ success: false, message: 'Failed to submit feedback.' });
+  }
+});
+
+// ============================================
+// Sync iCal Feed (requires Firebase Auth)
 // ============================================
 exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
   if (cors(req, res)) return;
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Verify Firebase Auth token
+  const decodedToken = await verifyAuthToken(req);
+  if (!decodedToken) {
+    return res.status(401).json({
+      success: false,
+      message: 'Authentication required',
+    });
   }
 
   // Rate limiting
@@ -405,6 +628,27 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
     return res.status(400).json({
       success: false,
       message: 'Property ID and iCal URL required',
+    });
+  }
+
+  // Validate platform to prevent Firestore field injection
+  const ALLOWED_PLATFORMS = ['airbnb', 'vrbo', 'booking'];
+  const safePlatform = ALLOWED_PLATFORMS.includes(platform) ? platform : 'other';
+
+  // Verify the user owns this property
+  const propertyDoc = await db.collection('guestbot_properties').doc(propertyId).get();
+  if (!propertyDoc.exists) {
+    return res.status(404).json({
+      success: false,
+      message: 'Property not found',
+    });
+  }
+
+  const property = propertyDoc.data();
+  if (property.ownerId !== decodedToken.uid) {
+    return res.status(403).json({
+      success: false,
+      message: 'Not authorized to sync this property',
     });
   }
 
@@ -437,7 +681,7 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-    const response = await fetch(icalUrl, {
+    const response = await safeFetch(icalUrl, {
       headers: {
         'User-Agent': 'GuestBot/1.0',
       },
@@ -526,7 +770,7 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
             guestName,
             checkIn: Timestamp.fromDate(checkIn),
             checkOut: Timestamp.fromDate(checkOut),
-            platform: platform || 'ical',
+            platform: safePlatform,
             updatedAt: Timestamp.now(),
           });
       } else {
@@ -537,7 +781,7 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
           guestPhone: '', // iCal doesn't include phone
           checkIn: Timestamp.fromDate(checkIn),
           checkOut: Timestamp.fromDate(checkOut),
-          platform: platform || 'ical',
+          platform: safePlatform,
           icalUid: uid,
           source: 'ical',
           createdAt: Timestamp.now(),
@@ -553,8 +797,8 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
       .doc(propertyId)
       .set(
         {
-          [`icalUrls.${platform}`]: icalUrl,
-          [`syncMetadata.${platform}`]: {
+          [`icalUrls.${safePlatform}`]: icalUrl,
+          [`syncMetadata.${safePlatform}`]: {
             lastSync: Timestamp.now(),
             eventsImported: imported,
           },
@@ -566,7 +810,7 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
       success: true,
       imported,
       skipped,
-      message: `Synced ${imported} bookings from ${platform || 'calendar'}`,
+      message: `Synced ${imported} bookings from ${safePlatform}`,
     });
   } catch (error) {
     console.error('iCal sync error:', error);
@@ -585,3 +829,8 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
     });
   }
 });
+
+// Export isPrivateUrl for testing
+exports._isPrivateUrl = isPrivateUrl;
+exports._isPrivateIP = isPrivateIP;
+exports._safeFetch = safeFetch;

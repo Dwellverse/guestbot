@@ -27,6 +27,50 @@ async function loadTranslations(lang) {
   }
 }
 
+function sanitizeHtml(html) {
+  const DANGEROUS_TAGS = new Set([
+    'script',
+    'iframe',
+    'object',
+    'embed',
+    'form',
+    'input',
+    'textarea',
+    'select',
+    'button',
+    'style',
+    'link',
+    'meta',
+    'base',
+    'svg',
+    'math',
+  ]);
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  const frag = template.content;
+
+  DANGEROUS_TAGS.forEach((tag) => {
+    frag.querySelectorAll(tag).forEach((el) => el.remove());
+  });
+
+  frag.querySelectorAll('*').forEach((el) => {
+    for (const attr of Array.from(el.attributes)) {
+      if (attr.name.toLowerCase().startsWith('on')) {
+        el.removeAttribute(attr.name);
+      } else if (
+        ['href', 'src', 'action', 'formaction', 'xlink:href'].includes(attr.name.toLowerCase()) &&
+        attr.value.replace(/\s/g, '').toLowerCase().startsWith('javascript:')
+      ) {
+        el.removeAttribute(attr.name);
+      }
+    }
+  });
+
+  const div = document.createElement('div');
+  div.appendChild(frag);
+  return div.innerHTML;
+}
+
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     const key = el.getAttribute('data-i18n');
@@ -34,7 +78,7 @@ function applyTranslations() {
   });
   document.querySelectorAll('[data-i18n-html]').forEach((el) => {
     const key = el.getAttribute('data-i18n-html');
-    if (translations[key] != null) el.innerHTML = translations[key];
+    if (translations[key] != null) el.innerHTML = sanitizeHtml(translations[key]);
   });
   document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
     const key = el.getAttribute('data-i18n-placeholder');

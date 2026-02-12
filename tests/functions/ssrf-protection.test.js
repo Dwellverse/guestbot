@@ -20,7 +20,7 @@ describe('SSRF Protection', () => {
         return true;
       }
 
-      // Block private IP ranges
+      // Block private IPv4 ranges
       const ipv4Match = hostname.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
       if (ipv4Match) {
         const [, a, b, c, d] = ipv4Match.map(Number);
@@ -39,6 +39,29 @@ describe('SSRF Protection', () => {
 
         // 0.0.0.0
         if (a === 0 && b === 0 && c === 0 && d === 0) return true;
+      }
+
+      // Block IPv6 private ranges
+      const cleanHostname = hostname.replace(/^\[|\]$/g, '');
+
+      // IPv6 unique local (fc00::/7)
+      if (/^fc[0-9a-f]{2}:/i.test(cleanHostname) || /^fd[0-9a-f]{2}:/i.test(cleanHostname)) {
+        return true;
+      }
+
+      // IPv6 link-local (fe80::/10)
+      if (/^fe[89ab][0-9a-f]:/i.test(cleanHostname)) {
+        return true;
+      }
+
+      // IPv4-mapped IPv6 (::ffff:x.x.x.x)
+      if (/^::ffff:/i.test(cleanHostname)) {
+        return true;
+      }
+
+      // Block cloud metadata endpoints
+      if (hostname === '169.254.169.254' || hostname === 'metadata.google.internal') {
+        return true;
       }
 
       // Block internal hostnames
@@ -96,6 +119,32 @@ describe('SSRF Protection', () => {
 
       it('blocks 0.0.0.0', () => {
         expect(isPrivateUrl('http://0.0.0.0/calendar.ics')).toBe(true);
+      });
+    });
+
+    describe('should block IPv6 private ranges', () => {
+      it('blocks IPv6 unique local fc00::/7', () => {
+        expect(isPrivateUrl('http://[fc00::1]/calendar.ics')).toBe(true);
+        expect(isPrivateUrl('http://[fd00::1]/calendar.ics')).toBe(true);
+      });
+
+      it('blocks IPv6 link-local fe80::/10', () => {
+        expect(isPrivateUrl('http://[fe80::1]/calendar.ics')).toBe(true);
+      });
+
+      it('blocks IPv4-mapped IPv6 addresses', () => {
+        expect(isPrivateUrl('http://[::ffff:127.0.0.1]/calendar.ics')).toBe(true);
+        expect(isPrivateUrl('http://[::ffff:192.168.1.1]/calendar.ics')).toBe(true);
+      });
+    });
+
+    describe('should block cloud metadata endpoints', () => {
+      it('blocks cloud metadata IP', () => {
+        expect(isPrivateUrl('http://169.254.169.254/latest/meta-data/')).toBe(true);
+      });
+
+      it('blocks Google metadata hostname', () => {
+        expect(isPrivateUrl('http://metadata.google.internal/computeMetadata/v1/')).toBe(true);
       });
     });
 

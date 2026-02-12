@@ -16,9 +16,47 @@ service cloud.firestore {
     match /guestbot_properties/{propertyId} {
       allow read: if request.auth != null &&
         resource.data.ownerId == request.auth.uid;
+
       allow create: if request.auth != null &&
-        request.resource.data.ownerId == request.auth.uid;
-      allow update, delete: if request.auth != null &&
+        request.resource.data.ownerId == request.auth.uid &&
+        request.resource.data.keys().hasAll(['ownerId', 'name']) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() <= 200 &&
+        (!('address' in request.resource.data) || (request.resource.data.address is string && request.resource.data.address.size() <= 500)) &&
+        (!('houseRules' in request.resource.data) || (request.resource.data.houseRules is string && request.resource.data.houseRules.size() <= 5000)) &&
+        (!('customInfo' in request.resource.data) || (request.resource.data.customInfo is string && request.resource.data.customInfo.size() <= 5000)) &&
+        (!('localTips' in request.resource.data) || (request.resource.data.localTips is string && request.resource.data.localTips.size() <= 5000)) &&
+        (!('wifiName' in request.resource.data) || (request.resource.data.wifiName is string && request.resource.data.wifiName.size() <= 100)) &&
+        (!('wifiPassword' in request.resource.data) || (request.resource.data.wifiPassword is string && request.resource.data.wifiPassword.size() <= 100)) &&
+        (!('doorCode' in request.resource.data) || (request.resource.data.doorCode is string && request.resource.data.doorCode.size() <= 50)) &&
+        (!('gateCode' in request.resource.data) || (request.resource.data.gateCode is string && request.resource.data.gateCode.size() <= 50)) &&
+        (!('lockboxCode' in request.resource.data) || (request.resource.data.lockboxCode is string && request.resource.data.lockboxCode.size() <= 50)) &&
+        (!('lockboxLocation' in request.resource.data) || (request.resource.data.lockboxLocation is string && request.resource.data.lockboxLocation.size() <= 200)) &&
+        (!('city' in request.resource.data) || (request.resource.data.city is string && request.resource.data.city.size() <= 100)) &&
+        (!('state' in request.resource.data) || (request.resource.data.state is string && request.resource.data.state.size() <= 100)) &&
+        (!('checkInTime' in request.resource.data) || (request.resource.data.checkInTime is string && request.resource.data.checkInTime.size() <= 50)) &&
+        (!('checkOutTime' in request.resource.data) || (request.resource.data.checkOutTime is string && request.resource.data.checkOutTime.size() <= 50));
+
+      allow update: if request.auth != null &&
+        resource.data.ownerId == request.auth.uid &&
+        request.resource.data.ownerId == resource.data.ownerId &&
+        (!('name' in request.resource.data) || (request.resource.data.name is string && request.resource.data.name.size() <= 200)) &&
+        (!('address' in request.resource.data) || (request.resource.data.address is string && request.resource.data.address.size() <= 500)) &&
+        (!('houseRules' in request.resource.data) || (request.resource.data.houseRules is string && request.resource.data.houseRules.size() <= 5000)) &&
+        (!('customInfo' in request.resource.data) || (request.resource.data.customInfo is string && request.resource.data.customInfo.size() <= 5000)) &&
+        (!('localTips' in request.resource.data) || (request.resource.data.localTips is string && request.resource.data.localTips.size() <= 5000)) &&
+        (!('wifiName' in request.resource.data) || (request.resource.data.wifiName is string && request.resource.data.wifiName.size() <= 100)) &&
+        (!('wifiPassword' in request.resource.data) || (request.resource.data.wifiPassword is string && request.resource.data.wifiPassword.size() <= 100)) &&
+        (!('doorCode' in request.resource.data) || (request.resource.data.doorCode is string && request.resource.data.doorCode.size() <= 50)) &&
+        (!('gateCode' in request.resource.data) || (request.resource.data.gateCode is string && request.resource.data.gateCode.size() <= 50)) &&
+        (!('lockboxCode' in request.resource.data) || (request.resource.data.lockboxCode is string && request.resource.data.lockboxCode.size() <= 50)) &&
+        (!('lockboxLocation' in request.resource.data) || (request.resource.data.lockboxLocation is string && request.resource.data.lockboxLocation.size() <= 200)) &&
+        (!('city' in request.resource.data) || (request.resource.data.city is string && request.resource.data.city.size() <= 100)) &&
+        (!('state' in request.resource.data) || (request.resource.data.state is string && request.resource.data.state.size() <= 100)) &&
+        (!('checkInTime' in request.resource.data) || (request.resource.data.checkInTime is string && request.resource.data.checkInTime.size() <= 50)) &&
+        (!('checkOutTime' in request.resource.data) || (request.resource.data.checkOutTime is string && request.resource.data.checkOutTime.size() <= 50));
+
+      allow delete: if request.auth != null &&
         resource.data.ownerId == request.auth.uid;
     }
 
@@ -35,6 +73,29 @@ service cloud.firestore {
       // Update/Delete: user must own the property
       allow update, delete: if request.auth != null &&
         ownsProperty(resource.data.propertyId);
+    }
+
+    // Rate limit collection - server-side only, no client access
+    match /guestbot_rate_limits/{docId} {
+      allow read, write: if false;
+    }
+
+    // Session tokens - server-side only
+    match /guestbot_sessions/{sessionId} {
+      allow read, write: if false;
+    }
+
+    // Feedback collection - server-side only (written via Cloud Function)
+    // Property owners can read feedback for their properties
+    match /guestbot_feedback/{feedbackId} {
+      allow read: if request.auth != null &&
+        ownsProperty(resource.data.propertyId);
+      allow write: if false;
+    }
+
+    // Deny all access to any other collection
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

@@ -8,12 +8,14 @@ on:
   workflow_dispatch:
 
 env:
-  NODE_VERSION: '20'
+  NODE_VERSION: '22'
 
 jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,6 +40,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -68,7 +72,7 @@ jobs:
 
       - name: Deploy Functions
         run: |
-          npm install -g firebase-tools
+          npm install -g firebase-tools@13
           firebase deploy --only functions --project guestbot-7029e
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

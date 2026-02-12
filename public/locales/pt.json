@@ -1,33 +1,27 @@
 {
   "meta.title": "GuestBot — Concierge IA para Aluguel por Temporada | Reduza Perguntas de Hóspedes em 80%",
   "meta.description": "GuestBot é o concierge IA nº 1 para hóspedes de Airbnb, VRBO e aluguéis por temporada. QR codes permitem que hóspedes recebam respostas instantâneas 24/7. Configure em 5 minutos. Apenas $4.99/mês.",
-
   "nav.features": "Funcionalidades",
   "nav.how_it_works": "Como Funciona",
   "nav.pricing": "Preços",
   "nav.faq": "Perguntas Frequentes",
   "nav.get_started": "Comece Agora",
   "nav.toggle_menu": "Alternar menu",
-
   "hero.title_line1": "Concierge IA para",
   "hero.title_line2": "Aluguel por Temporada",
   "hero.subtitle": "Reduza as perguntas dos hóspedes em 80%. Coloque QR codes pela sua propriedade — os hóspedes escaneiam e recebem respostas instantâneas com IA. Nenhum download de aplicativo necessário.",
   "hero.cta_primary": "Comece o Teste Grátis",
   "hero.cta_secondary": "Veja Como Funciona",
-
   "hero.mockup_title": "GuestBot",
   "hero.mockup_bot1": "Olá! Sou seu concierge IA. Pergunte-me qualquer coisa sobre sua estadia.",
   "hero.mockup_user1": "Qual é a senha do WiFi?",
   "hero.mockup_bot2": "O WiFi é \"BeachHouse_5G\" e a senha é \"sunset2024\"",
   "hero.mockup_user2": "Algum bom restaurante por perto?",
   "hero.mockup_bot3": "Recomendo o Ocean Grill (5 min a pé) para frutos do mar ou o Café Luna para brunch!",
-
   "stats.fewer_messages": "Menos Mensagens de Hóspedes",
   "stats.instant_responses": "Respostas Instantâneas",
   "stats.setup_time": "Tempo de Configuração",
-
   "social_proof.label": "Confiado por anfitriões no",
-
   "testimonials.tag": "Depoimentos",
   "testimonials.title": "Amado por Anfitriões em Todo Lugar",
   "testimonials.subtitle": "Veja por que administradores de propriedades estão migrando para o GuestBot para a comunicação com hóspedes.",
@@ -40,7 +34,6 @@
   "testimonials.review3": "\"A ideia do QR code é genial. Coloquei um perto da TV, um na cozinha, um perto do termostato. Os hóspedes simplesmente escaneiam e recebem exatamente a ajuda que precisam para aquele item específico.\"",
   "testimonials.author3": "Emily Watson",
   "testimonials.role3": "5 propriedades em Denver",
-
   "features.tag": "Funcionalidades",
   "features.title": "Tudo que Seus Hóspedes Precisam",
   "features.subtitle": "O GuestBot fornece respostas instantâneas para perguntas comuns, recomendações locais e informações específicas da propriedade — tudo com tecnologia de IA.",
@@ -58,7 +51,6 @@
   "features.verify_link": "Saiba mais sobre segurança →",
   "features.noapp_title": "Sem Necessidade de Aplicativo",
   "features.noapp_desc": "Funciona instantaneamente em qualquer navegador móvel. Hóspedes escaneiam e conversam — sem downloads ou cadastros necessários.",
-
   "preview.tag": "Veja em Ação",
   "preview.title": "Painel Simples, Experiência Encantadora para o Hóspede",
   "preview.subtitle": "Uma interface limpa para você gerenciar propriedades e uma experiência de chat instantâneo para seus hóspedes.",
@@ -75,7 +67,6 @@
   "preview.guest_user2": "Que horas é o checkout?",
   "preview.guest_bot3": "O checkout é às 11:00. Por favor, deixe as chaves no balcão da cozinha. Boa viagem! 🌴",
   "preview.guest_input_placeholder": "Digite sua pergunta...",
-
   "how.tag": "Como Funciona",
   "how.title": "Simples para Você, Perfeito para os Hóspedes",
   "how.subtitle": "Configure uma vez, ajude hóspedes para sempre. Três passos fáceis para transformar a experiência dos seus hóspedes.",
@@ -85,7 +76,6 @@
   "how.step2_desc": "Gere QR codes específicos para cada contexto e coloque-os pela sua propriedade — cozinha, TV, banheiro, etc.",
   "how.step3_title": "Hóspedes Recebem Respostas",
   "how.step3_desc": "Hóspedes escaneiam, verificam sua reserva e conversam com a IA para ajuda instantânea. Você relaxa.",
-
   "integrations.tag": "Integrações",
   "integrations.title": "Sincroniza com Suas Plataformas de Reserva",
   "integrations.subtitle": "Importe automaticamente as reservas dos hóspedes das plataformas que você já usa.",
@@ -94,7 +84,6 @@
   "integrations.booking": "Booking.com",
   "integrations.ical": "Qualquer Feed iCal",
   "integrations.note": "<strong>Segurança em Primeiro Lugar:</strong> Sincronizamos apenas datas de reserva e nomes de hóspedes através de feeds iCal somente leitura. O GuestBot nunca tem acesso às suas contas de plataforma, senhas ou informações de pagamento. As credenciais da sua propriedade ficam seguras no seu painel do GuestBot.",
-
   "usecases.tag": "Locais para QR Codes",
   "usecases.title": "QR Codes em Todo Lugar",
   "usecases.subtitle": "Cada local recebe seu próprio QR code com respostas contextuais.",
@@ -104,7 +93,6 @@
   "usecases.thermostat": "Termostato",
   "usecases.bathroom": "Banheiro",
   "usecases.pool": "Piscina",
-
   "benefits.tag": "Benefícios",
   "benefits.title": "Por que Anfitriões Amam o GuestBot",
   "benefits.subtitle": "Pare de responder as mesmas perguntas repetidamente. Deixe a IA cuidar disso enquanto você foca em expandir seu negócio.",
@@ -116,7 +104,6 @@
   "benefits.scale_desc": "Gerencie mais propriedades sem aumentar proporcionalmente sua carga de trabalho.",
   "benefits.pro_title": "Toque Profissional",
   "benefits.pro_desc": "O concierge IA faz sua propriedade parecer uma experiência de hotel premium.",
-
   "comparison.tag": "A Diferença",
   "comparison.title": "Antes e Depois do GuestBot",
   "comparison.subtitle": "Veja como o GuestBot transforma sua experiência diária como anfitrião.",
@@ -134,7 +121,6 @@
   "comparison.after_4": "Durma a noite toda enquanto a IA atende os hóspedes",
   "comparison.after_5": "Ajuda interativa que os hóspedes realmente usam",
   "comparison.after_6": "Melhores avaliações com uma experiência aprimorada para o hóspede",
-
   "security.tag": "Confiança e Segurança",
   "security.title": "Seus Dados Estão Protegidos",
   "security.subtitle": "Levamos a privacidade a sério. O GuestBot é construído com segurança de nível empresarial e total conformidade com regulamentações de proteção de dados.",
@@ -146,7 +132,6 @@
   "security.verify_desc": "Apenas hóspedes verificados com reservas ativas podem acessar informações da propriedade.",
   "security.retention_title": "Retenção de Dados",
   "security.retention_desc": "Dados de chat dos hóspedes são excluídos automaticamente após o checkout.",
-
   "roi.tag": "Economia",
   "roi.title": "Calcule Sua Economia",
   "roi.subtitle": "Veja quanto tempo e dinheiro o GuestBot economiza para você a cada mês.",
@@ -156,7 +141,6 @@
   "roi.return_label": "ROI por apenas $4.99/mês",
   "roi.hrs": "hrs",
   "roi.return_suffix": "de retorno",
-
   "pricing.tag": "Preços",
   "pricing.title": "Um Preço Simples. Tudo Incluído.",
   "pricing.subtitle": "Sem planos, sem confusão. Tenha todas as funcionalidades por menos que um café.",
@@ -178,7 +162,6 @@
   "pricing.f_verify": "Verificação de hóspede",
   "pricing.f_sync": "Sincronização Airbnb e VRBO",
   "pricing.f_support": "Suporte prioritário",
-
   "contact.tag": "Contato",
   "contact.title": "Entre em Contato",
   "contact.subtitle": "Tem perguntas? Adoraríamos ouvir você. Envie-nos uma mensagem e responderemos o mais rápido possível.",
@@ -198,7 +181,6 @@
   "contact.submit": "Enviar Mensagem",
   "contact.success_title": "Mensagem Enviada!",
   "contact.success_desc": "Obrigado pelo contato. Retornaremos em até 24 horas.",
-
   "faq.tag": "Perguntas Frequentes",
   "faq.title": "Perguntas Frequentes",
   "faq.subtitle": "Tudo que você precisa saber sobre o GuestBot.",
@@ -216,11 +198,9 @@
   "faq.a6": "Sim! Você controla todas as informações no perfil da sua propriedade — regras da casa, instruções de check-in, recomendações locais, guias de eletrodomésticos e muito mais. A IA usa exatamente o que você fornece para dar respostas personalizadas e precisas. <a href=\"#features\">Explore todas as funcionalidades →</a>",
   "faq.q7": "Quantas propriedades posso adicionar?",
   "faq.a7": "Ilimitadas. Seja com 1 propriedade ou 100, o preço é o mesmo — $4.99/mês. Cada propriedade recebe seu próprio conjunto de QR codes e respostas de IA personalizadas. <a href=\"#pricing\">Veja os detalhes de preços →</a>",
-
   "cta.title": "Pronto para Transformar a Experiência dos Seus Hóspedes?",
   "cta.subtitle": "Junte-se a centenas de anfitriões que reduziram sua carga de trabalho com o GuestBot.",
   "cta.button": "Comece Grátis",
-
   "footer.desc": "Concierge IA para hóspedes de aluguel por temporada. Reduza perguntas de hóspedes, melhore avaliações e escale seu negócio.",
   "footer.product": "Produto",
   "footer.product_features": "Funcionalidades",
@@ -244,7 +224,6 @@
   "footer.bottom_terms": "Termos",
   "footer.bottom_cookies": "Configurações de Cookies",
   "footer.bottom_donotsell": "Não Vender",
-
   "chat.meta_title": "GuestBot — Assistente do Hóspede",
   "chat.meta_description": "Receba respostas instantâneas sobre seu aluguel por temporada. Pergunte sobre WiFi, check-in, comodidades, recomendações locais e muito mais.",
   "chat.header_title": "GuestBot",
@@ -286,5 +265,32 @@
   "chat.feedback_positive": "✅ Obrigado!",
   "chat.feedback_negative": "📝 Obrigado pelo feedback",
   "chat.feedback_helpful": "Útil",
-  "chat.feedback_not_helpful": "Não útil"
+  "chat.feedback_not_helpful": "Não útil",
+  "stats.languages": "Languages Supported",
+  "features.multilang_title": "8 Languages Built-In",
+  "features.multilang_desc": "AI automatically detects guest language and responds in English, Spanish, French, German, Portuguese, Italian, Japanese, or Chinese.",
+  "features.verified_title": "Verified Responses",
+  "features.verified_desc": "Every AI response is validated against your actual property data. No hallucinated codes or made-up information.",
+  "features.streaming_title": "Real-Time Streaming",
+  "features.streaming_desc": "Responses stream in real-time for a natural, conversational feel. No waiting for the full answer to load.",
+  "features.feedback_title": "Guest Feedback",
+  "features.feedback_desc": "Guests can rate responses with thumbs up/down. See what questions are asked most to improve your property info.",
+  "features.smart_title": "Smart Context Switching",
+  "features.smart_desc": "AI detects when guests ask about a different area and automatically adjusts. Ask about the TV from the kitchen QR — it just works.",
+  "usecases.checkout": "Checkout",
+  "security.brute_title": "Brute Force Protection",
+  "security.brute_desc": "Automatic lockout after failed verification attempts. Your property codes stay safe.",
+  "security.codes_title": "Smart Code Sharing",
+  "security.codes_desc": "WiFi and door codes only shared when contextually relevant — not dumped all at once.",
+  "security.ai_title": "AI Safety Filters",
+  "security.ai_desc": "Multi-layer protection against prompt injection and jailbreak attempts.",
+  "security.rate_title": "Rate Limiting",
+  "security.rate_desc": "Built-in protection against abuse. Guests get helpful limits, not locked out.",
+  "pricing.f_languages": "8 languages included",
+  "pricing.f_streaming": "Real-time streaming",
+  "pricing.f_feedback": "Guest feedback tracking",
+  "stats.properties": "Unlimited Properties",
+  "stats.rating": "Host Rating",
+  "preview.dashboard_subtitle": "Manage your vacation rentals and generate QR codes",
+  "usecases.garage": "Garage"
 }

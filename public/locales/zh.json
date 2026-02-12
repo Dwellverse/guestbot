@@ -1,33 +1,27 @@
 {
   "meta.title": "GuestBot — 度假租赁AI礼宾服务 | 减少80%客人问题",
   "meta.description": "GuestBot是Airbnb、VRBO及度假租赁排名第一的AI智能礼宾服务。二维码让客人全天候即时获取答案。5分钟完成设置。仅需$4.99/月。",
-
   "nav.features": "功能",
   "nav.how_it_works": "使用方法",
   "nav.pricing": "价格",
   "nav.faq": "常见问题",
   "nav.get_started": "立即开始",
   "nav.toggle_menu": "切换菜单",
-
   "hero.title_line1": "度假租赁的",
   "hero.title_line2": "AI智能礼宾",
   "hero.subtitle": "减少80%的客人咨询。在您的房源各处放置二维码——客人扫码即可获得AI即时解答。无需下载任何应用。",
   "hero.cta_primary": "开始免费试用",
   "hero.cta_secondary": "了解使用方法",
-
   "hero.mockup_title": "GuestBot",
   "hero.mockup_bot1": "您好！我是您的AI礼宾助手。关于您的住宿，随时可以问我任何问题。",
   "hero.mockup_user1": "WiFi密码是什么？",
   "hero.mockup_bot2": "WiFi名称是\"BeachHouse_5G\"，密码是\"sunset2024\"",
   "hero.mockup_user2": "附近有好的餐厅推荐吗？",
   "hero.mockup_bot3": "推荐Ocean Grill（步行5分钟）的海鲜，或者Café Luna的早午餐！",
-
   "stats.fewer_messages": "客人消息减少",
   "stats.instant_responses": "即时回复",
   "stats.setup_time": "设置时间",
-
   "social_proof.label": "受到以下平台房东的信赖",
-
   "testimonials.tag": "用户评价",
   "testimonials.title": "深受各地房东喜爱",
   "testimonials.subtitle": "了解为什么越来越多的房产管理者选择GuestBot来处理客人沟通。",
@@ -40,7 +34,6 @@
   "testimonials.review3": "\"二维码的创意太棒了。我在电视旁放了一个，厨房放了一个，温控器旁放了一个。客人只需扫码就能获得针对该设备的帮助。\"",
   "testimonials.author3": "Emily Watson",
   "testimonials.role3": "丹佛5处房产",
-
   "features.tag": "功能",
   "features.title": "满足客人的一切需求",
   "features.subtitle": "GuestBot为常见问题提供即时解答、本地推荐和房源专属信息——全部由AI驱动。",
@@ -58,7 +51,6 @@
   "features.verify_link": "了解安全机制 →",
   "features.noapp_title": "无需下载应用",
   "features.noapp_desc": "在任何手机浏览器中即可使用。客人扫码即可聊天——无需下载或注册账户。",
-
   "preview.tag": "实际演示",
   "preview.title": "简洁的管理面板，愉悦的客人体验",
   "preview.subtitle": "为您提供简洁的房源管理界面，为客人提供即时聊天体验。",
@@ -75,7 +67,6 @@
   "preview.guest_user2": "退房时间是几点？",
   "preview.guest_bot3": "退房时间是上午11:00。请将钥匙留在厨房台面上。祝您旅途愉快！🌴",
   "preview.guest_input_placeholder": "输入您的问题...",
-
   "how.tag": "使用方法",
   "how.title": "对您简单，对客人无缝",
   "how.subtitle": "一次设置，永久服务客人。三个简单步骤，打造全新的客人体验。",
@@ -85,7 +76,6 @@
   "how.step2_desc": "生成场景专属的二维码，放置在房源各处——厨房、电视、浴室等。",
   "how.step3_title": "客人获取答案",
   "how.step3_desc": "客人扫码、验证预订并与AI聊天获取即时帮助。您尽管放心。",
-
   "integrations.tag": "集成服务",
   "integrations.title": "与您的预订平台同步",
   "integrations.subtitle": "自动从您已在使用的平台导入客人预订信息。",
@@ -94,7 +84,6 @@
   "integrations.booking": "Booking.com",
   "integrations.ical": "任何iCal订阅源",
   "integrations.note": "<strong>安全优先：</strong>我们仅通过只读iCal订阅源同步预订日期和客人姓名。GuestBot绝不会访问您的平台账户、密码或支付信息。您的房源凭证安全地保存在GuestBot管理面板中。",
-
   "usecases.tag": "二维码放置",
   "usecases.title": "二维码无处不在",
   "usecases.subtitle": "每个位置都有专属二维码，提供场景感知的回答。",
@@ -104,7 +93,6 @@
   "usecases.thermostat": "温控器",
   "usecases.bathroom": "浴室",
   "usecases.pool": "泳池",
-
   "benefits.tag": "优势",
   "benefits.title": "房东喜爱GuestBot的理由",
   "benefits.subtitle": "不再反复回答同样的问题。让AI来处理，您专注于拓展业务。",
@@ -116,7 +104,6 @@
   "benefits.scale_desc": "管理更多房产，而不会成比例地增加您的工作量。",
   "benefits.pro_title": "专业体验",
   "benefits.pro_desc": "AI礼宾服务让您的房源拥有高端酒店般的体验。",
-
   "comparison.tag": "对比",
   "comparison.title": "使用GuestBot前后对比",
   "comparison.subtitle": "看看GuestBot如何改变您的日常房东管理体验。",
@@ -134,7 +121,6 @@
   "comparison.after_4": "安心入睡，AI帮您服务客人",
   "comparison.after_5": "客人真正会使用的互动帮助",
   "comparison.after_6": "更好的客人体验带来更好的评价",
-
   "security.tag": "信任与安全",
   "security.title": "您的数据受到保护",
   "security.subtitle": "我们高度重视隐私。GuestBot采用企业级安全措施，完全符合数据保护法规。",
@@ -146,7 +132,6 @@
   "security.verify_desc": "只有经过验证且有有效预订的客人才能访问房源信息。",
   "security.retention_title": "数据保留",
   "security.retention_desc": "客人聊天数据在退房后自动删除。",
-
   "roi.tag": "节省",
   "roi.title": "计算您的节省",
   "roi.subtitle": "看看GuestBot每月为您节省多少时间和金钱。",
@@ -156,7 +141,6 @@
   "roi.return_label": "仅需$4.99/月的投资回报",
   "roi.hrs": "小时",
   "roi.return_suffix": "回报",
-
   "pricing.tag": "价格",
   "pricing.title": "简单统一价格。全部功能包含。",
   "pricing.subtitle": "无等级划分，无困惑。所有功能，比一杯咖啡还便宜。",
@@ -178,7 +162,6 @@
   "pricing.f_verify": "客人身份验证",
   "pricing.f_sync": "Airbnb和VRBO同步",
   "pricing.f_support": "优先支持",
-
   "contact.tag": "联系我们",
   "contact.title": "联系我们",
   "contact.subtitle": "有问题？我们很乐意听取您的意见。给我们留言，我们会尽快回复。",
@@ -198,7 +181,6 @@
   "contact.submit": "发送消息",
   "contact.success_title": "消息已发送！",
   "contact.success_desc": "感谢您的联系。我们将在24小时内回复您。",
-
   "faq.tag": "常见问题",
   "faq.title": "常见问题解答",
   "faq.subtitle": "关于GuestBot您需要了解的一切。",
@@ -216,11 +198,9 @@
   "faq.a6": "当然可以！您控制房源资料中的所有信息——房屋规则、入住指南、本地推荐、电器使用说明等。AI完全基于您提供的内容给出个性化、准确的回答。<a href=\"#features\">探索所有功能 →</a>",
   "faq.q7": "我可以添加多少处房源？",
   "faq.a7": "无限制。无论您有1处还是100处房产，价格都一样——$4.99/月。每处房产都有独立的二维码和定制化的AI回答。<a href=\"#pricing\">查看价格详情 →</a>",
-
   "cta.title": "准备好改变您的客人体验了吗？",
   "cta.subtitle": "加入数百位已经通过GuestBot减轻工作负担的房东。",
   "cta.button": "免费开始使用",
-
   "footer.desc": "AI智能度假租赁礼宾服务。减少客人问题，提升评价，拓展您的业务。",
   "footer.product": "产品",
   "footer.product_features": "功能",
@@ -244,7 +224,6 @@
   "footer.bottom_terms": "条款",
   "footer.bottom_cookies": "Cookie设置",
   "footer.bottom_donotsell": "禁止出售个人信息",
-
   "chat.meta_title": "GuestBot — 客人助手",
   "chat.meta_description": "即时获取度假租赁相关的答案。询问WiFi、入住、设施、本地推荐等。",
   "chat.header_title": "GuestBot",
@@ -286,5 +265,32 @@
   "chat.feedback_positive": "✅ 谢谢！",
   "chat.feedback_negative": "📝 感谢您的反馈",
   "chat.feedback_helpful": "有帮助",
-  "chat.feedback_not_helpful": "没帮助"
+  "chat.feedback_not_helpful": "没帮助",
+  "stats.languages": "Languages Supported",
+  "features.multilang_title": "8 Languages Built-In",
+  "features.multilang_desc": "AI automatically detects guest language and responds in English, Spanish, French, German, Portuguese, Italian, Japanese, or Chinese.",
+  "features.verified_title": "Verified Responses",
+  "features.verified_desc": "Every AI response is validated against your actual property data. No hallucinated codes or made-up information.",
+  "features.streaming_title": "Real-Time Streaming",
+  "features.streaming_desc": "Responses stream in real-time for a natural, conversational feel. No waiting for the full answer to load.",
+  "features.feedback_title": "Guest Feedback",
+  "features.feedback_desc": "Guests can rate responses with thumbs up/down. See what questions are asked most to improve your property info.",
+  "features.smart_title": "Smart Context Switching",
+  "features.smart_desc": "AI detects when guests ask about a different area and automatically adjusts. Ask about the TV from the kitchen QR — it just works.",
+  "usecases.checkout": "Checkout",
+  "security.brute_title": "Brute Force Protection",
+  "security.brute_desc": "Automatic lockout after failed verification attempts. Your property codes stay safe.",
+  "security.codes_title": "Smart Code Sharing",
+  "security.codes_desc": "WiFi and door codes only shared when contextually relevant — not dumped all at once.",
+  "security.ai_title": "AI Safety Filters",
+  "security.ai_desc": "Multi-layer protection against prompt injection and jailbreak attempts.",
+  "security.rate_title": "Rate Limiting",
+  "security.rate_desc": "Built-in protection against abuse. Guests get helpful limits, not locked out.",
+  "pricing.f_languages": "8 languages included",
+  "pricing.f_streaming": "Real-time streaming",
+  "pricing.f_feedback": "Guest feedback tracking",
+  "stats.properties": "Unlimited Properties",
+  "stats.rating": "Host Rating",
+  "preview.dashboard_subtitle": "Manage your vacation rentals and generate QR codes",
+  "usecases.garage": "Garage"
 }

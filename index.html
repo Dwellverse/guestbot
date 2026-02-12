@@ -6,20 +6,13 @@
     <title>GuestBot — AI Concierge for Vacation Rentals | Reduce Guest Questions 80%</title>
 
     <!-- Google Analytics 4 -->
-    <!-- Replace GA_MEASUREMENT_ID with your actual GA4 ID (e.g., G-XXXXXXXXXX) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
+    <!-- TODO: Replace GA_MEASUREMENT_ID with your actual GA4 ID (e.g., G-XXXXXXXXXX) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script> -->
+    <script type="module" src="/js/index.js"></script>
 
     <!-- Google Search Console Verification -->
-    <!-- Replace with your actual verification code -->
-    <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" />
+    <!-- TODO: Replace YOUR_VERIFICATION_CODE with your actual verification code -->
+    <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" /> -->
 
     <!-- Performance: Preload critical resources -->
     <link
@@ -35,10 +28,21 @@
     />
     <meta
       name="keywords"
-      content="vacation rental AI, guest concierge, Airbnb automation, VRBO guest communication, property management software, QR code check-in, short term rental, guest messaging, vacation rental chatbot, AI property assistant"
+      content="vacation rental AI, guest concierge, Airbnb automation, VRBO guest communication, property management software, QR code check-in, short term rental, guest messaging, vacation rental chatbot, AI property assistant, Airbnb host tools, vacation rental guest experience, self check-in vacation rental, Airbnb guest support, VRBO host automation, rental property AI chatbot, guest FAQ automation, Airbnb superhost tools, vacation rental WiFi sharing, smart home vacation rental, contactless check-in, guest communication app, Airbnb message automation, vacation rental customer service, property manager software, Booking.com host tools, holiday rental assistant, short term rental technology, Airbnb iCal sync, vacation rental booking sync"
     />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <link rel="canonical" href="https://guestbot.ai" />
+
+    <!-- Hreflang for International SEO -->
+    <link rel="alternate" hreflang="en" href="https://guestbot.ai" />
+    <link rel="alternate" hreflang="es" href="https://guestbot.ai?lang=es" />
+    <link rel="alternate" hreflang="fr" href="https://guestbot.ai?lang=fr" />
+    <link rel="alternate" hreflang="de" href="https://guestbot.ai?lang=de" />
+    <link rel="alternate" hreflang="pt" href="https://guestbot.ai?lang=pt" />
+    <link rel="alternate" hreflang="it" href="https://guestbot.ai?lang=it" />
+    <link rel="alternate" hreflang="ja" href="https://guestbot.ai?lang=ja" />
+    <link rel="alternate" hreflang="zh" href="https://guestbot.ai?lang=zh" />
+    <link rel="alternate" hreflang="x-default" href="https://guestbot.ai" />
 
     <!-- Additional SEO Meta Tags -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -52,27 +56,42 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="GuestBot" />
-    <meta property="og:title" content="GuestBot — AI Concierge for Vacation Rentals" />
+    <meta property="og:title" content="GuestBot — AI Concierge for Vacation Rentals | Reduce Guest Questions 80%" />
     <meta
       property="og:description"
-      content="The smartest way to handle guest questions. QR codes + AI = happy guests & fewer interruptions. Try free today."
+      content="The #1 AI-powered guest concierge for Airbnb, VRBO & vacation rentals. QR codes let guests get instant answers 24/7. Setup in 5 minutes. Only $4.99/mo. Try free for 14 days."
     />
     <meta property="og:url" content="https://guestbot.ai" />
-    <meta property="og:image" content="https://guestbot-7029e.web.app/og-image.png" />
+    <meta property="og:image" content="https://guestbot.ai/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="GuestBot AI Concierge - QR code scanning and chat interface for vacation rentals"
+    />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="pt_BR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:locale:alternate" content="zh_CN" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@guestbot" />
     <meta name="twitter:creator" content="@guestbot" />
-    <meta name="twitter:title" content="GuestBot — AI Concierge for Vacation Rentals" />
+    <meta name="twitter:title" content="GuestBot — AI Concierge for Vacation Rentals | Reduce Guest Questions 80%" />
     <meta
       name="twitter:description"
-      content="Reduce guest questions by 80%. QR codes + AI gives guests instant answers 24/7."
+      content="The #1 AI concierge for Airbnb & VRBO. QR codes + AI = guests get instant answers 24/7. Setup in 5 min. $4.99/mo. 8 languages. Free trial."
     />
-    <meta name="twitter:image" content="https://guestbot-7029e.web.app/og-image.png" />
+    <meta name="twitter:image" content="https://guestbot.ai/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="GuestBot AI Concierge - QR code scanning and chat interface for vacation rentals"
+    />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -261,6 +280,39 @@
             }
           }
         ]
+      }
+    </script>
+    <!-- WebSite Schema for Sitelinks Searchbox -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "GuestBot",
+        "alternateName": ["GuestBot AI", "GuestBot Concierge"],
+        "url": "https://guestbot.ai",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://guestbot.ai/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        },
+        "inLanguage": ["en", "es", "fr", "de", "pt", "it", "ja", "zh"]
+      }
+    </script>
+    <!-- VideoObject Schema for Demo -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "GuestBot Demo - AI Concierge for Vacation Rentals",
+        "description": "See how GuestBot helps vacation rental hosts reduce guest questions by 80% with AI-powered QR codes.",
+        "thumbnailUrl": "https://guestbot.ai/og-image.png",
+        "uploadDate": "2026-01-15",
+        "contentUrl": "https://guestbot.ai/demo",
+        "embedUrl": "https://guestbot.ai/demo",
+        "duration": "PT2M30S"
       }
     </script>
 
@@ -809,7 +861,7 @@
 
       .cases-grid {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 16px;
       }
 
@@ -1309,8 +1361,33 @@
 
       /* MOBILE */
       @media (max-width: 900px) {
+        .nav-hamburger {
+          display: flex;
+        }
+
         .nav-links {
           display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: rgba(0, 0, 0, 0.95);
+          backdrop-filter: blur(10px);
+          border-bottom: 1px solid var(--dark-3);
+          padding: 16px 24px;
+          gap: 8px;
+        }
+
+        .nav-links.open {
+          display: flex;
+        }
+
+        .nav-links .nav-link,
+        .nav-links .nav-cta {
+          padding: 12px 0;
+          width: 100%;
+          text-align: center;
         }
 
         .hero-text {
@@ -1336,7 +1413,7 @@
         }
 
         .cases-grid {
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
         }
 
         .benefits-content {
@@ -1912,9 +1989,20 @@
         margin-bottom: 24px;
       }
 
+      .dashboard-preview-title-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
       .dashboard-preview-title {
         font-size: 18px;
         font-weight: 600;
+      }
+
+      .dashboard-preview-subtitle {
+        font-size: 12px;
+        color: var(--gray-400);
       }
 
       .dashboard-preview-user {
@@ -2134,6 +2222,329 @@
         color: var(--gray-400);
         font-size: 14px;
       }
+
+      /* SOCIAL PROOF BAR */
+      .social-proof {
+        padding: 32px 24px;
+        border-top: 1px solid var(--dark-3);
+        border-bottom: 1px solid var(--dark-3);
+        background: var(--dark);
+      }
+
+      .social-proof-inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .social-proof-label {
+        font-size: 13px;
+        color: var(--gray-500);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .social-proof-logos {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .social-proof-logo {
+        padding: 6px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gray-400);
+        border: 1px solid var(--dark-4);
+        border-radius: 6px;
+        background: var(--dark-2);
+        white-space: nowrap;
+      }
+
+      /* ROI CALCULATOR */
+      .roi-calculator {
+        padding: 100px 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .roi-calculator .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .roi-calculator-header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .roi-slider-container {
+        margin-bottom: 48px;
+      }
+
+      .roi-slider-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 16px;
+        font-size: 16px;
+        color: var(--gray-300);
+      }
+
+      .roi-slider-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .roi-input {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background: var(--dark-3);
+        outline: none;
+        cursor: pointer;
+      }
+
+      .roi-input::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--accent);
+        cursor: pointer;
+        border: 3px solid var(--dark);
+        box-shadow: 0 0 0 3px var(--accent);
+      }
+
+      .roi-input::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--accent);
+        cursor: pointer;
+        border: 3px solid var(--dark);
+        box-shadow: 0 0 0 3px var(--accent);
+      }
+
+      .roi-results {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .roi-card {
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 16px;
+        padding: 32px 24px;
+        text-align: center;
+      }
+
+      .roi-card-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+      }
+
+      .roi-value {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 4px;
+      }
+
+      .roi-label {
+        font-size: 14px;
+        color: var(--gray-400);
+      }
+
+      @media (max-width: 600px) {
+        .roi-results {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* HAMBURGER MENU */
+      .nav-hamburger {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        z-index: 101;
+      }
+
+      .nav-hamburger span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--white);
+        border-radius: 2px;
+        transition: all 0.3s;
+      }
+
+      .nav-hamburger.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .nav-hamburger.open span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .nav-hamburger.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+
+      /* PRICING TOGGLE */
+      .pricing-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 32px;
+      }
+
+      .pricing-toggle-option {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--gray-500);
+        transition: color 0.3s;
+        cursor: pointer;
+      }
+
+      .pricing-toggle-option.active {
+        color: var(--white);
+      }
+
+      .pricing-toggle-switch {
+        position: relative;
+        width: 52px;
+        height: 28px;
+        background: var(--gray-500);
+        border-radius: 14px;
+        cursor: pointer;
+        border: none;
+        transition: background 0.3s;
+      }
+
+      .pricing-toggle-switch::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--white);
+        transition: transform 0.3s;
+      }
+
+      .pricing-toggle-switch.annual::after {
+        transform: translateX(24px);
+      }
+
+      .pricing-toggle-switch.annual {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .pricing-save-badge {
+        display: none;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--accent);
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        padding: 4px 10px;
+        border-radius: 20px;
+      }
+
+      .pricing-save-badge.show {
+        display: inline-block;
+      }
+
+      /* I18N: Anti-FOUC */
+      body {
+        opacity: 0;
+        transition: opacity 0.15s;
+      }
+      body.i18n-ready {
+        opacity: 1;
+      }
+
+      /* LANGUAGE SWITCHER */
+      .lang-switcher {
+        position: relative;
+      }
+      .lang-toggle {
+        background: none;
+        border: 1px solid var(--dark-3);
+        border-radius: 8px;
+        padding: 8px 12px;
+        color: var(--gray-400);
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+        font-family: inherit;
+      }
+      .lang-toggle:hover {
+        border-color: var(--accent);
+        color: var(--white);
+      }
+      .lang-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 12px;
+        padding: 8px;
+        min-width: 160px;
+        z-index: 200;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+      }
+      .lang-switcher.open .lang-dropdown {
+        display: block;
+      }
+      .lang-option {
+        display: block;
+        width: 100%;
+        padding: 8px 12px;
+        background: none;
+        border: none;
+        color: var(--gray-400);
+        font-size: 13px;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: all 0.15s;
+        font-family: inherit;
+      }
+      .lang-option:hover {
+        background: var(--dark-3);
+        color: var(--white);
+      }
+      .lang-option.active {
+        color: var(--accent);
+      }
     </style>
   </head>
   <body>
@@ -2150,12 +2561,30 @@
         <span class="nav-brand-icon">🤖</span>
         GuestBot
       </a>
+      <button class="nav-hamburger" aria-label="Toggle menu" data-i18n-aria="nav.toggle_menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <div class="nav-links">
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#how-it-works" class="nav-link">How It Works</a>
-        <a href="#pricing" class="nav-link">Pricing</a>
-        <a href="#faq" class="nav-link">FAQ</a>
-        <a href="/app" class="nav-cta">Get Started</a>
+        <a href="#features" class="nav-link" data-i18n="nav.features">Features</a>
+        <a href="#how-it-works" class="nav-link" data-i18n="nav.how_it_works">How It Works</a>
+        <a href="#pricing" class="nav-link" data-i18n="nav.pricing">Pricing</a>
+        <a href="#faq" class="nav-link" data-i18n="nav.faq">FAQ</a>
+        <div class="lang-switcher">
+          <button class="lang-toggle" aria-label="Change language">🌐 EN</button>
+          <div class="lang-dropdown">
+            <button class="lang-option" data-lang="en">English</button>
+            <button class="lang-option" data-lang="es">Español</button>
+            <button class="lang-option" data-lang="fr">Français</button>
+            <button class="lang-option" data-lang="de">Deutsch</button>
+            <button class="lang-option" data-lang="pt">Português</button>
+            <button class="lang-option" data-lang="it">Italiano</button>
+            <button class="lang-option" data-lang="ja">日本語</button>
+            <button class="lang-option" data-lang="zh">中文</button>
+          </div>
+        </div>
+        <a href="/app" class="nav-cta" data-i18n="nav.get_started">Get Started</a>
       </div>
     </nav>
 
@@ -2163,14 +2592,20 @@
     <section class="hero">
       <div class="hero-content">
         <div class="hero-text">
-          <h1 class="hero-title">AI Concierge for<br /><span class="accent">Vacation Rentals</span></h1>
-          <p class="hero-subtitle">
+          <h1 class="hero-title">
+            <span data-i18n="hero.title_line1">AI Concierge for</span><br /><span
+              class="accent"
+              data-i18n="hero.title_line2"
+              >Vacation Rentals</span
+            >
+          </h1>
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
             Reduce guest questions by 80%. Place QR codes around your property — guests scan and get instant AI-powered
             answers. No app download required.
           </p>
           <div class="hero-buttons">
-            <a href="/app" class="btn btn-primary">Start Free Trial</a>
-            <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
+            <a href="/app" class="btn btn-primary" data-i18n="hero.cta_primary">Start Free Trial</a>
+            <a href="#how-it-works" class="btn btn-secondary" data-i18n="hero.cta_secondary">See How It Works</a>
           </div>
         </div>
         <div class="hero-visual">
@@ -2178,14 +2613,18 @@
             <div class="mockup-screen">
               <div class="mockup-header">
                 <span class="mockup-header-icon">🤖</span>
-                <span class="mockup-header-title">GuestBot</span>
+                <span class="mockup-header-title" data-i18n="hero.mockup_title">GuestBot</span>
               </div>
               <div class="mockup-chat">
-                <div class="mockup-msg bot">Hi! I'm your AI concierge. Ask me anything about your stay.</div>
-                <div class="mockup-msg user">What's the WiFi password?</div>
-                <div class="mockup-msg bot">The WiFi is "BeachHouse_5G" and the password is "sunset2024"</div>
-                <div class="mockup-msg user">Any good restaurants nearby?</div>
-                <div class="mockup-msg bot">
+                <div class="mockup-msg bot" data-i18n="hero.mockup_bot1">
+                  Hi! I'm your AI concierge. Ask me anything about your stay.
+                </div>
+                <div class="mockup-msg user" data-i18n="hero.mockup_user1">What's the WiFi password?</div>
+                <div class="mockup-msg bot" data-i18n="hero.mockup_bot2">
+                  The WiFi is "BeachHouse_5G" and the password is "sunset2024"
+                </div>
+                <div class="mockup-msg user" data-i18n="hero.mockup_user2">Any good restaurants nearby?</div>
+                <div class="mockup-msg bot" data-i18n="hero.mockup_bot3">
                   I recommend Ocean Grill (5 min walk) for seafood or Café Luna for brunch!
                 </div>
               </div>
@@ -2200,15 +2639,41 @@
       <div class="stats-grid">
         <div class="stat">
           <div class="stat-value">80%</div>
-          <div class="stat-label">Fewer Guest Messages</div>
+          <div class="stat-label" data-i18n="stats.fewer_messages">Fewer Guest Messages</div>
         </div>
         <div class="stat">
           <div class="stat-value">24/7</div>
-          <div class="stat-label">Instant Responses</div>
+          <div class="stat-label" data-i18n="stats.instant_responses">Instant Responses</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">8</div>
+          <div class="stat-label" data-i18n="stats.languages">Languages Supported</div>
         </div>
         <div class="stat">
           <div class="stat-value">5 min</div>
-          <div class="stat-label">Setup Time</div>
+          <div class="stat-label" data-i18n="stats.setup_time">Setup Time</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">∞</div>
+          <div class="stat-label" data-i18n="stats.properties">Unlimited Properties</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">4.9★</div>
+          <div class="stat-label" data-i18n="stats.rating">Host Rating</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOCIAL PROOF -->
+    <section class="social-proof">
+      <div class="social-proof-inner">
+        <span class="social-proof-label" data-i18n="social_proof.label">Trusted by hosts on</span>
+        <div class="social-proof-logos">
+          <span class="social-proof-logo">Airbnb</span>
+          <span class="social-proof-logo">VRBO</span>
+          <span class="social-proof-logo">Booking.com</span>
+          <span class="social-proof-logo">Houfy</span>
+          <span class="social-proof-logo">Direct Bookings</span>
         </div>
       </div>
     </section>
@@ -2217,52 +2682,52 @@
     <section class="testimonials" id="testimonials">
       <div class="container">
         <div class="testimonials-header">
-          <span class="section-tag">Testimonials</span>
-          <h2 class="section-title">Loved by Hosts Everywhere</h2>
-          <p class="section-subtitle">
+          <span class="section-tag" data-i18n="testimonials.tag">Testimonials</span>
+          <h2 class="section-title" data-i18n="testimonials.title">Loved by Hosts Everywhere</h2>
+          <p class="section-subtitle" data-i18n="testimonials.subtitle">
             See why property managers are switching to GuestBot for their guest communication.
           </p>
         </div>
         <div class="testimonials-grid">
           <div class="testimonial-card">
             <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">
+            <p class="testimonial-text" data-i18n="testimonials.review1">
               "I used to get 15+ messages a day asking about WiFi, check-out times, and parking. Now I maybe get 2-3
               that actually need my attention. GuestBot handles everything else perfectly."
             </p>
             <div class="testimonial-author">
               <div class="testimonial-avatar">SM</div>
               <div class="testimonial-info">
-                <div class="testimonial-name">Sarah Mitchell</div>
-                <div class="testimonial-role">12 properties in Miami</div>
+                <div class="testimonial-name" data-i18n="testimonials.author1">Sarah Mitchell</div>
+                <div class="testimonial-role" data-i18n="testimonials.role1">12 properties in Miami</div>
               </div>
             </div>
           </div>
           <div class="testimonial-card">
             <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">
+            <p class="testimonial-text" data-i18n="testimonials.review2">
               "My guests love that they can get instant answers at 2am without waiting for me to wake up. My reviews
               have noticeably improved since I started using GuestBot."
             </p>
             <div class="testimonial-author">
               <div class="testimonial-avatar">JR</div>
               <div class="testimonial-info">
-                <div class="testimonial-name">James Rodriguez</div>
-                <div class="testimonial-role">8 properties in Austin</div>
+                <div class="testimonial-name" data-i18n="testimonials.author2">James Rodriguez</div>
+                <div class="testimonial-role" data-i18n="testimonials.role2">8 properties in Austin</div>
               </div>
             </div>
           </div>
           <div class="testimonial-card">
             <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">
+            <p class="testimonial-text" data-i18n="testimonials.review3">
               "The QR code idea is genius. I put one by the TV, one in the kitchen, one by the thermostat. Guests just
               scan and get exactly the help they need for that specific thing."
             </p>
             <div class="testimonial-author">
               <div class="testimonial-avatar">EW</div>
               <div class="testimonial-info">
-                <div class="testimonial-name">Emily Watson</div>
-                <div class="testimonial-role">5 properties in Denver</div>
+                <div class="testimonial-name" data-i18n="testimonials.author3">Emily Watson</div>
+                <div class="testimonial-role" data-i18n="testimonials.role3">5 properties in Denver</div>
               </div>
             </div>
           </div>
@@ -2274,9 +2739,9 @@
     <section class="features" id="features">
       <div class="container">
         <div class="features-header">
-          <span class="section-tag">Features</span>
-          <h2 class="section-title">Everything Your Guests Need</h2>
-          <p class="section-subtitle">
+          <span class="section-tag" data-i18n="features.tag">Features</span>
+          <h2 class="section-title" data-i18n="features.title">Everything Your Guests Need</h2>
+          <p class="section-subtitle" data-i18n="features.subtitle">
             GuestBot provides instant answers to common questions, local recommendations, and property-specific
             information — all powered by AI.
           </p>
@@ -2284,47 +2749,90 @@
         <div class="features-grid">
           <div class="feature-card">
             <div class="feature-icon">📱</div>
-            <h3 class="feature-title">Context-Aware QR Codes</h3>
-            <p class="feature-desc">
+            <h3 class="feature-title" data-i18n="features.qr_title">Context-Aware QR Codes</h3>
+            <p class="feature-desc" data-i18n="features.qr_desc">
               Place different QR codes around your property. Kitchen, TV, thermostat — each provides context-specific
               help.
             </p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">🤖</div>
-            <h3 class="feature-title">AI-Powered Answers</h3>
-            <p class="feature-desc">
+            <h3 class="feature-title" data-i18n="features.ai_title">AI-Powered Answers</h3>
+            <p class="feature-desc" data-i18n="features.ai_desc">
               Powered by advanced AI that understands natural language and provides friendly, accurate responses.
             </p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">📍</div>
-            <h3 class="feature-title">Local Recommendations</h3>
-            <p class="feature-desc">
+            <h3 class="feature-title" data-i18n="features.local_title">Local Recommendations</h3>
+            <p class="feature-desc" data-i18n="features.local_desc">
               Guests can ask about restaurants, parks, activities, and attractions — AI knows the local area.
             </p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">📅</div>
-            <h3 class="feature-title">iCal Calendar Sync</h3>
+            <h3 class="feature-title" data-i18n="features.ical_title">iCal Calendar Sync</h3>
             <p class="feature-desc">
-              Sync bookings automatically from Airbnb, VRBO, and Booking.com. No manual entry needed.
-              <a href="#integrations" class="feature-link">View integrations →</a>
+              <span data-i18n="features.ical_desc"
+                >Sync bookings automatically from Airbnb, VRBO, and Booking.com. No manual entry needed.</span
+              >
+              <a href="#integrations" class="feature-link" data-i18n="features.ical_link">View integrations →</a>
             </p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">🔐</div>
-            <h3 class="feature-title">Guest Verification</h3>
+            <h3 class="feature-title" data-i18n="features.verify_title">Guest Verification</h3>
             <p class="feature-desc">
-              Guests verify their stay with their phone number. Only active guests can access property info.
-              <a href="#security" class="feature-link">Learn about security →</a>
+              <span data-i18n="features.verify_desc"
+                >Guests verify their stay with their phone number. Only active guests can access property info.</span
+              >
+              <a href="#security" class="feature-link" data-i18n="features.verify_link">Learn about security →</a>
             </p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">⚡</div>
-            <h3 class="feature-title">No App Required</h3>
-            <p class="feature-desc">
+            <h3 class="feature-title" data-i18n="features.noapp_title">No App Required</h3>
+            <p class="feature-desc" data-i18n="features.noapp_desc">
               Works instantly in any mobile browser. Guests scan and chat — no downloads or accounts needed.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3 class="feature-title" data-i18n="features.multilang_title">8 Languages Built-In</h3>
+            <p class="feature-desc" data-i18n="features.multilang_desc">
+              AI automatically detects guest language and responds in English, Spanish, French, German, Portuguese,
+              Italian, Japanese, or Chinese.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✅</div>
+            <h3 class="feature-title" data-i18n="features.verified_title">Verified Responses</h3>
+            <p class="feature-desc" data-i18n="features.verified_desc">
+              Every AI response is validated against your actual property data. No hallucinated codes or made-up
+              information.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3 class="feature-title" data-i18n="features.streaming_title">Real-Time Streaming</h3>
+            <p class="feature-desc" data-i18n="features.streaming_desc">
+              Responses stream in real-time for a natural, conversational feel. No waiting for the full answer to load.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3 class="feature-title" data-i18n="features.feedback_title">Guest Feedback</h3>
+            <p class="feature-desc" data-i18n="features.feedback_desc">
+              Guests can rate responses with thumbs up/down. See what questions are asked most to improve your property
+              info.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3 class="feature-title" data-i18n="features.smart_title">Smart Context Switching</h3>
+            <p class="feature-desc" data-i18n="features.smart_desc">
+              AI detects when guests ask about a different area and automatically adjusts. Ask about the TV from the
+              kitchen QR — it just works.
             </p>
           </div>
         </div>
@@ -2335,16 +2843,18 @@
     <section class="app-preview" id="app-preview">
       <div class="container">
         <div class="app-preview-header">
-          <span class="section-tag">See It In Action</span>
-          <h2 class="section-title">Simple Dashboard, Delightful Guest Experience</h2>
-          <p class="section-subtitle">
+          <span class="section-tag" data-i18n="preview.tag">See It In Action</span>
+          <h2 class="section-title" data-i18n="preview.title">Simple Dashboard, Delightful Guest Experience</h2>
+          <p class="section-subtitle" data-i18n="preview.subtitle">
             A clean interface for you to manage properties, and an instant chat experience for your guests.
           </p>
         </div>
 
         <div class="preview-tabs">
-          <button class="preview-tab active" data-preview="dashboard">Host Dashboard</button>
-          <button class="preview-tab" data-preview="guest">Guest Chat</button>
+          <button class="preview-tab active" data-preview="dashboard" data-i18n="preview.tab_dashboard">
+            Host Dashboard
+          </button>
+          <button class="preview-tab" data-preview="guest" data-i18n="preview.tab_guest">Guest Chat</button>
         </div>
 
         <div class="preview-content active" data-preview="dashboard">
@@ -2354,7 +2864,12 @@
                 <div class="preview-device-screen">
                   <div class="dashboard-preview">
                     <div class="dashboard-preview-header">
-                      <div class="dashboard-preview-title">Your Properties</div>
+                      <div class="dashboard-preview-title-group">
+                        <div class="dashboard-preview-title" data-i18n="preview.dashboard_title">Your Properties</div>
+                        <div class="dashboard-preview-subtitle" data-i18n="preview.dashboard_subtitle">
+                          Manage your vacation rentals and generate QR codes
+                        </div>
+                      </div>
                       <div class="dashboard-preview-user"><span>👤</span> host@example.com</div>
                     </div>
                     <div class="dashboard-property-list">
@@ -2395,7 +2910,9 @@
                   </div>
                 </div>
               </div>
-              <div class="preview-device-label">Manage all your properties in one place</div>
+              <div class="preview-device-label" data-i18n="preview.dashboard_label">
+                Manage all your properties in one place
+              </div>
             </div>
           </div>
         </div>
@@ -2409,32 +2926,39 @@
                     <div class="chat-preview-header">
                       <div class="chat-preview-avatar">🤖</div>
                       <div class="chat-preview-info">
-                        <h4>GuestBot</h4>
-                        <span>● Online</span>
+                        <h4 data-i18n="preview.guest_bot_name">GuestBot</h4>
+                        <span data-i18n="preview.guest_online">● Online</span>
                       </div>
                     </div>
                     <div class="chat-preview-messages">
-                      <div class="chat-msg bot">
+                      <div class="chat-msg bot" data-i18n="preview.guest_bot1">
                         Welcome to Beach House Retreat! 🏖️ I'm your AI assistant. How can I help you today?
                       </div>
-                      <div class="chat-msg user">How do I connect to the WiFi?</div>
-                      <div class="chat-msg bot">
+                      <div class="chat-msg user" data-i18n="preview.guest_user1">How do I connect to the WiFi?</div>
+                      <div class="chat-msg bot" data-i18n="preview.guest_bot2">
                         The WiFi network is "BeachHouse_5G" and the password is "sunset2024". You should see it appear
                         in your available networks. Let me know if you have any trouble connecting!
                       </div>
-                      <div class="chat-msg user">What time is checkout?</div>
-                      <div class="chat-msg bot">
+                      <div class="chat-msg user" data-i18n="preview.guest_user2">What time is checkout?</div>
+                      <div class="chat-msg bot" data-i18n="preview.guest_bot3">
                         Checkout is at 11:00 AM. Please leave the keys on the kitchen counter. Safe travels! 🌴
                       </div>
                     </div>
                     <div class="chat-preview-input">
-                      <input type="text" placeholder="Type your question..." disabled />
+                      <input
+                        type="text"
+                        placeholder="Type your question..."
+                        disabled
+                        data-i18n-placeholder="preview.guest_input_placeholder"
+                      />
                       <button>→</button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="preview-device-label">Guests get instant answers on their phone</div>
+              <div class="preview-device-label" data-i18n="preview.guest_label">
+                Guests get instant answers on their phone
+              </div>
             </div>
           </div>
         </div>
@@ -2445,31 +2969,33 @@
     <section class="how-it-works" id="how-it-works">
       <div class="container">
         <div class="how-header">
-          <span class="section-tag">How It Works</span>
-          <h2 class="section-title">Simple for You, Seamless for Guests</h2>
-          <p class="section-subtitle">
+          <span class="section-tag" data-i18n="how.tag">How It Works</span>
+          <h2 class="section-title" data-i18n="how.title">Simple for You, Seamless for Guests</h2>
+          <p class="section-subtitle" data-i18n="how.subtitle">
             Set up once, help guests forever. Three easy steps to transform your guest experience.
           </p>
         </div>
         <div class="steps">
           <div class="step">
             <div class="step-number">1</div>
-            <h3 class="step-title">Add Your Property</h3>
-            <p class="step-desc">
+            <h3 class="step-title" data-i18n="how.step1_title">Add Your Property</h3>
+            <p class="step-desc" data-i18n="how.step1_desc">
               Enter property details, WiFi codes, house rules, and your favorite local recommendations.
             </p>
           </div>
           <div class="step">
             <div class="step-number">2</div>
-            <h3 class="step-title">Print QR Codes</h3>
-            <p class="step-desc">
+            <h3 class="step-title" data-i18n="how.step2_title">Print QR Codes</h3>
+            <p class="step-desc" data-i18n="how.step2_desc">
               Generate context-specific QR codes and place them around your property — kitchen, TV, bathroom, etc.
             </p>
           </div>
           <div class="step">
             <div class="step-number">3</div>
-            <h3 class="step-title">Guests Get Answers</h3>
-            <p class="step-desc">Guests scan, verify their booking, and chat with AI for instant help. You relax.</p>
+            <h3 class="step-title" data-i18n="how.step3_title">Guests Get Answers</h3>
+            <p class="step-desc" data-i18n="how.step3_desc">
+              Guests scan, verify their booking, and chat with AI for instant help. You relax.
+            </p>
           </div>
         </div>
       </div>
@@ -2479,31 +3005,33 @@
     <section class="integrations" id="integrations">
       <div class="container">
         <div class="integrations-header">
-          <span class="section-tag">Integrations</span>
-          <h2 class="section-title">Syncs With Your Booking Platforms</h2>
-          <p class="section-subtitle">Automatically import guest bookings from the platforms you already use.</p>
+          <span class="section-tag" data-i18n="integrations.tag">Integrations</span>
+          <h2 class="section-title" data-i18n="integrations.title">Syncs With Your Booking Platforms</h2>
+          <p class="section-subtitle" data-i18n="integrations.subtitle">
+            Automatically import guest bookings from the platforms you already use.
+          </p>
         </div>
         <div class="integrations-grid">
           <div class="integration-item">
             <div class="integration-logo">🏠</div>
-            <div class="integration-name">Airbnb</div>
+            <div class="integration-name" data-i18n="integrations.airbnb">Airbnb</div>
           </div>
           <div class="integration-item">
             <div class="integration-logo">🌴</div>
-            <div class="integration-name">VRBO</div>
+            <div class="integration-name" data-i18n="integrations.vrbo">VRBO</div>
           </div>
           <div class="integration-item">
             <div class="integration-logo">🅱️</div>
-            <div class="integration-name">Booking.com</div>
+            <div class="integration-name" data-i18n="integrations.booking">Booking.com</div>
           </div>
           <div class="integration-item">
             <div class="integration-logo">📅</div>
-            <div class="integration-name">Any iCal Feed</div>
+            <div class="integration-name" data-i18n="integrations.ical">Any iCal Feed</div>
           </div>
         </div>
         <div class="integrations-note">
           <div class="integrations-note-icon">🔒</div>
-          <p class="integrations-note-text">
+          <p class="integrations-note-text" data-i18n-html="integrations.note">
             <strong>Security First:</strong> We only sync booking dates and guest names via read-only iCal feeds.
             GuestBot never has access to your platform accounts, passwords, or payment information. Your property
             credentials stay safely in your GuestBot dashboard.
@@ -2516,34 +3044,44 @@
     <section class="use-cases">
       <div class="container">
         <div class="use-header">
-          <span class="section-tag">QR Placements</span>
-          <h2 class="section-title">QR Codes Everywhere</h2>
-          <p class="section-subtitle">Each location gets its own QR code with context-aware responses.</p>
+          <span class="section-tag" data-i18n="usecases.tag">QR Placements</span>
+          <h2 class="section-title" data-i18n="usecases.title">QR Codes Everywhere</h2>
+          <p class="section-subtitle" data-i18n="usecases.subtitle">
+            Each location gets its own QR code with context-aware responses.
+          </p>
         </div>
         <div class="cases-grid">
           <div class="case">
             <div class="case-icon">🚪</div>
-            <div class="case-title">Front Door</div>
+            <div class="case-title" data-i18n="usecases.front_door">Front Door</div>
           </div>
           <div class="case">
             <div class="case-icon">☕</div>
-            <div class="case-title">Kitchen</div>
+            <div class="case-title" data-i18n="usecases.kitchen">Kitchen</div>
           </div>
           <div class="case">
             <div class="case-icon">📺</div>
-            <div class="case-title">TV</div>
+            <div class="case-title" data-i18n="usecases.tv">TV</div>
           </div>
           <div class="case">
             <div class="case-icon">🌡️</div>
-            <div class="case-title">Thermostat</div>
+            <div class="case-title" data-i18n="usecases.thermostat">Thermostat</div>
           </div>
           <div class="case">
             <div class="case-icon">🛁</div>
-            <div class="case-title">Bathroom</div>
+            <div class="case-title" data-i18n="usecases.bathroom">Bathroom</div>
           </div>
           <div class="case">
             <div class="case-icon">🏊</div>
-            <div class="case-title">Pool</div>
+            <div class="case-title" data-i18n="usecases.pool">Pool</div>
+          </div>
+          <div class="case">
+            <div class="case-icon">🧳</div>
+            <div class="case-title" data-i18n="usecases.checkout">Checkout</div>
+          </div>
+          <div class="case">
+            <div class="case-icon">🚗</div>
+            <div class="case-title" data-i18n="usecases.garage">Garage</div>
           </div>
         </div>
       </div>
@@ -2554,9 +3092,9 @@
       <div class="container">
         <div class="benefits-content">
           <div class="benefits-text">
-            <span class="section-tag">Benefits</span>
-            <h2 class="section-title">Why Hosts Love GuestBot</h2>
-            <p class="section-subtitle">
+            <span class="section-tag" data-i18n="benefits.tag">Benefits</span>
+            <h2 class="section-title" data-i18n="benefits.title">Why Hosts Love GuestBot</h2>
+            <p class="section-subtitle" data-i18n="benefits.subtitle">
               Stop answering the same questions over and over. Let AI handle it while you focus on growing your
               business.
             </p>
@@ -2569,8 +3107,10 @@
                 </svg>
               </div>
               <div class="benefit-text">
-                <h4>Save Hours Every Week</h4>
-                <p>No more repetitive messages about WiFi, check-out times, or how to use the TV.</p>
+                <h4 data-i18n="benefits.time_title">Save Hours Every Week</h4>
+                <p data-i18n="benefits.time_desc">
+                  No more repetitive messages about WiFi, check-out times, or how to use the TV.
+                </p>
               </div>
             </div>
             <div class="benefit-item">
@@ -2580,8 +3120,10 @@
                 </svg>
               </div>
               <div class="benefit-text">
-                <h4>Better Guest Reviews</h4>
-                <p>Guests appreciate instant answers at 2am. Happy guests leave better reviews.</p>
+                <h4 data-i18n="benefits.reviews_title">Better Guest Reviews</h4>
+                <p data-i18n="benefits.reviews_desc">
+                  Guests appreciate instant answers at 2am. Happy guests leave better reviews.
+                </p>
               </div>
             </div>
             <div class="benefit-item">
@@ -2591,8 +3133,10 @@
                 </svg>
               </div>
               <div class="benefit-text">
-                <h4>Scale Your Portfolio</h4>
-                <p>Manage more properties without proportionally increasing your workload.</p>
+                <h4 data-i18n="benefits.scale_title">Scale Your Portfolio</h4>
+                <p data-i18n="benefits.scale_desc">
+                  Manage more properties without proportionally increasing your workload.
+                </p>
               </div>
             </div>
             <div class="benefit-item">
@@ -2602,8 +3146,10 @@
                 </svg>
               </div>
               <div class="benefit-text">
-                <h4>Professional Touch</h4>
-                <p>AI concierge makes your property feel like a premium hotel experience.</p>
+                <h4 data-i18n="benefits.pro_title">Professional Touch</h4>
+                <p data-i18n="benefits.pro_desc">
+                  AI concierge makes your property feel like a premium hotel experience.
+                </p>
               </div>
             </div>
           </div>
@@ -2615,40 +3161,42 @@
     <section class="comparison" id="comparison">
       <div class="container">
         <div class="comparison-header">
-          <span class="section-tag">The Difference</span>
-          <h2 class="section-title">Before & After GuestBot</h2>
-          <p class="section-subtitle">See how GuestBot transforms your daily hosting experience.</p>
+          <span class="section-tag" data-i18n="comparison.tag">The Difference</span>
+          <h2 class="section-title" data-i18n="comparison.title">Before & After GuestBot</h2>
+          <p class="section-subtitle" data-i18n="comparison.subtitle">
+            See how GuestBot transforms your daily hosting experience.
+          </p>
         </div>
         <div class="comparison-grid">
           <div class="comparison-card before">
             <div class="comparison-card-header">
               <div class="comparison-card-icon">😫</div>
-              <div class="comparison-card-title">Without GuestBot</div>
+              <div class="comparison-card-title" data-i18n="comparison.before_title">Without GuestBot</div>
             </div>
             <ul class="comparison-list">
               <li>
                 <span>✗</span>
-                <span>Constant phone buzzing with guest messages at all hours</span>
+                <span data-i18n="comparison.before_1">Constant phone buzzing with guest messages at all hours</span>
               </li>
               <li>
                 <span>✗</span>
-                <span>Repeating the same WiFi password 10 times a week</span>
+                <span data-i18n="comparison.before_2">Repeating the same WiFi password 10 times a week</span>
               </li>
               <li>
                 <span>✗</span>
-                <span>Frustrated guests waiting hours for simple answers</span>
+                <span data-i18n="comparison.before_3">Frustrated guests waiting hours for simple answers</span>
               </li>
               <li>
                 <span>✗</span>
-                <span>Middle-of-the-night "how do I work the TV?" messages</span>
+                <span data-i18n="comparison.before_4">Middle-of-the-night "how do I work the TV?" messages</span>
               </li>
               <li>
                 <span>✗</span>
-                <span>Creating lengthy instruction documents nobody reads</span>
+                <span data-i18n="comparison.before_5">Creating lengthy instruction documents nobody reads</span>
               </li>
               <li>
                 <span>✗</span>
-                <span>Lower reviews due to slow response times</span>
+                <span data-i18n="comparison.before_6">Lower reviews due to slow response times</span>
               </li>
             </ul>
           </div>
@@ -2660,32 +3208,32 @@
           <div class="comparison-card after">
             <div class="comparison-card-header">
               <div class="comparison-card-icon">😌</div>
-              <div class="comparison-card-title">With GuestBot</div>
+              <div class="comparison-card-title" data-i18n="comparison.after_title">With GuestBot</div>
             </div>
             <ul class="comparison-list">
               <li>
                 <span>✓</span>
-                <span>Peace and quiet — AI handles 80% of questions automatically</span>
+                <span data-i18n="comparison.after_1">Peace and quiet — AI handles 80% of questions automatically</span>
               </li>
               <li>
                 <span>✓</span>
-                <span>Guests scan QR code and get instant, accurate answers</span>
+                <span data-i18n="comparison.after_2">Guests scan QR code and get instant, accurate answers</span>
               </li>
               <li>
                 <span>✓</span>
-                <span>Happy guests who feel supported 24/7</span>
+                <span data-i18n="comparison.after_3">Happy guests who feel supported 24/7</span>
               </li>
               <li>
                 <span>✓</span>
-                <span>Sleep through the night while AI assists guests</span>
+                <span data-i18n="comparison.after_4">Sleep through the night while AI assists guests</span>
               </li>
               <li>
                 <span>✓</span>
-                <span>Interactive help that guests actually use</span>
+                <span data-i18n="comparison.after_5">Interactive help that guests actually use</span>
               </li>
               <li>
                 <span>✓</span>
-                <span>Better reviews from improved guest experience</span>
+                <span data-i18n="comparison.after_6">Better reviews from improved guest experience</span>
               </li>
             </ul>
           </div>
@@ -2697,9 +3245,9 @@
     <section class="security" id="security">
       <div class="container">
         <div class="security-header">
-          <span class="section-tag">Trust & Security</span>
-          <h2 class="section-title">Your Data is Protected</h2>
-          <p class="section-subtitle">
+          <span class="section-tag" data-i18n="security.tag">Trust & Security</span>
+          <h2 class="section-title" data-i18n="security.title">Your Data is Protected</h2>
+          <p class="section-subtitle" data-i18n="security.subtitle">
             We take privacy seriously. GuestBot is built with enterprise-grade security and full compliance with data
             protection regulations.
           </p>
@@ -2707,23 +3255,96 @@
         <div class="security-grid">
           <div class="security-card">
             <div class="security-icon">🔒</div>
-            <h3 class="security-title">Encrypted Data</h3>
-            <p class="security-desc">All data encrypted in transit (TLS 1.3) and at rest (AES-256).</p>
+            <h3 class="security-title" data-i18n="security.encrypted_title">Encrypted Data</h3>
+            <p class="security-desc" data-i18n="security.encrypted_desc">
+              All data encrypted in transit (TLS 1.3) and at rest (AES-256).
+            </p>
           </div>
           <div class="security-card">
             <div class="security-icon">🇪🇺</div>
-            <h3 class="security-title">GDPR Compliant</h3>
-            <p class="security-desc">Full compliance with EU data protection regulations.</p>
+            <h3 class="security-title" data-i18n="security.gdpr_title">GDPR Compliant</h3>
+            <p class="security-desc" data-i18n="security.gdpr_desc">
+              Full compliance with EU data protection regulations.
+            </p>
           </div>
           <div class="security-card">
             <div class="security-icon">🛡️</div>
-            <h3 class="security-title">Guest Verification</h3>
-            <p class="security-desc">Only verified guests with active bookings can access property info.</p>
+            <h3 class="security-title" data-i18n="security.verify_title">Guest Verification</h3>
+            <p class="security-desc" data-i18n="security.verify_desc">
+              Only verified guests with active bookings can access property info.
+            </p>
           </div>
           <div class="security-card">
             <div class="security-icon">🗑️</div>
-            <h3 class="security-title">Data Retention</h3>
-            <p class="security-desc">Guest chat data automatically deleted after checkout.</p>
+            <h3 class="security-title" data-i18n="security.retention_title">Data Retention</h3>
+            <p class="security-desc" data-i18n="security.retention_desc">
+              Guest chat data automatically deleted after checkout.
+            </p>
+          </div>
+          <div class="security-card">
+            <div class="security-icon">🚫</div>
+            <h3 class="security-title" data-i18n="security.brute_title">Brute Force Protection</h3>
+            <p class="security-desc" data-i18n="security.brute_desc">
+              Automatic lockout after failed verification attempts. Your property codes stay safe.
+            </p>
+          </div>
+          <div class="security-card">
+            <div class="security-icon">🔐</div>
+            <h3 class="security-title" data-i18n="security.codes_title">Smart Code Sharing</h3>
+            <p class="security-desc" data-i18n="security.codes_desc">
+              WiFi and door codes only shared when contextually relevant — not dumped all at once.
+            </p>
+          </div>
+          <div class="security-card">
+            <div class="security-icon">🤖</div>
+            <h3 class="security-title" data-i18n="security.ai_title">AI Safety Filters</h3>
+            <p class="security-desc" data-i18n="security.ai_desc">
+              Multi-layer protection against prompt injection and jailbreak attempts.
+            </p>
+          </div>
+          <div class="security-card">
+            <div class="security-icon">⏱️</div>
+            <h3 class="security-title" data-i18n="security.rate_title">Rate Limiting</h3>
+            <p class="security-desc" data-i18n="security.rate_desc">
+              Built-in protection against abuse. Guests get helpful limits, not locked out.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROI CALCULATOR -->
+    <section class="roi-calculator" id="roi">
+      <div class="container">
+        <div class="roi-calculator-header">
+          <span class="section-tag" data-i18n="roi.tag">Savings</span>
+          <h2 class="section-title" data-i18n="roi.title">Calculate Your Savings</h2>
+          <p class="section-subtitle" data-i18n="roi.subtitle">
+            See how much time and money GuestBot saves you each month.
+          </p>
+        </div>
+        <div class="roi-slider-container">
+          <div class="roi-slider-label">
+            <span data-i18n="roi.slider_label">How many guest messages do you get per week?</span>
+            <span class="roi-slider-value" id="roiSliderValue">20</span>
+          </div>
+          <input type="range" class="roi-input" id="roiSlider" min="5" max="100" value="20" step="1" />
+        </div>
+        <div class="roi-results">
+          <div class="roi-card">
+            <div class="roi-card-icon">⏱️</div>
+            <div class="roi-value" id="roiTimeSaved">3.2 hrs</div>
+            <div class="roi-label" data-i18n="roi.time_saved">Time Saved / Month</div>
+          </div>
+          <div class="roi-card">
+            <div class="roi-card-icon">💰</div>
+            <div class="roi-value" id="roiValueSaved">$80</div>
+            <div class="roi-label" data-i18n="roi.value_saved">Value of Time / Month</div>
+          </div>
+          <div class="roi-card">
+            <div class="roi-card-icon">📈</div>
+            <div class="roi-value" id="roiReturn">16x return</div>
+            <div class="roi-label" data-i18n="roi.return_label">ROI for just $4.99/mo</div>
           </div>
         </div>
       </div>
@@ -2733,55 +3354,82 @@
     <section class="pricing" id="pricing">
       <div class="container">
         <div class="pricing-header">
-          <span class="section-tag">Pricing</span>
-          <h2 class="section-title">One Simple Price. Everything Included.</h2>
-          <p class="section-subtitle">No tiers, no confusion. Get all features for less than a coffee.</p>
+          <span class="section-tag" data-i18n="pricing.tag">Pricing</span>
+          <h2 class="section-title" data-i18n="pricing.title">One Simple Price. Everything Included.</h2>
+          <p class="section-subtitle" data-i18n="pricing.subtitle">
+            No tiers, no confusion. Get all features for less than a coffee.
+          </p>
+          <div class="pricing-toggle">
+            <span class="pricing-toggle-option active" data-plan="monthly" data-i18n="pricing.monthly">Monthly</span>
+            <button
+              class="pricing-toggle-switch"
+              id="pricingToggle"
+              aria-label="Toggle annual pricing"
+              data-i18n-aria="pricing.toggle_aria"
+            ></button>
+            <span class="pricing-toggle-option" data-plan="annual" data-i18n="pricing.annual">Annual</span>
+            <span class="pricing-save-badge" id="pricingSaveBadge" data-i18n="pricing.save_badge">Save 20%</span>
+          </div>
         </div>
         <div class="pricing-single">
           <div class="pricing-single-left">
             <div class="pricing-single-price">
               <span class="pricing-currency">$</span>
-              <span class="pricing-amount">4.99</span>
-              <span class="pricing-period">/month</span>
+              <span class="pricing-amount" id="pricingAmount">4.99</span>
+              <span class="pricing-period" data-i18n="pricing.period">/month</span>
             </div>
-            <p class="pricing-single-note">Cancel anytime. No contracts.</p>
-            <a href="/app" class="btn btn-primary btn-lg">Start Free Trial</a>
-            <p class="pricing-trial-note">14-day free trial. No credit card required.</p>
+            <p class="pricing-single-note" id="pricingNote" data-i18n="pricing.note_monthly">
+              Cancel anytime. No contracts.
+            </p>
+            <a href="/app" class="btn btn-primary btn-lg" data-i18n="pricing.cta">Start Free Trial</a>
+            <p class="pricing-trial-note" data-i18n="pricing.trial_note">14-day free trial. No credit card required.</p>
           </div>
           <div class="pricing-single-right">
-            <h3 class="pricing-includes-title">Everything you need:</h3>
+            <h3 class="pricing-includes-title" data-i18n="pricing.includes_title">Everything you need:</h3>
             <div class="pricing-features-grid">
               <div class="pricing-feature-item">
                 <span class="pricing-feature-icon">✓</span>
-                <span>Unlimited properties</span>
+                <span data-i18n="pricing.f_properties">Unlimited properties</span>
               </div>
               <div class="pricing-feature-item">
                 <span class="pricing-feature-icon">✓</span>
-                <span>Unlimited QR codes</span>
+                <span data-i18n="pricing.f_qr">Unlimited QR codes</span>
               </div>
               <div class="pricing-feature-item">
                 <span class="pricing-feature-icon">✓</span>
-                <span>AI-powered guest chat</span>
+                <span data-i18n="pricing.f_ai">AI-powered guest chat</span>
               </div>
               <div class="pricing-feature-item">
                 <span class="pricing-feature-icon">✓</span>
-                <span>iCal calendar sync</span>
+                <span data-i18n="pricing.f_ical">iCal calendar sync</span>
               </div>
               <div class="pricing-feature-item">
                 <span class="pricing-feature-icon">✓</span>
-                <span>Local recommendations</span>
+                <span data-i18n="pricing.f_local">Local recommendations</span>
               </div>
               <div class="pricing-feature-item">
                 <span class="pricing-feature-icon">✓</span>
-                <span>Guest verification</span>
+                <span data-i18n="pricing.f_verify">Guest verification</span>
               </div>
               <div class="pricing-feature-item">
                 <span class="pricing-feature-icon">✓</span>
-                <span>Airbnb & VRBO sync</span>
+                <span data-i18n="pricing.f_sync">Airbnb & VRBO sync</span>
               </div>
               <div class="pricing-feature-item">
                 <span class="pricing-feature-icon">✓</span>
-                <span>Priority support</span>
+                <span data-i18n="pricing.f_languages">8 languages included</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span data-i18n="pricing.f_streaming">Real-time streaming</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span data-i18n="pricing.f_feedback">Guest feedback tracking</span>
+              </div>
+              <div class="pricing-feature-item">
+                <span class="pricing-feature-icon">✓</span>
+                <span data-i18n="pricing.f_support">Priority support</span>
               </div>
             </div>
           </div>
@@ -2794,73 +3442,73 @@
       <div class="container">
         <div class="contact-content">
           <div class="contact-info">
-            <span class="section-tag">Contact</span>
-            <h2 class="section-title">Get in Touch</h2>
-            <p class="section-subtitle">
+            <span class="section-tag" data-i18n="contact.tag">Contact</span>
+            <h2 class="section-title" data-i18n="contact.title">Get in Touch</h2>
+            <p class="section-subtitle" data-i18n="contact.subtitle">
               Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
             </p>
             <div class="contact-methods">
               <div class="contact-method">
                 <div class="contact-method-icon">📧</div>
                 <div class="contact-method-text">
-                  <strong>Email</strong>
-                  <span>support@guestbot.ai</span>
+                  <strong data-i18n="contact.email_label">Email</strong>
+                  <span data-i18n="contact.email_value">support@guestbot.ai</span>
                 </div>
               </div>
               <div class="contact-method">
                 <div class="contact-method-icon">💬</div>
                 <div class="contact-method-text">
-                  <strong>Live Chat</strong>
-                  <span>Available 9am - 6pm EST</span>
+                  <strong data-i18n="contact.chat_label">Live Chat</strong>
+                  <span data-i18n="contact.chat_value">Available 9am - 6pm EST</span>
                 </div>
               </div>
               <div class="contact-method">
                 <div class="contact-method-icon">📍</div>
                 <div class="contact-method-text">
-                  <strong>Location</strong>
-                  <span>Miami, Florida, USA</span>
+                  <strong data-i18n="contact.location_label">Location</strong>
+                  <span data-i18n="contact.location_value">Miami, Florida, USA</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="contact-form" id="contactForm">
-            <h3 class="form-title">Send a Message</h3>
+            <h3 class="form-title" data-i18n="contact.form_title">Send a Message</h3>
             <form id="contactFormEl">
               <div class="form-row">
                 <div class="form-group">
-                  <label class="form-label">First Name</label>
+                  <label class="form-label" data-i18n="contact.first_name">First Name</label>
                   <input type="text" class="form-input" name="firstName" required />
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Last Name</label>
+                  <label class="form-label" data-i18n="contact.last_name">Last Name</label>
                   <input type="text" class="form-input" name="lastName" required />
                 </div>
               </div>
               <div class="form-group">
-                <label class="form-label">Email</label>
+                <label class="form-label" data-i18n="contact.email">Email</label>
                 <input type="email" class="form-input" name="email" required />
               </div>
               <div class="form-group">
-                <label class="form-label">Subject</label>
+                <label class="form-label" data-i18n="contact.subject">Subject</label>
                 <input type="text" class="form-input" name="subject" required />
               </div>
               <div class="form-group">
-                <label class="form-label">Message</label>
+                <label class="form-label" data-i18n="contact.message">Message</label>
                 <textarea class="form-textarea" name="message" required></textarea>
               </div>
               <div class="form-consent">
                 <input type="checkbox" id="consent" required />
-                <label for="consent"
+                <label for="consent" data-i18n-html="contact.consent"
                   >I agree to the <a href="/privacy">Privacy Policy</a> and consent to being contacted about my
                   inquiry.</label
                 >
               </div>
-              <button type="submit" class="btn btn-primary">Send Message</button>
+              <button type="submit" class="btn btn-primary" data-i18n="contact.submit">Send Message</button>
             </form>
             <div class="form-success" id="formSuccess">
               <div class="form-success-icon">✅</div>
-              <h3>Message Sent!</h3>
-              <p>Thanks for reaching out. We'll get back to you within 24 hours.</p>
+              <h3 data-i18n="contact.success_title">Message Sent!</h3>
+              <p data-i18n="contact.success_desc">Thanks for reaching out. We'll get back to you within 24 hours.</p>
             </div>
           </div>
         </div>
@@ -2871,18 +3519,18 @@
     <section class="faq" id="faq">
       <div class="container">
         <div class="faq-header">
-          <span class="section-tag">FAQ</span>
-          <h2 class="section-title">Frequently Asked Questions</h2>
-          <p class="section-subtitle">Everything you need to know about GuestBot.</p>
+          <span class="section-tag" data-i18n="faq.tag">FAQ</span>
+          <h2 class="section-title" data-i18n="faq.title">Frequently Asked Questions</h2>
+          <p class="section-subtitle" data-i18n="faq.subtitle">Everything you need to know about GuestBot.</p>
         </div>
         <div class="faq-grid">
           <div class="faq-item">
             <button class="faq-question">
-              <span>Can guests see my door codes and WiFi password?</span>
+              <span data-i18n="faq.q1">Can guests see my door codes and WiFi password?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <div class="faq-answer-inner">
+              <div class="faq-answer-inner" data-i18n-html="faq.a1">
                 Only verified guests with an active booking can access your property information. Guests must verify
                 their phone number matches a current reservation before the AI shares any sensitive details like door
                 codes or WiFi passwords. <a href="#security">Learn more about our security measures →</a>
@@ -2891,11 +3539,11 @@
           </div>
           <div class="faq-item">
             <button class="faq-question">
-              <span>What if the AI gives incorrect information?</span>
+              <span data-i18n="faq.q2">What if the AI gives incorrect information?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <div class="faq-answer-inner">
+              <div class="faq-answer-inner" data-i18n-html="faq.a2">
                 The AI only responds with information you've provided in your property profile. It won't make things up.
                 For questions it can't answer, it politely tells guests to contact you directly. You're always in
                 control of what information is shared.
@@ -2904,11 +3552,11 @@
           </div>
           <div class="faq-item">
             <button class="faq-question">
-              <span>How does booking sync work? Is it secure?</span>
+              <span data-i18n="faq.q3">How does booking sync work? Is it secure?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <div class="faq-answer-inner">
+              <div class="faq-answer-inner" data-i18n-html="faq.a3">
                 We use read-only iCal calendar feeds from Airbnb, VRBO, and Booking.com. This only syncs booking dates
                 and guest names — we never have access to your platform login, account settings, or payment information.
                 Your credentials stay completely separate. <a href="#integrations">See supported integrations →</a>
@@ -2917,11 +3565,11 @@
           </div>
           <div class="faq-item">
             <button class="faq-question">
-              <span>Do guests need to download an app?</span>
+              <span data-i18n="faq.q4">Do guests need to download an app?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <div class="faq-answer-inner">
+              <div class="faq-answer-inner" data-i18n-html="faq.a4">
                 No. Guests simply scan a QR code with their phone camera and the chat opens instantly in their mobile
                 browser. No app download, no account creation — it just works.
               </div>
@@ -2929,11 +3577,11 @@
           </div>
           <div class="faq-item">
             <button class="faq-question">
-              <span>What happens to guest data after checkout?</span>
+              <span data-i18n="faq.q5">What happens to guest data after checkout?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <div class="faq-answer-inner">
+              <div class="faq-answer-inner" data-i18n-html="faq.a5">
                 Guest chat conversations are automatically deleted after their checkout date. We don't store personal
                 data longer than necessary, and guests can request deletion at any time. We're fully GDPR and CCPA
                 compliant. <a href="/privacy">Read our Privacy Policy →</a>
@@ -2942,11 +3590,11 @@
           </div>
           <div class="faq-item">
             <button class="faq-question">
-              <span>Can I customize what the AI says?</span>
+              <span data-i18n="faq.q6">Can I customize what the AI says?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <div class="faq-answer-inner">
+              <div class="faq-answer-inner" data-i18n-html="faq.a6">
                 Yes! You control all the information in your property profile — house rules, check-in instructions,
                 local recommendations, appliance guides, and more. The AI uses exactly what you provide to give
                 personalized, accurate responses. <a href="#features">Explore all features →</a>
@@ -2955,11 +3603,11 @@
           </div>
           <div class="faq-item">
             <button class="faq-question">
-              <span>How many properties can I add?</span>
+              <span data-i18n="faq.q7">How many properties can I add?</span>
               <span class="faq-icon">+</span>
             </button>
             <div class="faq-answer">
-              <div class="faq-answer-inner">
+              <div class="faq-answer-inner" data-i18n-html="faq.a7">
                 Unlimited. Whether you have 1 property or 100, the price is the same — $4.99/month. Each property gets
                 its own set of QR codes and customized AI responses. <a href="#pricing">View pricing details →</a>
               </div>
@@ -2972,9 +3620,11 @@
     <!-- CTA -->
     <section class="cta">
       <div class="container">
-        <h2 class="cta-title">Ready to Transform Your Guest Experience?</h2>
-        <p class="cta-subtitle">Join hundreds of hosts who've reduced their workload with GuestBot.</p>
-        <a href="/app" class="btn btn-primary">Get Started Free</a>
+        <h2 class="cta-title" data-i18n="cta.title">Ready to Transform Your Guest Experience?</h2>
+        <p class="cta-subtitle" data-i18n="cta.subtitle">
+          Join hundreds of hosts who've reduced their workload with GuestBot.
+        </p>
+        <a href="/app" class="btn btn-primary" data-i18n="cta.button">Get Started Free</a>
       </div>
     </section>
 
@@ -2987,133 +3637,70 @@
               <span class="footer-brand-icon">🤖</span>
               GuestBot
             </div>
-            <p class="footer-desc">
+            <p class="footer-desc" data-i18n="footer.desc">
               AI-powered guest concierge for vacation rentals. Reduce guest questions, improve reviews, and scale your
               business.
             </p>
           </div>
           <div class="footer-col">
-            <h4 class="footer-title">Product</h4>
+            <h4 class="footer-title" data-i18n="footer.product">Product</h4>
             <ul class="footer-links">
-              <li><a href="#features">Features</a></li>
-              <li><a href="#pricing">Pricing</a></li>
-              <li><a href="#how-it-works">How It Works</a></li>
-              <li><a href="/app">Dashboard</a></li>
+              <li><a href="#features" data-i18n="footer.features">Features</a></li>
+              <li><a href="#pricing" data-i18n="footer.pricing">Pricing</a></li>
+              <li><a href="#how-it-works" data-i18n="footer.how_it_works">How It Works</a></li>
+              <li><a href="/app" data-i18n="footer.dashboard">Dashboard</a></li>
             </ul>
           </div>
           <div class="footer-col">
-            <h4 class="footer-title">Company</h4>
+            <h4 class="footer-title" data-i18n="footer.company">Company</h4>
             <ul class="footer-links">
-              <li><a href="#contact">Contact</a></li>
-              <li><a href="#security">Security</a></li>
-              <li><a href="/privacy">Privacy Policy</a></li>
-              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="#contact" data-i18n="footer.contact">Contact</a></li>
+              <li><a href="#security" data-i18n="footer.security">Security</a></li>
+              <li><a href="/privacy" data-i18n="footer.privacy_policy">Privacy Policy</a></li>
+              <li><a href="/terms" data-i18n="footer.terms_of_service">Terms of Service</a></li>
             </ul>
           </div>
           <div class="footer-col">
-            <h4 class="footer-title">Legal</h4>
+            <h4 class="footer-title" data-i18n="footer.legal">Legal</h4>
             <ul class="footer-links">
-              <li><a href="/privacy">Privacy Policy</a></li>
-              <li><a href="/terms">Terms of Service</a></li>
-              <li><a href="/privacy#gdpr">GDPR</a></li>
-              <li><a href="/privacy#ccpa">CCPA</a></li>
+              <li><a href="/privacy" data-i18n="footer.privacy_policy_2">Privacy Policy</a></li>
+              <li><a href="/terms" data-i18n="footer.terms_of_service_2">Terms of Service</a></li>
+              <li><a href="/privacy#gdpr" data-i18n="footer.gdpr">GDPR</a></li>
+              <li><a href="/privacy#ccpa" data-i18n="footer.ccpa">CCPA</a></li>
               <li>
-                <a
-                  href="#"
-                  onclick="
-                    GuestBotCookies.showPreferences();
-                    return false;
-                  "
-                  >Cookie Settings</a
-                >
+                <a href="#" class="js-cookie-settings" data-i18n="footer.cookie_settings">Cookie Settings</a>
               </li>
             </ul>
           </div>
           <div class="footer-col">
-            <h4 class="footer-title">Sister Companies</h4>
+            <h4 class="footer-title" data-i18n="footer.sisters">Sister Companies</h4>
             <ul class="footer-links">
-              <li><a href="https://dwellverse.io" target="_blank" rel="noopener">Dwellverse</a></li>
-              <li><a href="https://roibot.ai" target="_blank" rel="noopener">ROIBOT.AI</a></li>
+              <li>
+                <a href="https://dwellverse.io" target="_blank" rel="noopener noreferrer" data-i18n="footer.dwellverse"
+                  >Dwellverse</a
+                >
+              </li>
+              <li>
+                <a href="https://roibot.ai" target="_blank" rel="noopener noreferrer" data-i18n="footer.roibot"
+                  >ROIBOT.AI</a
+                >
+              </li>
             </ul>
           </div>
         </div>
         <div class="footer-bottom">
-          <p class="footer-copy">© 2026 GuestBot. All rights reserved.</p>
+          <p class="footer-copy" data-i18n="footer.copyright">© 2026 GuestBot. All rights reserved.</p>
           <div class="footer-legal">
-            <a href="/privacy">Privacy</a>
-            <a href="/terms">Terms</a>
-            <a
-              href="#"
-              onclick="
-                GuestBotCookies.showPreferences();
-                return false;
-              "
-              >Cookie Settings</a
-            >
-            <a
-              href="#"
-              onclick="
-                GuestBotCookies.showPreferences();
-                return false;
-              "
-              >Do Not Sell</a
-            >
+            <a href="/privacy" data-i18n="footer.privacy">Privacy</a>
+            <a href="/terms" data-i18n="footer.terms">Terms</a>
+            <a href="#" class="js-cookie-settings" data-i18n="footer.cookie_settings_bottom">Cookie Settings</a>
+            <a href="#" class="js-cookie-settings" data-i18n="footer.do_not_sell">Do Not Sell</a>
           </div>
         </div>
       </div>
     </footer>
 
-    <script>
-      // Contact form handling
-      document.getElementById('contactFormEl').addEventListener('submit', function (e) {
-        e.preventDefault();
-        // In production, this would send to your backend
-        document.querySelector('.contact-form form').style.display = 'none';
-        document.getElementById('formSuccess').classList.add('show');
-      });
-
-      // Smooth scroll for nav links
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href'));
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-      });
-
-      // FAQ accordion
-      document.querySelectorAll('.faq-question').forEach((button) => {
-        button.addEventListener('click', () => {
-          const item = button.parentElement;
-          const isOpen = item.classList.contains('open');
-
-          // Close all other items
-          document.querySelectorAll('.faq-item').forEach((i) => i.classList.remove('open'));
-
-          // Toggle current item
-          if (!isOpen) {
-            item.classList.add('open');
-          }
-        });
-      });
-
-      // Preview tabs
-      document.querySelectorAll('.preview-tab').forEach((tab) => {
-        tab.addEventListener('click', () => {
-          const preview = tab.dataset.preview;
-
-          // Update tabs
-          document.querySelectorAll('.preview-tab').forEach((t) => t.classList.remove('active'));
-          tab.classList.add('active');
-
-          // Update content
-          document.querySelectorAll('.preview-content').forEach((c) => c.classList.remove('active'));
-          document.querySelector(`.preview-content[data-preview="${preview}"]`).classList.add('active');
-        });
-      });
-    </script>
+    <!-- Main page scripts loaded via /js/index.js in head -->
 
     <!-- Cookie Consent -->
     <script src="/js/cookie-consent.js"></script>
