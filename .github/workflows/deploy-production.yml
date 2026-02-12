@@ -95,4 +95,4 @@ jobs:
         if: always()
         run: |
           echo "Production deployment completed"
-          echo "URL: https://guestbot.ai"
+          echo "URL: https://guestbot.io"

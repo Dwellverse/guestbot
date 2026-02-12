@@ -202,8 +202,8 @@ function getModel(temperature = 0.5) {
 // ============================================
 const cors = (req, res) => {
   const allowedOrigins = [
-    'https://guestbot.ai',
-    'https://www.guestbot.ai',
+    'https://guestbot.io',
+    'https://www.guestbot.io',
     'https://guestbot-ai.web.app',
     'https://guestbot-7029e.web.app',
   ];

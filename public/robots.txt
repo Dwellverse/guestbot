@@ -1,11 +1,11 @@
 # GuestBot robots.txt
-# https://guestbot.ai
+# https://guestbot.io
 
 User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://guestbot.ai/sitemap.xml
+Sitemap: https://guestbot.io/sitemap.xml
 
 # Disallow admin/app areas from indexing
 Disallow: /app

@@ -122,7 +122,7 @@ These security controls are critical. Never bypass, disable, or weaken them:
   keyword match); rate-limited to 5 lookups/10min
 - **Session tokens** — 30-minute expiry, server-validated, stored in sessionStorage
 - **Identical error messages** on verification failure (prevents enumeration)
-- **CORS** — Restricted to `guestbot.ai` and `*.web.app`
+- **CORS** — Restricted to `guestbot.io` and `*.web.app`
 - **Security headers** — CSP, HSTS, X-Frame-Options: DENY, nosniff, strict referrer
 
 ## Deployment
