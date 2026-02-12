@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-    <!-- Homepage - highest priority with language alternates -->
+    <!-- Homepage with language alternates -->
     <url>
         <loc>https://guestbot.io/</loc>
         <xhtml:link rel="alternate" hreflang="en" href="https://guestbot.io/" />
@@ -17,78 +17,23 @@
         <xhtml:link rel="alternate" hreflang="ja" href="https://guestbot.io/?lang=ja" />
         <xhtml:link rel="alternate" hreflang="zh" href="https://guestbot.io/?lang=zh" />
         <xhtml:link rel="alternate" hreflang="x-default" href="https://guestbot.io/" />
-        <lastmod>2026-02-05</lastmod>
+        <lastmod>2026-02-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
 
-    <!-- Features Section -->
-    <url>
-        <loc>https://guestbot.io/#features</loc>
-        <lastmod>2026-02-05</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
-    </url>
-
-    <!-- How It Works Section -->
-    <url>
-        <loc>https://guestbot.io/#how-it-works</loc>
-        <lastmod>2026-02-05</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
-    </url>
-
-    <!-- Pricing Section -->
-    <url>
-        <loc>https://guestbot.io/#pricing</loc>
-        <lastmod>2026-02-05</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
-    </url>
-
-    <!-- Integrations Section -->
-    <url>
-        <loc>https://guestbot.io/#integrations</loc>
-        <lastmod>2026-02-05</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <!-- Security Section -->
-    <url>
-        <loc>https://guestbot.io/#security</loc>
-        <lastmod>2026-02-05</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <!-- FAQ Section -->
-    <url>
-        <loc>https://guestbot.io/#faq</loc>
-        <lastmod>2026-02-05</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <!-- Contact Section -->
-    <url>
-        <loc>https://guestbot.io/#contact</loc>
-        <lastmod>2026-02-05</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-
-    <!-- Legal Pages -->
+    <!-- Privacy Policy -->
     <url>
         <loc>https://guestbot.io/privacy</loc>
-        <lastmod>2026-02-05</lastmod>
+        <lastmod>2026-02-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
 
+    <!-- Terms of Service -->
     <url>
         <loc>https://guestbot.io/terms</loc>
-        <lastmod>2026-02-05</lastmod>
+        <lastmod>2026-02-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
