@@ -3,6 +3,8 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signOut,
 } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
@@ -12,6 +14,7 @@ import {
   doc,
   addDoc,
   setDoc,
+  getDoc,
   getDocs,
   deleteDoc,
   query,
@@ -84,8 +87,10 @@ const bookingModal = document.getElementById('bookingModal');
 onAuthStateChanged(auth, (user) => {
   if (user) {
     currentUser = user;
-    document.getElementById('userEmail').textContent = user.email;
-    document.getElementById('userAvatar').textContent = (user.email || 'U')[0].toUpperCase();
+    document.getElementById('userEmail').textContent = user.displayName || user.email;
+    document.getElementById('userAvatar').textContent = (user.displayName ||
+      user.email ||
+      'U')[0].toUpperCase();
     authScreen.style.display = 'none';
     appEl.classList.add('active');
 
@@ -177,6 +182,29 @@ authForm.addEventListener('submit', async (e) => {
     authError.classList.add('show');
     authBtn.disabled = false;
     authBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+  }
+});
+
+// Google sign-in
+const googleProvider = new GoogleAuthProvider();
+document.getElementById('googleSignInBtn')?.addEventListener('click', async () => {
+  authError.classList.remove('show');
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    // Create user doc if new user
+    const userDoc = await getDoc(doc(db, 'guestbot_users', result.user.uid));
+    if (!userDoc.exists()) {
+      await setDoc(doc(db, 'guestbot_users', result.user.uid), {
+        email: result.user.email,
+        name: result.user.displayName || '',
+        createdAt: Timestamp.now(),
+      });
+    }
+  } catch (err) {
+    if (err.code !== 'auth/popup-closed-by-user') {
+      authError.textContent = err.message.replace('Firebase: ', '');
+      authError.classList.add('show');
+    }
   }
 });
 

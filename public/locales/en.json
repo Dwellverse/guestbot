@@ -71,6 +71,8 @@
   "features.feedback_desc": "Guests can rate responses with thumbs up/down. See what questions are asked most to improve your property info.",
   "features.smart_title": "Smart Context Switching",
   "features.smart_desc": "AI detects when guests ask about a different area and automatically adjusts. Ask about the TV from the kitchen QR — it just works.",
+  "features.billing_title": "Subscription Management",
+  "features.billing_desc": "Manage your plan, update payment details, and view invoices — all from your dashboard. Cancel anytime, no questions asked.",
 
   "preview.tag": "See It In Action",
   "preview.title": "Simple Dashboard, Delightful Guest Experience",

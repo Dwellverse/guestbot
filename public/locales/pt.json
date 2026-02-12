@@ -277,6 +277,8 @@
   "features.feedback_desc": "Guests can rate responses with thumbs up/down. See what questions are asked most to improve your property info.",
   "features.smart_title": "Smart Context Switching",
   "features.smart_desc": "AI detects when guests ask about a different area and automatically adjusts. Ask about the TV from the kitchen QR — it just works.",
+  "features.billing_title": "Gestão de Assinatura",
+  "features.billing_desc": "Gerencie seu plano, atualize os dados de pagamento e visualize faturas — tudo pelo seu painel. Cancele a qualquer momento, sem perguntas.",
   "usecases.checkout": "Checkout",
   "security.brute_title": "Brute Force Protection",
   "security.brute_desc": "Automatic lockout after failed verification attempts. Your property codes stay safe.",
