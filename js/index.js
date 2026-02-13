@@ -13,10 +13,33 @@ await initI18n();
 // Contact form handling
 const contactForm = document.getElementById('contactFormEl');
 if (contactForm) {
-  contactForm.addEventListener('submit', function (e) {
+  contactForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-    document.querySelector('.contact-form form').style.display = 'none';
-    document.getElementById('formSuccess').classList.add('show');
+    const btn = contactForm.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    try {
+      const data = Object.fromEntries(new FormData(contactForm));
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (result.success) {
+        document.querySelector('.contact-form form').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+      } else {
+        alert(result.message || 'Failed to send. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+      }
+    } catch {
+      alert('Failed to send. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+    }
   });
 }
 

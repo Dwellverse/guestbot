@@ -60,6 +60,10 @@
         "function": "submitFeedback"
       },
       {
+        "source": "/api/contact",
+        "function": "submitContact"
+      },
+      {
         "source": "/app",
         "destination": "/app.html"
       },

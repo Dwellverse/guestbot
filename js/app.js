@@ -34,7 +34,7 @@ import {
 
 const app = initializeApp({
   apiKey: 'AIzaSyA0wGXqNLsW9IoimyvlQQg4GTSoZIy9Wkk',
-  authDomain: 'guestbot-7029e.firebaseapp.com',
+  authDomain: 'guestbot.io',
   projectId: 'guestbot-7029e',
   storageBucket: 'guestbot-7029e.firebasestorage.app',
   messagingSenderId: '501713945904',

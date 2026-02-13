@@ -561,6 +561,54 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
 });
 
 // ============================================
+// Submit Contact Form
+// ============================================
+exports.submitContact = onRequest({ cors: false }, async (req, res) => {
+  if (cors(req, res)) return;
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const clientIP = getClientIP(req);
+  const rateCheck = checkRateLimit('submitContact', `${clientIP}:contact`);
+  if (!rateCheck.allowed) {
+    return res
+      .status(429)
+      .json({ success: false, message: 'Too many requests. Please try again later.' });
+  }
+
+  const { firstName, lastName, email, subject, message } = req.body;
+
+  if (!firstName || !lastName || !email || !subject || !message) {
+    return res.status(400).json({ success: false, message: 'All fields are required.' });
+  }
+
+  // Basic email validation
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ success: false, message: 'Invalid email address.' });
+  }
+
+  try {
+    await db.collection('guestbot_contact').add({
+      firstName: String(firstName).substring(0, 100),
+      lastName: String(lastName).substring(0, 100),
+      email: String(email).substring(0, 200),
+      subject: String(subject).substring(0, 200),
+      message: String(message).substring(0, 2000),
+      ip: clientIP,
+      createdAt: Timestamp.now(),
+      read: false,
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Contact form error:', error);
+    res.status(500).json({ success: false, message: 'Failed to submit. Please try again.' });
+  }
+});
+
+// ============================================
 // Submit Feedback (thumbs up/down on AI responses)
 // ============================================
 exports.submitFeedback = onRequest({ cors: false }, async (req, res) => {
