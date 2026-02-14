@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GuestBot — Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta
       name="description"
       content="Manage your vacation rental properties with GuestBot. Set up QR codes, sync bookings, and let AI handle guest questions 24/7."
@@ -98,8 +99,9 @@
         margin-bottom: 32px;
       }
 
-      .auth-logo span {
-        font-size: 32px;
+      .auth-logo img {
+        width: 64px;
+        height: 64px;
       }
 
       .auth-title {
@@ -315,15 +317,16 @@
       }
 
       .header-brand-icon {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, var(--accent) 0%, #059669 100%);
-        border-radius: 12px;
+        width: 36px;
+        height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      }
+
+      .header-brand-icon img {
+        width: 100%;
+        height: 100%;
       }
 
       .header-nav {
@@ -1000,7 +1003,7 @@
     <div class="auth-screen" id="authScreen">
       <div class="auth-card">
         <div class="auth-logo">
-          <span>🤖</span>
+          <img src="/logo.svg" alt="GuestBot" width="64" height="64" />
         </div>
         <h1 class="auth-title" id="authTitle">Welcome back</h1>
         <p class="auth-subtitle" id="authSubtitle">Sign in to manage your properties</p>
@@ -1061,7 +1064,7 @@
       <div class="app-bg"></div>
       <header class="header">
         <a href="/app" class="header-brand">
-          <div class="header-brand-icon">🤖</div>
+          <div class="header-brand-icon"><img src="/logo.svg" alt="GuestBot" width="28" height="28" /></div>
           GuestBot
         </a>
         <div class="header-nav">

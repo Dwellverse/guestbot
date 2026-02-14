@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>GuestBot — Guest Assistant</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta
       name="description"
       content="Get instant answers about your vacation rental. Ask about WiFi, check-in, amenities, local recommendations, and more."
@@ -82,7 +83,13 @@
       }
 
       .header-icon {
-        font-size: 24px;
+        display: flex;
+        align-items: center;
+      }
+
+      .header-icon img {
+        width: 24px;
+        height: 24px;
       }
 
       .header-title {
@@ -463,7 +470,7 @@
     <!-- CHAT SCREEN -->
     <div class="chat-screen" id="chatScreen">
       <header class="header">
-        <span class="header-icon">🤖</span>
+        <span class="header-icon"><img src="/logo.svg" alt="GuestBot" width="24" height="24" /></span>
         <span class="header-title" data-i18n="chat.header_title">GuestBot</span>
         <span class="header-context" id="contextBadge" data-i18n="chat.context_general">General</span>
         <div class="lang-switcher">

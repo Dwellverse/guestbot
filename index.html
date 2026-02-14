@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GuestBot — AI Concierge for Vacation Rentals | Reduce Guest Questions 80%</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
 
     <!-- Google Analytics 4 -->
     <!-- TODO: Replace GA_MEASUREMENT_ID with your actual GA4 ID (e.g., G-XXXXXXXXXX) -->
@@ -516,7 +517,14 @@
       }
 
       .nav-brand-icon {
-        font-size: 24px;
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+      }
+
+      .nav-brand-icon img {
+        width: 100%;
+        height: 100%;
       }
 
       .nav-links {
@@ -2539,12 +2547,13 @@
       }
 
       /* I18N: Anti-FOUC */
-      body {
+      body:not(.i18n-ready) {
         opacity: 0;
         transition: opacity 0.15s;
       }
       body.i18n-ready {
         opacity: 1;
+        transition: opacity 0.15s;
       }
 
       /* LANGUAGE SWITCHER */
@@ -2552,12 +2561,13 @@
         position: relative;
       }
       .lang-toggle {
-        background: none;
-        border: 1px solid var(--dark-3);
+        background: var(--accent-dim);
+        border: 1px solid var(--accent);
         border-radius: 8px;
         padding: 8px 12px;
-        color: var(--gray-400);
+        color: var(--accent);
         font-size: 13px;
+        font-weight: 600;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -2566,7 +2576,7 @@
         font-family: inherit;
       }
       .lang-toggle:hover {
-        border-color: var(--accent);
+        background: var(--accent);
         color: var(--white);
       }
       .lang-dropdown {
@@ -2609,6 +2619,18 @@
     </style>
   </head>
   <body>
+    <script>
+      setTimeout(function () {
+        document.body.classList.add('i18n-ready');
+      }, 2000);
+    </script>
+    <noscript
+      ><style>
+        body {
+          opacity: 1 !important;
+        }
+      </style></noscript
+    >
     <a href="#main" class="sr-only">Skip to main content</a>
 
     <!-- NEBULA BACKGROUND -->
@@ -2621,7 +2643,7 @@
     <!-- NAVIGATION -->
     <nav class="nav">
       <a href="/" class="nav-brand">
-        <span class="nav-brand-icon">🤖</span>
+        <span class="nav-brand-icon"><img src="/logo.svg" alt="GuestBot" width="28" height="28" /></span>
         GuestBot
       </a>
       <button class="nav-hamburger" aria-label="Toggle menu" data-i18n-aria="nav.toggle_menu">
