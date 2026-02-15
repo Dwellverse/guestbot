@@ -36,7 +36,7 @@ function extractMentionedValues(text) {
     }
   }
 
-  // Door/gate/lockbox code mentions
+  // Door/gate/lockbox/garage code mentions
   const codePatterns = [
     /(?:door|entry)\s*code\s*(?:is|:)\s*["""]?(\S+?)["""]?(?:\s|[.,!]|$)/gi,
     /(?:gate)\s*code\s*(?:is|:)\s*["""]?(\S+?)["""]?(?:\s|[.,!]|$)/gi,
@@ -52,7 +52,9 @@ function extractMentionedValues(text) {
           ? 'gateCode'
           : pattern.source.includes('lockbox')
             ? 'lockboxCode'
-            : 'doorCode';
+            : pattern.source.includes('garage')
+              ? 'garageCode'
+              : 'doorCode';
       found.push({ type, value: match[1] });
     }
   }
@@ -102,6 +104,7 @@ function validateResponse(response, property) {
     wifiName: property.wifiName,
     doorCode: property.doorCode,
     gateCode: property.gateCode,
+    garageCode: property.garageCode,
     lockboxCode: property.lockboxCode,
     checkInTime: property.checkInTime,
     checkOutTime: property.checkOutTime,

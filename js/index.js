@@ -3,12 +3,37 @@ import { t, initI18n } from './i18n.js';
 // Initialize i18n first (await to ensure translations are loaded)
 await initI18n();
 
-// Google Analytics 4
-// TODO: Replace GA_MEASUREMENT_ID with your actual GA4 ID and uncomment
-// window.dataLayer = window.dataLayer || [];
-// function gtag() { dataLayer.push(arguments); }
-// gtag('js', new Date());
-// gtag('config', 'GA_MEASUREMENT_ID');
+// Inline toast for landing page (app.js has its own showToast)
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  Object.assign(toast.style, {
+    position: 'fixed',
+    bottom: '32px',
+    left: '50%',
+    transform: 'translateX(-50%) translateY(20px)',
+    background: '#10b981',
+    color: '#fff',
+    padding: '14px 28px',
+    borderRadius: '12px',
+    fontSize: '14px',
+    fontWeight: '500',
+    zIndex: '10000',
+    opacity: '0',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 8px 32px rgba(16,185,129,0.3)',
+  });
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => {
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+  });
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(20px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
 
 // Contact form handling
 const contactForm = document.getElementById('contactFormEl');
@@ -31,12 +56,12 @@ if (contactForm) {
         document.querySelector('.contact-form form').style.display = 'none';
         document.getElementById('formSuccess').classList.add('show');
       } else {
-        alert(result.message || 'Failed to send. Please try again.');
+        showToast(result.message || 'Failed to send. Please try again.');
         btn.disabled = false;
         btn.textContent = 'Send Message';
       }
     } catch {
-      alert('Failed to send. Please try again.');
+      showToast('Failed to send. Please try again.');
       btn.disabled = false;
       btn.textContent = 'Send Message';
     }

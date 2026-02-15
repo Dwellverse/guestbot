@@ -139,6 +139,7 @@ function buildPropertyInfo(property, question, identifier) {
       }
 
       lines.push(`- Gate Code: ${property.gateCode || 'Not provided'}`);
+      lines.push(`- Garage Code: ${property.garageCode || 'Not provided'}`);
     } else {
       lines.push('- Access codes: Rate limit reached. Please try again later.');
     }
@@ -150,6 +151,10 @@ function buildPropertyInfo(property, question, identifier) {
   lines.push(`- Check-in: ${property.checkInTime || 'Not specified'}`);
   lines.push(`- Check-out: ${property.checkOutTime || 'Not specified'}`);
   lines.push(`- House Rules: ${property.houseRules || 'Standard vacation rental rules'}`);
+  if (property.bedroomInfo) lines.push(`- Bedroom Info: ${property.bedroomInfo}`);
+  if (property.parkingInfo) lines.push(`- Parking Info: ${property.parkingInfo}`);
+  if (property.amenitiesInfo) lines.push(`- Amenities Info: ${property.amenitiesInfo}`);
+  if (property.petPolicy) lines.push(`- Pet Policy: ${property.petPolicy}`);
   lines.push(`- Additional Property Info: ${property.customInfo || 'None'}`);
   lines.push(`- Host's Local Recommendations: ${property.localTips || 'None provided'}`);
 

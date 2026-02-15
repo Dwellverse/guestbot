@@ -16,7 +16,7 @@ const {
 const { filterOutput } = require('../../functions/output-filter');
 const { detectContext, resolveContext } = require('../../functions/context-detector');
 const { validateResponse } = require('../../functions/response-validator');
-const { getTemperature, sanitizeHistory } = require('../../functions/ai-prompt');
+const { getTemperature, sanitizeHistory, buildPrompt } = require('../../functions/ai-prompt');
 
 describe('Input Sanitizer', () => {
   describe('sanitizeQuestion', () => {
@@ -247,6 +247,30 @@ describe('Context Detector', () => {
       expect(detectContext('What do I need to do before leaving?').detected).toBe('checkout');
     });
 
+    it('detects bedroom context', () => {
+      expect(detectContext('Where are the extra blankets?').detected).toBe('bedroom');
+      expect(detectContext('How many pillows are on the bed?').detected).toBe('bedroom');
+      expect(detectContext('Is there a closet in the bedroom?').detected).toBe('bedroom');
+    });
+
+    it('detects parking context', () => {
+      expect(detectContext('Where do I park my car?').detected).toBe('parking');
+      expect(detectContext('Is there a parking garage?').detected).toBe('parking');
+      expect(detectContext('Is there an EV charger?').detected).toBe('parking');
+    });
+
+    it('detects amenities context', () => {
+      expect(detectContext('Is there a washer and dryer?').detected).toBe('amenities');
+      expect(detectContext('Can I use the grill?').detected).toBe('amenities');
+      expect(detectContext('Do you have a gym or fitness center?').detected).toBe('amenities');
+    });
+
+    it('detects policies context', () => {
+      expect(detectContext('Are pets allowed?').detected).toBe('policies');
+      expect(detectContext('What are the quiet hours?').detected).toBe('policies');
+      expect(detectContext('Is smoking permitted?').detected).toBe('policies');
+    });
+
     it('returns null for ambiguous questions', () => {
       expect(detectContext('Tell me more about that').detected).toBe(null);
       expect(detectContext('Thanks!').detected).toBe(null);
@@ -310,10 +334,21 @@ describe('Response Validator', () => {
 });
 
 describe('Dynamic Temperature', () => {
-  it('uses low temperature for factual questions', () => {
-    expect(getTemperature('general', "What's the WiFi password?")).toBe(0.3);
+  it('uses zero temperature for access code questions', () => {
+    expect(getTemperature('general', "What's the WiFi password?")).toBe(0.0);
+    expect(getTemperature('general', "What's the door code?")).toBe(0.0);
+    expect(getTemperature('general', "What's the gate code?")).toBe(0.0);
+    expect(getTemperature('general', "What's the garage code?")).toBe(0.0);
+    expect(getTemperature('general', 'How do I unlock the door?')).toBe(0.0);
+    expect(getTemperature('general', "What's the lockbox code?")).toBe(0.0);
+    expect(getTemperature('general', "What's the wi-fi password?")).toBe(0.0);
+    expect(getTemperature('general', "What's the access code?")).toBe(0.0);
+  });
+
+  it('uses low temperature for other factual questions', () => {
     expect(getTemperature('general', 'What time is checkout?')).toBe(0.3);
-    expect(getTemperature('general', "What's the door code?")).toBe(0.3);
+    expect(getTemperature('general', 'What are the house rules?')).toBe(0.3);
+    expect(getTemperature('general', 'What is the address?')).toBe(0.3);
   });
 
   it('uses higher temperature for recommendations', () => {
@@ -324,6 +359,13 @@ describe('Dynamic Temperature', () => {
   it('uses context-based temperature for general questions', () => {
     expect(getTemperature('thermostat', 'How does this work?')).toBe(0.3);
     expect(getTemperature('general', 'How does this work?')).toBe(0.5);
+  });
+
+  it('uses correct temperature for new contexts', () => {
+    expect(getTemperature('bedroom', 'How does this work?')).toBe(0.4);
+    expect(getTemperature('parking', 'How does this work?')).toBe(0.3);
+    expect(getTemperature('amenities', 'How does this work?')).toBe(0.4);
+    expect(getTemperature('policies', 'How does this work?')).toBe(0.3);
   });
 });
 
@@ -397,5 +439,35 @@ describe('Conversation History Sanitization', () => {
     const result = sanitizeHistory(history);
     expect(result[0].role).toBe('user');
     expect(result[result.length - 1].role).toBe('model');
+  });
+});
+
+describe('Negative Feedback Injection', () => {
+  const mockProperty = {
+    name: 'Beach House',
+    city: 'Miami',
+    state: 'FL',
+    address: '123 Ocean Drive',
+    checkInTime: '4:00 PM',
+    checkOutTime: '11:00 AM',
+    houseRules: 'No smoking',
+  };
+
+  it('includes negative feedback in system prompt when provided', () => {
+    const feedback = ['How do I use the TV?', 'Where is the pool?'];
+    const result = buildPrompt(mockProperty, 'Hello', 'general', 'test:1', [], feedback);
+    expect(result.systemInstruction).toContain('PREVIOUS UNHELPFUL RESPONSES');
+    expect(result.systemInstruction).toContain('How do I use the TV?');
+    expect(result.systemInstruction).toContain('Where is the pool?');
+  });
+
+  it('omits feedback section when no negative feedback', () => {
+    const result = buildPrompt(mockProperty, 'Hello', 'general', 'test:1', [], []);
+    expect(result.systemInstruction).not.toContain('PREVIOUS UNHELPFUL RESPONSES');
+  });
+
+  it('omits feedback section when feedback is undefined', () => {
+    const result = buildPrompt(mockProperty, 'Hello', 'general', 'test:1', []);
+    expect(result.systemInstruction).not.toContain('PREVIOUS UNHELPFUL RESPONSES');
   });
 });

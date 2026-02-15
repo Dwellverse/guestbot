@@ -13,6 +13,7 @@ const state = {
   isVerified: false,
   guestName: null,
   sessionToken: null,
+  hostEmail: null,
   history: [], // Conversation history: [{ role: 'user'|'model', text: '...' }]
 };
 
@@ -30,6 +31,7 @@ const chatContainer = document.getElementById('chatContainer');
 const chatForm = document.getElementById('chatForm');
 const messageInput = document.getElementById('messageInput');
 const sendBtn = document.getElementById('sendBtn');
+let lastUserMessage = '';
 
 const CONTEXT_LABELS = {
   general: () => t('chat.context_general'),
@@ -39,6 +41,10 @@ const CONTEXT_LABELS = {
   bathroom: () => t('chat.context_bathroom'),
   pool: () => t('chat.context_pool'),
   checkout: () => t('chat.context_checkout'),
+  bedroom: () => t('chat.context_bedroom'),
+  parking: () => t('chat.context_parking'),
+  amenities: () => t('chat.context_amenities'),
+  policies: () => t('chat.context_policies'),
 };
 
 // Parse URL params and restore session
@@ -73,6 +79,7 @@ function saveSession() {
       isVerified: state.isVerified,
       guestName: state.guestName,
       sessionToken: state.sessionToken,
+      hostEmail: state.hostEmail,
       history: state.history,
       savedAt: Date.now(),
     };
@@ -104,6 +111,7 @@ function restoreSession() {
     state.isVerified = session.isVerified;
     state.guestName = session.guestName;
     state.sessionToken = session.sessionToken || null;
+    state.hostEmail = session.hostEmail || null;
     state.history = session.history || [];
     state.context = session.context || state.context;
 
@@ -122,6 +130,7 @@ function restoreSession() {
       const div = document.createElement('div');
       div.className = `message ${msg.role === 'user' ? 'user' : 'bot'}`;
       div.textContent = msg.text;
+      if (msg.time) appendTimestamp(div, msg.time);
       if (msg.role === 'model') {
         addFeedbackButtons(div, msg.text);
       }
@@ -173,6 +182,7 @@ verifyBtn.addEventListener('click', async () => {
       state.isVerified = true;
       state.guestName = data.data?.guestName || 'Guest';
       state.sessionToken = data.data?.sessionToken || null;
+      state.hostEmail = data.data?.hostEmail || null;
 
       verifyScreen.classList.add('hidden');
       chatScreen.classList.add('active');
@@ -205,9 +215,10 @@ chatForm.addEventListener('submit', async (e) => {
 
   const message = messageInput.value.trim();
   if (!message) return;
+  lastUserMessage = message;
 
   addMessage(message, 'user');
-  state.history.push({ role: 'user', text: message });
+  state.history.push({ role: 'user', text: message, time: Date.now() });
   messageInput.value = '';
   sendBtn.disabled = true;
 
@@ -240,7 +251,9 @@ chatForm.addEventListener('submit', async (e) => {
       const errData = await res.json().catch(() => ({}));
       cursor.remove();
       botEl.textContent = errData.message || t('chat.error_generic');
-      state.history.push({ role: 'model', text: botEl.textContent });
+      appendTimestamp(botEl);
+      addRetryButton(botEl);
+      state.history.push({ role: 'model', text: botEl.textContent, time: Date.now() });
       saveSession();
       sendBtn.disabled = false;
       messageInput.focus();
@@ -312,8 +325,9 @@ chatForm.addEventListener('submit', async (e) => {
 
       // Ensure cursor is removed
       if (cursor.parentNode) cursor.remove();
+      appendTimestamp(botEl);
 
-      state.history.push({ role: 'model', text: fullText });
+      state.history.push({ role: 'model', text: fullText, time: Date.now() });
       addFeedbackButtons(botEl, message);
     } else {
       // Fallback: non-streaming JSON response
@@ -322,7 +336,8 @@ chatForm.addEventListener('submit', async (e) => {
 
       if (data.success && data.data?.answer) {
         botEl.textContent = data.data.answer;
-        state.history.push({ role: 'model', text: data.data.answer });
+        appendTimestamp(botEl);
+        state.history.push({ role: 'model', text: data.data.answer, time: Date.now() });
 
         // Update context if server detected a different one
         if (data.data.context && data.data.context !== state.context) {
@@ -335,13 +350,16 @@ chatForm.addEventListener('submit', async (e) => {
         addFeedbackButtons(botEl, message);
       } else {
         botEl.textContent = t('chat.error_generic');
-        state.history.push({ role: 'model', text: botEl.textContent });
+        appendTimestamp(botEl);
+        state.history.push({ role: 'model', text: botEl.textContent, time: Date.now() });
       }
     }
   } catch (err) {
     if (cursor.parentNode) cursor.remove();
     botEl.textContent = t('chat.error_connection');
-    state.history.push({ role: 'model', text: botEl.textContent });
+    appendTimestamp(botEl);
+    addRetryButton(botEl);
+    state.history.push({ role: 'model', text: botEl.textContent, time: Date.now() });
   }
 
   saveSession();
@@ -369,8 +387,33 @@ function addFeedbackButtons(messageEl, question) {
   downBtn.title = t('chat.feedback_not_helpful');
   downBtn.addEventListener('click', () => submitFeedback(question, 'negative', wrapper));
 
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'copy-btn';
+  copyBtn.textContent = '\u{1F4CB}';
+  copyBtn.title = 'Copy';
+  copyBtn.addEventListener('click', () => {
+    const msgText = messageEl.firstChild?.textContent || '';
+    navigator.clipboard.writeText(msgText).then(() => {
+      copyBtn.textContent = '\u2713';
+      setTimeout(() => {
+        copyBtn.textContent = '\u{1F4CB}';
+      }, 1500);
+    });
+  });
+
   wrapper.appendChild(upBtn);
   wrapper.appendChild(downBtn);
+  wrapper.appendChild(copyBtn);
+
+  // Contact host link
+  if (state.hostEmail) {
+    const contactLink = document.createElement('a');
+    contactLink.className = 'contact-host-link';
+    contactLink.href = `mailto:${state.hostEmail}?subject=${encodeURIComponent(t('chat.contact_subject') || 'Question about my stay')}`;
+    contactLink.textContent = t('chat.contact_host') || 'Contact Host';
+    wrapper.appendChild(contactLink);
+  }
+
   messageEl.appendChild(wrapper);
 }
 
@@ -399,10 +442,22 @@ async function submitFeedback(question, rating, wrapper) {
 // ============================================
 // Utility
 // ============================================
+function formatTime(date) {
+  return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function appendTimestamp(el, time) {
+  const ts = document.createElement('span');
+  ts.className = 'message-time';
+  ts.textContent = formatTime(time || Date.now());
+  el.appendChild(ts);
+}
+
 function addMessage(text, className) {
   const div = document.createElement('div');
   div.className = `message ${className}`;
   div.textContent = text;
+  appendTimestamp(div);
   chatContainer.appendChild(div);
   chatContainer.scrollTop = chatContainer.scrollHeight;
   return div;
@@ -429,5 +484,71 @@ document.querySelectorAll('.quick-btn').forEach((btn) => {
 chatForm.addEventListener('submit', () => {
   quickActions.classList.add('hidden');
 });
+
+// Retry button for failed AI responses
+function addRetryButton(botEl) {
+  const retryBtn = document.createElement('button');
+  retryBtn.className = 'retry-btn';
+  retryBtn.textContent = 'Try again';
+  retryBtn.addEventListener('click', () => {
+    botEl.remove();
+    if (state.history.length > 0 && state.history[state.history.length - 1].role === 'model') {
+      state.history.pop();
+    }
+    messageInput.value = lastUserMessage;
+    chatForm.dispatchEvent(new Event('submit'));
+  });
+  botEl.appendChild(retryBtn);
+}
+
+// Connection state indicator
+window.addEventListener('offline', () => {
+  document.getElementById('offlineBanner').classList.add('visible');
+  sendBtn.disabled = true;
+});
+window.addEventListener('online', () => {
+  document.getElementById('offlineBanner').classList.remove('visible');
+  sendBtn.disabled = false;
+});
+
+// Language switcher keyboard navigation
+const langSwitcher = document.querySelector('.lang-switcher');
+const langToggle = document.querySelector('.lang-toggle');
+const langOptionEls = document.querySelectorAll('.lang-option');
+
+if (langToggle && langSwitcher) {
+  // Sync aria-expanded with open state
+  new MutationObserver(() => {
+    langToggle.setAttribute('aria-expanded', String(langSwitcher.classList.contains('open')));
+  }).observe(langSwitcher, { attributes: true, attributeFilter: ['class'] });
+
+  langToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      langSwitcher.classList.toggle('open');
+      if (langSwitcher.classList.contains('open') && langOptionEls.length > 0) {
+        langOptionEls[0].focus();
+      }
+    }
+    if (e.key === 'Escape') {
+      langSwitcher.classList.remove('open');
+    }
+  });
+
+  langOptionEls.forEach((opt, i) => {
+    opt.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        langSwitcher.classList.remove('open');
+        langToggle.focus();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        (langOptionEls[i + 1] || langOptionEls[0]).focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        (langOptionEls[i - 1] || langOptionEls[langOptionEls.length - 1]).focus();
+      }
+    });
+  });
+}
 
 init();

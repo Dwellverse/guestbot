@@ -6,9 +6,16 @@
     <title>GuestBot — AI Concierge for Vacation Rentals | Reduce Guest Questions 80%</title>
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
 
-    <!-- Google Analytics 4 -->
-    <!-- TODO: Replace GA_MEASUREMENT_ID with your actual GA4 ID (e.g., G-XXXXXXXXXX) -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script> -->
+    <!-- Google Analytics 4 — Replace GA_MEASUREMENT_ID with your GA4 ID (e.g., G-XXXXXXXXXX) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
     <script type="module" src="/js/index.js"></script>
 
     <!-- Google Search Console Verification -->
@@ -23,6 +30,7 @@
     />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <meta
       name="description"
       content="GuestBot is the #1 AI-powered guest concierge for Airbnb, VRBO & vacation rentals. QR codes let guests get instant answers 24/7. Setup in 5 minutes. Only $5.99/mo."

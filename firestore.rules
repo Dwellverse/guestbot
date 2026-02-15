@@ -42,7 +42,11 @@ service cloud.firestore {
         (!('city' in request.resource.data) || (request.resource.data.city is string && request.resource.data.city.size() <= 100)) &&
         (!('state' in request.resource.data) || (request.resource.data.state is string && request.resource.data.state.size() <= 100)) &&
         (!('checkInTime' in request.resource.data) || (request.resource.data.checkInTime is string && request.resource.data.checkInTime.size() <= 50)) &&
-        (!('checkOutTime' in request.resource.data) || (request.resource.data.checkOutTime is string && request.resource.data.checkOutTime.size() <= 50));
+        (!('checkOutTime' in request.resource.data) || (request.resource.data.checkOutTime is string && request.resource.data.checkOutTime.size() <= 50)) &&
+        (!('bedroomInfo' in request.resource.data) || (request.resource.data.bedroomInfo is string && request.resource.data.bedroomInfo.size() <= 5000)) &&
+        (!('parkingInfo' in request.resource.data) || (request.resource.data.parkingInfo is string && request.resource.data.parkingInfo.size() <= 5000)) &&
+        (!('amenitiesInfo' in request.resource.data) || (request.resource.data.amenitiesInfo is string && request.resource.data.amenitiesInfo.size() <= 5000)) &&
+        (!('petPolicy' in request.resource.data) || (request.resource.data.petPolicy is string && request.resource.data.petPolicy.size() <= 5000));
 
       allow update: if request.auth != null &&
         hasActiveSubscription(request.auth.uid) &&
@@ -62,7 +66,11 @@ service cloud.firestore {
         (!('city' in request.resource.data) || (request.resource.data.city is string && request.resource.data.city.size() <= 100)) &&
         (!('state' in request.resource.data) || (request.resource.data.state is string && request.resource.data.state.size() <= 100)) &&
         (!('checkInTime' in request.resource.data) || (request.resource.data.checkInTime is string && request.resource.data.checkInTime.size() <= 50)) &&
-        (!('checkOutTime' in request.resource.data) || (request.resource.data.checkOutTime is string && request.resource.data.checkOutTime.size() <= 50));
+        (!('checkOutTime' in request.resource.data) || (request.resource.data.checkOutTime is string && request.resource.data.checkOutTime.size() <= 50)) &&
+        (!('bedroomInfo' in request.resource.data) || (request.resource.data.bedroomInfo is string && request.resource.data.bedroomInfo.size() <= 5000)) &&
+        (!('parkingInfo' in request.resource.data) || (request.resource.data.parkingInfo is string && request.resource.data.parkingInfo.size() <= 5000)) &&
+        (!('amenitiesInfo' in request.resource.data) || (request.resource.data.amenitiesInfo is string && request.resource.data.amenitiesInfo.size() <= 5000)) &&
+        (!('petPolicy' in request.resource.data) || (request.resource.data.petPolicy is string && request.resource.data.petPolicy.size() <= 5000));
 
       allow delete: if request.auth != null &&
         resource.data.ownerId == request.auth.uid;
@@ -96,6 +104,13 @@ service cloud.firestore {
     // Feedback collection - server-side only (written via Cloud Function)
     // Property owners can read feedback for their properties
     match /guestbot_feedback/{feedbackId} {
+      allow read: if request.auth != null &&
+        ownsProperty(resource.data.propertyId);
+      allow write: if false;
+    }
+
+    // Usage analytics - server-written, owners can read for their properties
+    match /guestbot_usage/{usageId} {
       allow read: if request.auth != null &&
         ownsProperty(resource.data.propertyId);
       allow write: if false;

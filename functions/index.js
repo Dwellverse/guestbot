@@ -1,5 +1,6 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { onDocumentWritten } = require('firebase-functions/v2/firestore');
+const { onSchedule } = require('firebase-functions/v2/scheduler');
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, Timestamp } = require('firebase-admin/firestore');
 const { VertexAI, HarmCategory, HarmBlockThreshold } = require('@google-cloud/vertexai');
@@ -14,6 +15,8 @@ const { filterOutput } = require('./output-filter');
 const { validateResponse } = require('./response-validator');
 const { checkSubscription } = require('./subscription');
 const { syncSubscriptionToUser } = require('./subscription-sync');
+const { createRequestLogger } = require('./lib/logger');
+const { ExecutionTimer, trackApiUsage } = require('./lib/metrics');
 
 initializeApp();
 const db = getFirestore();
@@ -222,6 +225,7 @@ const cors = (req, res) => {
   res.set('Vary', 'Origin');
 
   // Security headers on all responses
+  res.set('Cache-Control', 'no-store');
   res.set('X-Content-Type-Options', 'nosniff');
   res.set('X-Frame-Options', 'DENY');
 
@@ -264,6 +268,8 @@ async function verifyAuthToken(req) {
 // ============================================
 exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
   if (cors(req, res)) return;
+  const log = createRequestLogger(req);
+  const timer = new ExecutionTimer('verifyGuest');
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -339,7 +345,9 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
           ? booking.checkOut.toDate()
           : new Date(booking.checkOut);
 
-        if (now >= checkIn && now <= checkOut) {
+        // Add 12-hour buffer to account for timezone differences
+        const TWELVE_HOURS = 12 * 60 * 60 * 1000;
+        if (now >= checkIn.getTime() - TWELVE_HOURS && now <= checkOut.getTime() + TWELVE_HOURS) {
           matchedBooking = booking;
           break;
         }
@@ -371,6 +379,20 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
         expiresAt: Timestamp.fromMillis(Date.now() + 30 * 60 * 1000), // 30 min
       });
 
+    // Get host email for contact escalation
+    let hostEmail = null;
+    if (property.ownerId) {
+      try {
+        const ownerRecord = await getAuth().getUser(property.ownerId);
+        hostEmail = ownerRecord.email || null;
+      } catch {
+        // Owner lookup failed — non-critical, omit email
+      }
+    }
+
+    log.info('Guest verified', { propertyId, duration: timer.end() });
+    trackApiUsage(db, propertyId, 'verifyGuest', true);
+
     res.json({
       success: true,
       verified: true,
@@ -378,10 +400,11 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
         guestName: matchedBooking.guestName,
         propertyName: property.name,
         sessionToken,
+        hostEmail,
       },
     });
   } catch (error) {
-    console.error('Verify error:', error);
+    log.error('Verify error', error, { duration: timer.end() });
     res.status(500).json({ success: false, message: 'Verification failed. Please try again.' });
   }
 });
@@ -391,6 +414,8 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
 // ============================================
 exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
   if (cors(req, res)) return;
+  const log = createRequestLogger(req);
+  const timer = new ExecutionTimer('askGuestBot');
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -478,16 +503,35 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
 
     const identifier = `${clientIP}:${propertyId}`;
 
+    // Fetch recent negative feedback to help AI improve
+    let negativeFeedback = [];
+    try {
+      const fbSnap = await db
+        .collection('guestbot_feedback')
+        .where('propertyId', '==', propertyId)
+        .where('rating', '==', 'negative')
+        .orderBy('createdAt', 'desc')
+        .limit(5)
+        .get();
+      negativeFeedback = fbSnap.docs.map((d) => d.data().question).filter(Boolean);
+    } catch {
+      // Non-critical: skip if feedback query fails (e.g. missing index)
+    }
+
     // Build structured prompt with conversation history and smart context
     const { systemInstruction, contents, temperature, resolvedContext } = buildPrompt(
       property,
       sanitized.sanitized,
       qrContext || 'general',
       identifier,
-      history
+      history,
+      negativeFeedback
     );
 
     const model = getModel(temperature);
+
+    // AI timeout constant (30 seconds)
+    const AI_TIMEOUT_MS = 30000;
 
     if (useStreaming) {
       // SSE streaming response
@@ -504,14 +548,23 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
       });
 
       let fullText = '';
+      let timedOut = false;
+
+      // Force-end streaming after timeout
+      const streamTimeout = setTimeout(() => {
+        timedOut = true;
+      }, AI_TIMEOUT_MS);
 
       for await (const chunk of streamResult.stream) {
+        if (timedOut) break;
         const chunkText = chunk.candidates?.[0]?.content?.parts?.[0]?.text || '';
         if (chunkText) {
           fullText += chunkText;
           res.write(`data: ${JSON.stringify({ type: 'chunk', text: chunkText })}\n\n`);
         }
       }
+
+      clearTimeout(streamTimeout);
 
       // Post-stream: validate and filter the complete response
       const { validated, hallucinations } = validateResponse(fullText, property);
@@ -522,15 +575,26 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
         res.write(`data: ${JSON.stringify({ type: 'replace', text: filtered })}\n\n`);
       }
 
+      log.info('Streaming response complete', {
+        propertyId,
+        context: resolvedContext,
+        duration: timer.end(),
+      });
+      trackApiUsage(db, propertyId, 'askGuestBot', true);
+
       res.write(`data: ${JSON.stringify({ type: 'done' })}\n\n`);
       res.end();
     } else {
-      // Non-streaming response (backwards compatible)
-      const result = await model.generateContent({
+      // Non-streaming response with timeout
+      const aiPromise = model.generateContent({
         systemInstruction: { parts: [{ text: systemInstruction }] },
         contents,
       });
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('AI request timed out')), AI_TIMEOUT_MS)
+      );
 
+      const result = await Promise.race([aiPromise, timeoutPromise]);
       const response = await result.response;
       const rawAnswer = response.text();
 
@@ -538,13 +602,21 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
       const { validated } = validateResponse(rawAnswer, property);
       const { filtered: answer } = filterOutput(validated);
 
+      log.info('Non-streaming response complete', {
+        propertyId,
+        context: resolvedContext,
+        duration: timer.end(),
+      });
+      trackApiUsage(db, propertyId, 'askGuestBot', true);
+
       res.json({
         success: true,
         data: { answer, context: resolvedContext },
       });
     }
   } catch (error) {
-    console.error('AI error:', error);
+    log.error('AI error', error, { propertyId: req.body.propertyId, duration: timer.end() });
+    trackApiUsage(db, req.body.propertyId || 'unknown', 'askGuestBot', false);
     // For streaming, check if headers already sent
     if (res.headersSent) {
       res.write(
@@ -565,6 +637,7 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
 // ============================================
 exports.submitContact = onRequest({ cors: false }, async (req, res) => {
   if (cors(req, res)) return;
+  const log = createRequestLogger(req);
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -601,9 +674,10 @@ exports.submitContact = onRequest({ cors: false }, async (req, res) => {
       read: false,
     });
 
+    log.info('Contact form submitted', { email: '[redacted]' });
     res.json({ success: true });
   } catch (error) {
-    console.error('Contact form error:', error);
+    log.error('Contact form error', error);
     res.status(500).json({ success: false, message: 'Failed to submit. Please try again.' });
   }
 });
@@ -613,6 +687,7 @@ exports.submitContact = onRequest({ cors: false }, async (req, res) => {
 // ============================================
 exports.submitFeedback = onRequest({ cors: false }, async (req, res) => {
   if (cors(req, res)) return;
+  const log = createRequestLogger(req);
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -624,13 +699,30 @@ exports.submitFeedback = onRequest({ cors: false }, async (req, res) => {
     return res.status(429).json({ success: false, message: 'Too many requests.' });
   }
 
-  const { propertyId, question, rating } = req.body;
+  const { propertyId, question, rating, sessionToken } = req.body;
 
   if (!propertyId || !question || !['positive', 'negative'].includes(rating)) {
     return res.status(400).json({
       success: false,
       message: 'propertyId, question, and rating (positive/negative) required',
     });
+  }
+
+  // Verify session token (same pattern as askGuestBot)
+  if (!sessionToken) {
+    return res.status(401).json({ success: false, message: 'Verification required' });
+  }
+
+  const sessionDoc = await db.collection('guestbot_sessions').doc(sessionToken).get();
+  if (!sessionDoc.exists) {
+    return res.status(401).json({ success: false, message: 'Invalid session' });
+  }
+
+  const session = sessionDoc.data();
+  if (session.propertyId !== propertyId || session.expiresAt.toMillis() < Date.now()) {
+    return res
+      .status(401)
+      .json({ success: false, message: 'Session expired. Please verify again.' });
   }
 
   try {
@@ -647,9 +739,12 @@ exports.submitFeedback = onRequest({ cors: false }, async (req, res) => {
       createdAt: Timestamp.now(),
     });
 
+    log.info('Feedback submitted', { propertyId, rating });
+    trackApiUsage(db, propertyId, 'submitFeedback', true);
+
     res.json({ success: true });
   } catch (error) {
-    console.error('Feedback error:', error);
+    log.error('Feedback error', error, { propertyId });
     res.status(500).json({ success: false, message: 'Failed to submit feedback.' });
   }
 });
@@ -659,6 +754,8 @@ exports.submitFeedback = onRequest({ cors: false }, async (req, res) => {
 // ============================================
 exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
   if (cors(req, res)) return;
+  const log = createRequestLogger(req);
+  const timer = new ExecutionTimer('syncIcal');
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -876,6 +973,14 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
         { merge: true }
       );
 
+    log.info('iCal sync complete', {
+      propertyId,
+      platform: safePlatform,
+      imported,
+      skipped,
+      duration: timer.end(),
+    });
+
     res.json({
       success: true,
       imported,
@@ -883,7 +988,7 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
       message: `Synced ${imported} bookings from ${safePlatform}`,
     });
   } catch (error) {
-    console.error('iCal sync error:', error);
+    log.error('iCal sync error', error, { propertyId, duration: timer.end() });
 
     // Generic error message (don't expose internal details)
     if (error.name === 'AbortError') {
@@ -909,6 +1014,26 @@ exports.syncSubscriptionStatus = onDocumentWritten(
   async (event) => {
     const uid = event.params.uid;
     await syncSubscriptionToUser(uid);
+  }
+);
+
+// ============================================
+// SCHEDULED: Clean up expired sessions (daily)
+// ============================================
+exports.cleanupExpiredSessions = onSchedule(
+  { schedule: 'every 24 hours', region: 'us-central1' },
+  async () => {
+    const now = Timestamp.now();
+    const sessionsRef = db.collection('guestbot_sessions');
+    const expired = await sessionsRef.where('expiresAt', '<', now).limit(500).get();
+
+    if (expired.empty) return;
+
+    const batch = db.batch();
+    expired.docs.forEach((doc) => batch.delete(doc.ref));
+    await batch.commit();
+
+    console.log(`Cleaned up ${expired.size} expired sessions`);
   }
 );
 

@@ -40,7 +40,29 @@
             "value": "camera=(), microphone=(), geolocation=(), payment=(self)"
           }
         ]
+      },
+      {
+        "source": "/logo.svg",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      },
+      {
+        "source": "/css/**",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      },
+      {
+        "source": "/js/**",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      },
+      {
+        "source": "/locales/*.json",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
       }
+    ],
+    "redirects": [
+      { "source": "/app/", "destination": "/app", "type": 301 },
+      { "source": "/chat/", "destination": "/chat", "type": 301 },
+      { "source": "/privacy/", "destination": "/privacy", "type": 301 },
+      { "source": "/terms/", "destination": "/terms", "type": 301 }
     ],
     "rewrites": [
       {

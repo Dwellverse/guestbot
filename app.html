@@ -269,6 +269,36 @@
         display: block;
       }
 
+      .auth-success {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 20px;
+        display: none;
+      }
+
+      .auth-success.show {
+        display: block;
+      }
+
+      .forgot-password {
+        text-align: right;
+        margin: -12px 0 20px;
+        font-size: 13px;
+      }
+
+      .forgot-password a {
+        color: var(--gray-400);
+        text-decoration: none;
+      }
+
+      .forgot-password a:hover {
+        color: var(--accent);
+      }
+
       /* APP LAYOUT */
       .app {
         display: none;
@@ -701,6 +731,115 @@
       .qr-label {
         font-size: 13px;
         color: var(--gray-400);
+        margin-bottom: 8px;
+      }
+
+      .qr-download-btn {
+        display: inline-block;
+        padding: 4px 12px;
+        background: var(--dark-3);
+        border: 1px solid var(--dark-4);
+        border-radius: 6px;
+        color: var(--gray-400);
+        font-size: 11px;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .qr-download-btn:hover {
+        background: var(--accent);
+        color: var(--white);
+        border-color: var(--accent);
+      }
+
+      .qr-download-all {
+        margin-top: 20px;
+      }
+
+      /* ANALYTICS */
+      .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .analytics-card {
+        background: var(--dark-3);
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+      }
+      .analytics-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .analytics-label {
+        font-size: 12px;
+        color: var(--gray-500);
+        margin-top: 4px;
+      }
+      .analytics-subsection {
+        margin-bottom: 20px;
+      }
+      .analytics-subtitle {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--gray-300);
+      }
+      .analytics-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .analytics-empty {
+        font-size: 13px;
+        color: var(--gray-500);
+      }
+      .analytics-bar-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+      }
+      .analytics-bar-label {
+        width: 80px;
+        color: var(--gray-400);
+        text-transform: capitalize;
+      }
+      .analytics-bar-track {
+        flex: 1;
+        height: 8px;
+        background: var(--dark-3);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .analytics-bar-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 4px;
+      }
+      .analytics-bar-count {
+        width: 36px;
+        text-align: right;
+        color: var(--gray-500);
+      }
+      .analytics-feedback-item {
+        font-size: 13px;
+        color: var(--gray-400);
+        padding: 8px 12px;
+        background: var(--dark-3);
+        border-radius: 8px;
+      }
+      .analytics-feedback-item .question {
+        color: var(--white);
+      }
+      .analytics-feedback-item .date {
+        font-size: 11px;
+        color: var(--gray-500);
+        margin-top: 4px;
       }
 
       /* BOOKINGS TABLE */
@@ -764,6 +903,35 @@
       .booking-status.past {
         background: var(--dark-3);
         color: var(--gray-500);
+      }
+
+      .booking-source {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 100px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: capitalize;
+      }
+
+      .booking-source.airbnb {
+        background: rgba(255, 56, 92, 0.15);
+        color: #ff385c;
+      }
+
+      .booking-source.vrbo {
+        background: rgba(59, 130, 246, 0.15);
+        color: #60a5fa;
+      }
+
+      .booking-source.booking {
+        background: rgba(0, 53, 128, 0.2);
+        color: #60a5fa;
+      }
+
+      .booking-source.manual {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--gray-400);
       }
 
       .no-bookings {
@@ -977,6 +1145,31 @@
         transform: translateX(-50%) translateY(0);
       }
 
+      .btn-icon {
+        background: none;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        padding: 8px;
+        color: var(--gray-400);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s;
+      }
+
+      .btn-icon:hover {
+        color: var(--white);
+        border-color: var(--accent);
+        background: rgba(16, 185, 129, 0.1);
+      }
+
+      .settings-success {
+        color: var(--accent);
+        font-size: 13px;
+        margin-top: 12px;
+        min-height: 20px;
+      }
+
       /* HIDDEN UTILITY */
       .hidden {
         display: none !important;
@@ -1023,6 +1216,8 @@
             <label class="form-label">Password</label>
             <input type="password" class="form-input" id="passwordInput" placeholder="••••••••" required />
           </div>
+          <p class="forgot-password" id="forgotPasswordLink"><a href="#">Forgot password?</a></p>
+          <div class="auth-success" id="authSuccess"></div>
           <button type="submit" class="btn btn-primary" id="authBtn">Sign In</button>
         </form>
 
@@ -1074,6 +1269,23 @@
           </div>
           <span class="header-plan-badge free" id="headerPlanBadge">Free</span>
           <button class="btn btn-secondary btn-sm" id="manageBillingBtn" style="display: none">Manage Billing</button>
+          <button class="btn-icon" id="settingsBtn" title="Account Settings">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+          </button>
           <button class="btn btn-secondary btn-sm" id="logoutBtn">Logout</button>
         </div>
       </header>
@@ -1096,6 +1308,13 @@
               <div class="spinner"></div>
             </div>
 
+            <input
+              type="text"
+              class="form-input"
+              id="propertySearch"
+              placeholder="Search properties..."
+              style="margin-bottom: 16px; max-width: 400px"
+            />
             <div class="properties-grid" id="propertiesGrid"></div>
 
             <div class="empty-state" id="emptyState">
@@ -1110,11 +1329,11 @@
     </div>
 
     <!-- PROPERTY MODAL -->
-    <div class="modal-overlay" id="propertyModal">
+    <div class="modal-overlay" id="propertyModal" role="dialog" aria-modal="true" aria-labelledby="propertyModalTitle">
       <div class="modal">
         <div class="modal-header">
           <h2 class="modal-title" id="propertyModalTitle">Add Property</h2>
-          <button class="modal-close" id="propertyModalClose">&times;</button>
+          <button class="modal-close" id="propertyModalClose" aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <div class="tabs">
@@ -1123,6 +1342,7 @@
             <button class="tab" data-tab="info">Guest Info</button>
             <button class="tab" data-tab="bookings">Bookings</button>
             <button class="tab" data-tab="qr">QR Codes</button>
+            <button class="tab" data-tab="analytics">Analytics</button>
           </div>
 
           <form id="propertyForm">
@@ -1133,20 +1353,33 @@
               <div class="form-section">
                 <div class="form-group">
                   <label class="form-label">Property Name</label>
-                  <input type="text" class="form-input" id="propName" placeholder="Beach House" required />
+                  <input
+                    type="text"
+                    class="form-input"
+                    id="propName"
+                    placeholder="Beach House"
+                    required
+                    maxlength="200"
+                  />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Address</label>
-                  <input type="text" class="form-input" id="propAddress" placeholder="123 Ocean Drive" />
+                  <input
+                    type="text"
+                    class="form-input"
+                    id="propAddress"
+                    placeholder="123 Ocean Drive"
+                    maxlength="500"
+                  />
                 </div>
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">City</label>
-                    <input type="text" class="form-input" id="propCity" placeholder="Miami" />
+                    <input type="text" class="form-input" id="propCity" placeholder="Miami" maxlength="100" />
                   </div>
                   <div class="form-group">
                     <label class="form-label">State</label>
-                    <input type="text" class="form-input" id="propState" placeholder="FL" />
+                    <input type="text" class="form-input" id="propState" placeholder="FL" maxlength="100" />
                   </div>
                 </div>
               </div>
@@ -1159,11 +1392,23 @@
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">Network Name</label>
-                    <input type="text" class="form-input" id="propWifiName" placeholder="BeachHouse_5G" />
+                    <input
+                      type="text"
+                      class="form-input"
+                      id="propWifiName"
+                      placeholder="BeachHouse_5G"
+                      maxlength="100"
+                    />
                   </div>
                   <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="text" class="form-input" id="propWifiPassword" placeholder="welcome123" />
+                    <input
+                      type="text"
+                      class="form-input"
+                      id="propWifiPassword"
+                      placeholder="welcome123"
+                      maxlength="100"
+                    />
                   </div>
                 </div>
               </div>
@@ -1172,11 +1417,11 @@
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">Front Door Code</label>
-                    <input type="text" class="form-input" id="propDoorCode" placeholder="1234" />
+                    <input type="text" class="form-input" id="propDoorCode" placeholder="1234" maxlength="50" />
                   </div>
                   <div class="form-group">
                     <label class="form-label">Lockbox Code</label>
-                    <input type="text" class="form-input" id="propLockboxCode" placeholder="5678" />
+                    <input type="text" class="form-input" id="propLockboxCode" placeholder="5678" maxlength="50" />
                   </div>
                 </div>
                 <div class="form-group">
@@ -1186,16 +1431,17 @@
                     class="form-input"
                     id="propLockboxLocation"
                     placeholder="On the front porch, behind the plant pot"
+                    maxlength="200"
                   />
                 </div>
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">Gate Code</label>
-                    <input type="text" class="form-input" id="propGateCode" placeholder="0000" />
+                    <input type="text" class="form-input" id="propGateCode" placeholder="0000" maxlength="50" />
                   </div>
                   <div class="form-group">
                     <label class="form-label">Garage Code</label>
-                    <input type="text" class="form-input" id="propGarageCode" placeholder="9999" />
+                    <input type="text" class="form-input" id="propGarageCode" placeholder="9999" maxlength="50" />
                   </div>
                 </div>
               </div>
@@ -1223,6 +1469,46 @@
                     class="form-textarea"
                     id="propRules"
                     placeholder="No smoking, no parties, quiet hours 10pm-8am..."
+                    maxlength="5000"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="form-section">
+                <div class="form-section-title">Area Details</div>
+                <div class="form-group">
+                  <label class="form-label">Bedroom Info</label>
+                  <textarea
+                    class="form-textarea"
+                    id="propBedroomInfo"
+                    placeholder="Number of bedrooms, bed sizes, extra pillows/blankets location, closet info..."
+                    maxlength="5000"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Parking Info</label>
+                  <textarea
+                    class="form-textarea"
+                    id="propParkingInfo"
+                    placeholder="Parking location, passes, garage access, driveway, street rules, EV charger..."
+                    maxlength="5000"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Amenities Info</label>
+                  <textarea
+                    class="form-textarea"
+                    id="propAmenitiesInfo"
+                    placeholder="Washer/dryer location, gym, pool, balcony, grill/BBQ, fireplace, bikes, games..."
+                    maxlength="5000"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Pet Policy</label>
+                  <textarea
+                    class="form-textarea"
+                    id="propPetPolicy"
+                    placeholder="Pet-friendly? Fees, restrictions, designated areas, clean-up supplies location..."
+                    maxlength="5000"
                   ></textarea>
                 </div>
               </div>
@@ -1232,7 +1518,8 @@
                   <textarea
                     class="form-textarea"
                     id="propCustomInfo"
-                    placeholder="Appliance instructions, parking info, special features, etc."
+                    placeholder="Appliance instructions, special features, anything else guests should know..."
+                    maxlength="5000"
                   ></textarea>
                 </div>
               </div>
@@ -1244,6 +1531,7 @@
                     class="form-textarea"
                     id="propLocalTips"
                     placeholder="Share your favorite restaurants, parks, activities, kid-friendly spots, beaches, hiking trails, etc. The AI will prioritize these when guests ask for recommendations."
+                    maxlength="5000"
                   ></textarea>
                 </div>
               </div>
@@ -1326,6 +1614,45 @@
                 <div class="qr-codes" id="qrCodes">
                   <p style="color: var(--gray-500)">Save property first to generate QR codes</p>
                 </div>
+                <button type="button" class="btn btn-secondary btn-sm qr-download-all hidden" id="downloadAllQrBtn">
+                  Download All QR Codes
+                </button>
+              </div>
+            </div>
+
+            <!-- ANALYTICS TAB -->
+            <div class="tab-content" data-tab="analytics">
+              <div class="analytics-section" id="analyticsSection">
+                <div class="analytics-grid">
+                  <div class="analytics-card">
+                    <div class="analytics-value" id="analyticsQuestions7d">—</div>
+                    <div class="analytics-label">Questions (7d)</div>
+                  </div>
+                  <div class="analytics-card">
+                    <div class="analytics-value" id="analyticsQuestions30d">—</div>
+                    <div class="analytics-label">Questions (30d)</div>
+                  </div>
+                  <div class="analytics-card">
+                    <div class="analytics-value" id="analyticsFeedbackRatio">—</div>
+                    <div class="analytics-label">Positive Feedback</div>
+                  </div>
+                  <div class="analytics-card">
+                    <div class="analytics-value" id="analyticsNegativeCount">—</div>
+                    <div class="analytics-label">Negative (30d)</div>
+                  </div>
+                </div>
+                <div class="analytics-subsection">
+                  <h4 class="analytics-subtitle">Top Contexts (30d)</h4>
+                  <div id="analyticsTopContexts" class="analytics-list">
+                    <span class="analytics-empty">No data yet</span>
+                  </div>
+                </div>
+                <div class="analytics-subsection">
+                  <h4 class="analytics-subtitle">Recent Negative Feedback</h4>
+                  <div id="analyticsNegativeFeedback" class="analytics-list">
+                    <span class="analytics-empty">No negative feedback</span>
+                  </div>
+                </div>
               </div>
             </div>
           </form>
@@ -1340,11 +1667,11 @@
     </div>
 
     <!-- BOOKING MODAL -->
-    <div class="modal-overlay" id="bookingModal">
+    <div class="modal-overlay" id="bookingModal" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
       <div class="modal" style="max-width: 450px">
         <div class="modal-header">
-          <h2 class="modal-title">Add Booking</h2>
-          <button class="modal-close" id="bookingModalClose">&times;</button>
+          <h2 class="modal-title" id="bookingModalTitle">Add Booking</h2>
+          <button class="modal-close" id="bookingModalClose" aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <form id="bookingForm">
@@ -1375,12 +1702,45 @@
       </div>
     </div>
 
+    <!-- SETTINGS MODAL -->
+    <div class="modal-overlay" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+      <div class="modal" style="max-width: 450px">
+        <div class="modal-header">
+          <h2 class="modal-title" id="settingsModalTitle">Account Settings</h2>
+          <button class="modal-close" id="settingsModalClose" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-section">
+            <div class="form-section-title">Profile</div>
+            <div class="form-group">
+              <label class="form-label">Display Name</label>
+              <input type="text" class="form-input" id="settingsName" placeholder="Your name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" id="settingsEmail" disabled style="opacity: 0.5" />
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="saveSettingsBtn">Save Changes</button>
+            <div class="settings-success" id="settingsSuccess"></div>
+          </div>
+          <div class="form-section" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--dark-3)">
+            <div class="form-section-title" style="color: var(--red)">Danger Zone</div>
+            <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 16px">
+              Permanently delete your account and all associated data. This cannot be undone.
+            </p>
+            <button type="button" class="btn btn-danger btn-sm" id="deleteAccountBtn">Delete Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- QR Code Library -->
     <script
       src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"
       integrity="sha384-Izc791esqyEy3BEIC42q7jbE0AaOkACziN+dyyXgYeDmpeMCLz0xA+xYN3aCd5zz"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" crossorigin="anonymous"></script>
 
     <!-- Firebase App -->
     <script type="module" src="/js/app.js"></script>

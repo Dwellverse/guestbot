@@ -91,6 +91,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Smoke test
+        run: |
+          curl -sf https://guestbot.io/ > /dev/null
+          curl -sf https://guestbot.io/app > /dev/null
+          curl -sf https://guestbot.io/chat > /dev/null
+          echo "Smoke tests passed"
+
       - name: Notify deployment
         if: always()
         run: |

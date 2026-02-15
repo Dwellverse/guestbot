@@ -114,6 +114,8 @@ export async function setLanguage(lang) {
   document.querySelectorAll('.lang-option').forEach((el) => {
     el.classList.toggle('active', el.dataset.lang === lang);
   });
+  const toggle = document.querySelector('.lang-toggle');
+  if (toggle) toggle.textContent = '\u{1F310} ' + lang.toUpperCase();
 }
 
 export async function initI18n() {
@@ -132,6 +134,7 @@ export async function initI18n() {
 
   const toggleBtn = document.querySelector('.lang-toggle');
   if (toggleBtn) {
+    toggleBtn.textContent = '\u{1F310} ' + currentLang.toUpperCase();
     toggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       toggleBtn.closest('.lang-switcher')?.classList.toggle('open');
