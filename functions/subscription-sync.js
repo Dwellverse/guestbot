@@ -13,6 +13,7 @@
 
 const { getFirestore, Timestamp } = require('firebase-admin/firestore');
 const { checkSubscription } = require('./subscription');
+const { defaultLogger: logger } = require('./lib/logger');
 
 /**
  * Sync subscription status to the user document.
@@ -41,7 +42,7 @@ async function syncSubscriptionToUser(uid) {
 
     await db.collection('guestbot_users').doc(uid).set(update, { merge: true });
   } catch (error) {
-    console.error('Subscription sync error:', error);
+    logger.error('Subscription sync error', error);
   }
 }
 

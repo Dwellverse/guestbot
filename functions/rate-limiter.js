@@ -7,6 +7,7 @@
  */
 
 const { getFirestore, Timestamp } = require('firebase-admin/firestore');
+const { defaultLogger: logger } = require('./lib/logger');
 
 // In-memory rate limit store (fast first-pass)
 const rateLimitStore = new Map();
@@ -166,7 +167,7 @@ async function recordFailedAttempt(ip, propertyId) {
     });
   } catch (error) {
     // Don't let rate limiting errors break the main flow
-    console.error('Rate limiter error:', error);
+    logger.error('Rate limiter error', error);
   }
 }
 
@@ -204,7 +205,7 @@ async function checkBruteForce(ip, propertyId) {
 
     return { locked: false };
   } catch (error) {
-    console.error('Brute force check error:', error);
+    logger.error('Brute force check error', error);
     // Fail open - don't block legitimate users due to DB errors
     return { locked: false };
   }
@@ -267,7 +268,7 @@ async function checkRateLimitFirestore(endpoint, identifier, customLimit) {
 
     return result;
   } catch (error) {
-    console.error('Firestore rate limit error:', error);
+    logger.error('Firestore rate limit error', error);
     return { allowed: true, remaining: 1 }; // Fail open
   }
 }

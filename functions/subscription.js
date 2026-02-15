@@ -9,6 +9,7 @@
  */
 
 const { getFirestore } = require('firebase-admin/firestore');
+const { defaultLogger: logger } = require('./lib/logger');
 
 const ACTIVE_STATUSES = ['active', 'trialing'];
 
@@ -84,7 +85,7 @@ async function checkSubscription(uid) {
 
     return result;
   } catch (error) {
-    console.error('Subscription check error:', error);
+    logger.error('Subscription check error', error);
     return result;
   }
 }

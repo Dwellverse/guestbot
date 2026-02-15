@@ -15,7 +15,7 @@ const { filterOutput } = require('./output-filter');
 const { validateResponse } = require('./response-validator');
 const { checkSubscription } = require('./subscription');
 const { syncSubscriptionToUser } = require('./subscription-sync');
-const { createRequestLogger } = require('./lib/logger');
+const { createRequestLogger, defaultLogger } = require('./lib/logger');
 const { ExecutionTimer, trackApiUsage } = require('./lib/metrics');
 
 initializeApp();
@@ -1033,11 +1033,6 @@ exports.cleanupExpiredSessions = onSchedule(
     expired.docs.forEach((doc) => batch.delete(doc.ref));
     await batch.commit();
 
-    console.log(`Cleaned up ${expired.size} expired sessions`);
+    defaultLogger.info('Cleaned up expired sessions', { count: expired.size });
   }
 );
-
-// Export isPrivateUrl for testing
-exports._isPrivateUrl = isPrivateUrl;
-exports._isPrivateIP = isPrivateIP;
-exports._safeFetch = safeFetch;

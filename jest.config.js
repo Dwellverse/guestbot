@@ -11,6 +11,7 @@ export default {
     '!functions/subscription.js',
     '!functions/subscription-sync.js',
     '!functions/rate-limiter.js',
+    '!functions/lib/logger.js',
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],

@@ -24,8 +24,6 @@ import {
   deleteDoc,
   query,
   where,
-  orderBy,
-  limit as firestoreLimit,
   onSnapshot,
   Timestamp,
 } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
@@ -722,7 +720,7 @@ async function loadAnalytics(propertyId) {
       if (!inLast30) continue;
 
       // Sum up all endpoint totals
-      for (const [key, val] of Object.entries(doc)) {
+      for (const [, val] of Object.entries(doc)) {
         if (val && typeof val === 'object' && val.total) {
           total30 += val.total;
           if (inLast7) total7 += val.total;

@@ -6,6 +6,7 @@
  */
 
 const { Timestamp } = require('firebase-admin/firestore');
+const { defaultLogger: logger } = require('./logger');
 
 /**
  * Metrics collector for tracking function performance
@@ -92,7 +93,7 @@ async function storeMetrics(db, functionName, metrics) {
     });
   } catch (error) {
     // Don't let metrics storage failures affect the main function
-    console.error('Failed to store metrics:', error.message);
+    logger.error('Failed to store metrics', error);
   }
 }
 
@@ -131,7 +132,7 @@ async function trackApiUsage(db, propertyId, endpoint, success) {
     });
   } catch (error) {
     // Don't let usage tracking failures affect the main function
-    console.error('Failed to track API usage:', error.message);
+    logger.error('Failed to track API usage', error);
   }
 }
 
