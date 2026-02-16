@@ -6,7 +6,7 @@ export default defineConfig({
   publicDir: 'public',
   build: {
     outDir: 'dist',
-    emptyDirBeforeWrite: true,
+    emptyOutDir: true,
     sourcemap: false,
     target: 'es2022',
     rollupOptions: {

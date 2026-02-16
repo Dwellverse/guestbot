@@ -206,8 +206,8 @@ async function checkBruteForce(ip, propertyId) {
     return { locked: false };
   } catch (error) {
     logger.error('Brute force check error', error);
-    // Fail open - don't block legitimate users due to DB errors
-    return { locked: false };
+    // Fail closed - block when we cannot verify lockout status
+    return { locked: true };
   }
 }
 

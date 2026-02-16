@@ -122,13 +122,12 @@ function validateResponse(response, property) {
     }
   }
 
-  // If hallucinations found, replace the incorrect values with correct ones
+  // If hallucinations found, redact the incorrect values instead of inserting real ones
   let validated = response;
   for (const h of hallucinations) {
-    // Replace the hallucinated value with the correct one
     validated = validated.replace(
       new RegExp(h.mentioned.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
-      h.actual
+      '[please ask me specifically for this information]'
     );
   }
 

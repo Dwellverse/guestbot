@@ -314,17 +314,21 @@ describe('Response Validator', () => {
     expect(result.validated).toBe('The WiFi password is surf123.');
   });
 
-  it('detects and corrects hallucinated WiFi passwords', () => {
+  it('detects and redacts hallucinated WiFi passwords', () => {
     const result = validateResponse('The WiFi password is wrongpass.', mockProperty);
     expect(result.hallucinations.length).toBeGreaterThan(0);
-    expect(result.validated).toContain('surf123');
+    expect(result.validated).toContain('[please ask me specifically for this information]');
     expect(result.validated).not.toContain('wrongpass');
+    // Must NOT leak the real password in the redacted output
+    expect(result.validated).not.toContain('surf123');
   });
 
-  it('detects and corrects hallucinated door codes', () => {
+  it('detects and redacts hallucinated door codes', () => {
     const result = validateResponse('The door code is 9999.', mockProperty);
     expect(result.hallucinations.length).toBeGreaterThan(0);
-    expect(result.validated).toContain('4567');
+    expect(result.validated).toContain('[please ask me specifically for this information]');
+    // Must NOT leak the real code in the redacted output
+    expect(result.validated).not.toContain('4567');
   });
 
   it('handles responses with no codes mentioned', () => {

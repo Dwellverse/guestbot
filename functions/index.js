@@ -237,13 +237,23 @@ const cors = (req, res) => {
 };
 
 // Helper to get client IP
+// In Cloud Functions behind Google's load balancer, the rightmost non-private IP
+// in X-Forwarded-For is the most trustworthy (set by the infrastructure).
 function getClientIP(req) {
-  return (
-    req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
-    req.headers['x-real-ip'] ||
-    req.connection?.remoteAddress ||
-    'unknown'
-  );
+  const xff = req.headers['x-forwarded-for'];
+  if (xff) {
+    const ips = xff
+      .split(',')
+      .map((ip) => ip.trim())
+      .filter(Boolean);
+    // Walk from right to left, return the first non-private IP
+    for (let i = ips.length - 1; i >= 0; i--) {
+      if (!isPrivateIP(ips[i])) return ips[i];
+    }
+    // All IPs are private (e.g. emulator), return leftmost
+    if (ips.length > 0) return ips[0];
+  }
+  return req.headers['x-real-ip'] || req.connection?.remoteAddress || 'unknown';
 }
 
 /**
@@ -291,6 +301,14 @@ exports.verifyGuest = onRequest({ cors: false }, async (req, res) => {
     return res.status(400).json({
       success: false,
       message: 'Property ID and phone last 4 digits required',
+    });
+  }
+
+  // Validate propertyId format (Firestore auto-IDs are 20 alphanumeric chars)
+  if (typeof propertyId !== 'string' || !/^[a-zA-Z0-9]{1,128}$/.test(propertyId)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid property ID',
     });
   }
 
@@ -421,9 +439,17 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Rate limiting by IP + propertyId
+  // Validate propertyId format before using it in rate limit keys
   const clientIP = getClientIP(req);
-  const propertyId = req.body.propertyId || 'unknown';
+  const propertyId = req.body.propertyId;
+  if (!propertyId || typeof propertyId !== 'string' || !/^[a-zA-Z0-9]{1,128}$/.test(propertyId)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid property ID',
+    });
+  }
+
+  // Rate limiting by IP + propertyId
   const rateCheck = checkRateLimit('askGuestBot', `${clientIP}:${propertyId}`);
   if (!rateCheck.allowed) {
     return res.status(429).json({
@@ -451,7 +477,11 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
   }
 
   const session = sessionDoc.data();
-  if (session.propertyId !== propertyId || session.expiresAt.toMillis() < Date.now()) {
+  if (
+    session.propertyId !== propertyId ||
+    session.expiresAt.toMillis() < Date.now() ||
+    session.clientIP !== clientIP
+  ) {
     return res.status(401).json({
       success: false,
       message: 'Session expired. Please verify again.',
@@ -559,6 +589,15 @@ exports.askGuestBot = onRequest({ cors: false }, async (req, res) => {
         if (timedOut) break;
         const chunkText = chunk.candidates?.[0]?.content?.parts?.[0]?.text || '';
         if (chunkText) {
+          // Per-chunk system prompt leak check — block immediately if detected
+          const chunkLeakCheck = filterOutput(fullText + chunkText);
+          if (chunkLeakCheck.reason === 'system_prompt_leak') {
+            fullText = '';
+            res.write(
+              `data: ${JSON.stringify({ type: 'replace', text: chunkLeakCheck.filtered })}\n\n`
+            );
+            break;
+          }
           fullText += chunkText;
           res.write(`data: ${JSON.stringify({ type: 'chunk', text: chunkText })}\n\n`);
         }
@@ -719,7 +758,11 @@ exports.submitFeedback = onRequest({ cors: false }, async (req, res) => {
   }
 
   const session = sessionDoc.data();
-  if (session.propertyId !== propertyId || session.expiresAt.toMillis() < Date.now()) {
+  if (
+    session.propertyId !== propertyId ||
+    session.expiresAt.toMillis() < Date.now() ||
+    session.clientIP !== clientIP
+  ) {
     return res
       .status(401)
       .json({ success: false, message: 'Session expired. Please verify again.' });
@@ -798,6 +841,14 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
     });
   }
 
+  // Validate iCal URL length
+  if (typeof icalUrl !== 'string' || icalUrl.length > 2048) {
+    return res.status(400).json({
+      success: false,
+      message: 'Calendar URL too long',
+    });
+  }
+
   // Validate platform to prevent Firestore field injection
   const ALLOWED_PLATFORMS = ['airbnb', 'vrbo', 'booking'];
   const safePlatform = ALLOWED_PLATFORMS.includes(platform) ? platform : 'other';
@@ -865,23 +916,37 @@ exports.syncIcal = onRequest({ cors: false }, async (req, res) => {
     }
 
     // Limit response size (5MB max)
+    const MAX_ICAL_SIZE = 5 * 1024 * 1024;
     const contentLength = response.headers.get('content-length');
-    if (contentLength && parseInt(contentLength) > 5 * 1024 * 1024) {
+    if (contentLength && parseInt(contentLength) > MAX_ICAL_SIZE) {
       return res.status(400).json({
         success: false,
         message: 'Calendar file too large',
       });
     }
 
-    const icalData = await response.text();
-
-    // Additional size check for chunked responses
-    if (icalData.length > 5 * 1024 * 1024) {
-      return res.status(400).json({
-        success: false,
-        message: 'Calendar file too large',
-      });
+    // Stream body with size enforcement to prevent OOM on chunked responses
+    const reader = response.body.getReader();
+    const chunks = [];
+    let totalSize = 0;
+    let readDone = false;
+    while (!readDone) {
+      const { done, value } = await reader.read();
+      if (done) {
+        readDone = true;
+        break;
+      }
+      totalSize += value.length;
+      if (totalSize > MAX_ICAL_SIZE) {
+        reader.cancel();
+        return res.status(400).json({
+          success: false,
+          message: 'Calendar file too large',
+        });
+      }
+      chunks.push(value);
     }
+    const icalData = Buffer.concat(chunks).toString('utf-8');
 
     // Parse iCal data
     const jcalData = ICAL.parse(icalData);

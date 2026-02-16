@@ -58,10 +58,16 @@ function sanitizeHtml(html) {
       if (attr.name.toLowerCase().startsWith('on')) {
         el.removeAttribute(attr.name);
       } else if (
-        ['href', 'src', 'action', 'formaction', 'xlink:href'].includes(attr.name.toLowerCase()) &&
-        attr.value.replace(/\s/g, '').toLowerCase().startsWith('javascript:')
+        ['href', 'src', 'action', 'formaction', 'xlink:href'].includes(attr.name.toLowerCase())
       ) {
-        el.removeAttribute(attr.name);
+        const dangerous = attr.value.replace(/\s/g, '').toLowerCase();
+        if (
+          dangerous.startsWith('javascript:') ||
+          dangerous.startsWith('data:') ||
+          dangerous.startsWith('blob:')
+        ) {
+          el.removeAttribute(attr.name);
+        }
       }
     }
   });

@@ -13,9 +13,21 @@ service cloud.firestore {
       return userDoc.subscriptionStatus in ['active', 'trialing'];
     }
 
-    // Users can read/write their own user doc
+    // Server-managed fields that clients must not modify directly
+    function isNotModifyingServerFields() {
+      let serverFields = ['subscriptionStatus', 'subscriptionActive', 'subscriptionTrialEnd',
+                          'subscriptionCurrentPeriodEnd', 'subscriptionCancelAtPeriodEnd',
+                          'subscriptionPriceId', 'subscriptionUpdatedAt'];
+      // For updates: ensure no server-managed field has changed
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(serverFields);
+    }
+
+    // Users can read their own user doc; writes must not touch subscription fields
     match /guestbot_users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId
+        && isNotModifyingServerFields();
     }
 
     // Properties - owners can CRUD their own
@@ -151,6 +163,16 @@ service cloud.firestore {
         allow read: if request.auth != null && request.auth.uid == uid;
         allow write: if false;
       }
+    }
+
+    // Contact form submissions - server-side only
+    match /guestbot_contact/{contactId} {
+      allow read, write: if false;
+    }
+
+    // Function execution metrics - server-side only
+    match /guestbot_metrics/{metricId} {
+      allow read, write: if false;
     }
 
     // Deny all access to any other collection

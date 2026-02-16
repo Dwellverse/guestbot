@@ -234,9 +234,14 @@ chatForm.addEventListener('submit', async (e) => {
   botEl.appendChild(cursor);
 
   try {
+    // Abort fetch if server hangs (60s timeout)
+    const controller = new AbortController();
+    const fetchTimeout = setTimeout(() => controller.abort(), 60000);
+
     const res = await fetch(`${API_BASE}/api/ask`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({
         propertyId: state.propertyId,
         question: message,
@@ -247,9 +252,29 @@ chatForm.addEventListener('submit', async (e) => {
       }),
     });
 
+    clearTimeout(fetchTimeout);
+
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
       cursor.remove();
+
+      // Handle session expiration — show re-verification UI
+      if (res.status === 401) {
+        sessionStorage.removeItem(SESSION_KEY);
+        state.isVerified = false;
+        state.sessionToken = null;
+        botEl.textContent = errData.message || t('chat.error_session_expired');
+        appendTimestamp(botEl);
+        // Show re-verify prompt after a short delay
+        setTimeout(() => {
+          chatScreen.classList.remove('active');
+          verifyScreen.classList.remove('hidden');
+          verifyError.textContent = t('chat.error_session_expired');
+        }, 2000);
+        sendBtn.disabled = false;
+        return;
+      }
+
       botEl.textContent = errData.message || t('chat.error_generic');
       appendTimestamp(botEl);
       addRetryButton(botEl);
