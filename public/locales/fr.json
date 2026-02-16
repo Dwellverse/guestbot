@@ -266,6 +266,7 @@
   "chat.error_generic": "Désolé, je n'ai pas pu obtenir de réponse. Veuillez réessayer.",
   "chat.error_empty": "Désolé, je n'ai pas pu générer de réponse. Veuillez réessayer.",
   "chat.error_connection": "Erreur de connexion. Veuillez réessayer.",
+  "chat.error_session_expired": "Votre session a expiré. Veuillez vérifier à nouveau.",
   "chat.feedback_positive": "✅ Merci !",
   "chat.feedback_negative": "📝 Merci pour votre retour",
   "chat.feedback_helpful": "Utile",

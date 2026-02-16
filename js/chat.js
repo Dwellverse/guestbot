@@ -31,6 +31,10 @@ const chatContainer = document.getElementById('chatContainer');
 const chatForm = document.getElementById('chatForm');
 const messageInput = document.getElementById('messageInput');
 const sendBtn = document.getElementById('sendBtn');
+const voiceBtn = document.getElementById('voiceBtn');
+const scrollBottomBtn = document.getElementById('scrollBottomBtn');
+const charCount = document.getElementById('charCount');
+const charCurrent = document.getElementById('charCurrent');
 let lastUserMessage = '';
 
 const CONTEXT_LABELS = {
@@ -46,6 +50,185 @@ const CONTEXT_LABELS = {
   amenities: () => t('chat.context_amenities'),
   policies: () => t('chat.context_policies'),
 };
+
+// ============================================
+// Auto-growing textarea
+// ============================================
+function autoGrow() {
+  messageInput.style.height = 'auto';
+  messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+}
+
+messageInput.addEventListener('input', autoGrow);
+
+// Submit on Enter, newline on Shift+Enter
+messageInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    chatForm.dispatchEvent(new Event('submit'));
+  }
+});
+
+// ============================================
+// Character count
+// ============================================
+messageInput.addEventListener('input', () => {
+  const len = messageInput.value.length;
+  charCurrent.textContent = len;
+  charCount.classList.toggle('visible', len > 0);
+  charCount.classList.toggle('warning', len >= 400 && len < 475);
+  charCount.classList.toggle('danger', len >= 475);
+});
+
+// ============================================
+// Voice input (Web Speech API)
+// ============================================
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+
+  recognition.onresult = (event) => {
+    let transcript = '';
+    for (let i = 0; i < event.results.length; i++) {
+      transcript += event.results[i][0].transcript;
+    }
+    messageInput.value = transcript;
+    autoGrow();
+    charCurrent.textContent = transcript.length;
+    charCount.classList.toggle('visible', transcript.length > 0);
+  };
+
+  recognition.onend = () => {
+    voiceBtn.classList.remove('listening');
+    if (messageInput.value.trim()) {
+      messageInput.focus();
+    }
+  };
+
+  recognition.onerror = () => {
+    voiceBtn.classList.remove('listening');
+  };
+
+  voiceBtn.addEventListener('click', () => {
+    if (voiceBtn.classList.contains('listening')) {
+      recognition.stop();
+      return;
+    }
+    voiceBtn.classList.add('listening');
+    try {
+      recognition.start();
+    } catch {
+      voiceBtn.classList.remove('listening');
+    }
+  });
+} else {
+  // Hide voice button if not supported
+  voiceBtn.classList.add('hidden');
+}
+
+// ============================================
+// Scroll-to-bottom button
+// ============================================
+chatContainer.addEventListener('scroll', () => {
+  const distFromBottom =
+    chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight;
+  scrollBottomBtn.classList.toggle('visible', distFromBottom > 150);
+});
+
+scrollBottomBtn.addEventListener('click', () => {
+  chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' });
+});
+
+// ============================================
+// Haptic feedback (mobile)
+// ============================================
+function haptic(style) {
+  if (!navigator.vibrate) return;
+  if (style === 'light') navigator.vibrate(10);
+  else if (style === 'medium') navigator.vibrate(20);
+}
+
+// ============================================
+// Sound notification
+// ============================================
+const notifSound = null;
+function playNotifSound() {
+  try {
+    if (!notifSound) {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.2);
+      return;
+    }
+    notifSound.currentTime = 0;
+    notifSound.play();
+  } catch {
+    // Audio not available — silently ignore
+  }
+}
+
+// ============================================
+// Simple markdown rendering (safe subset)
+// ============================================
+function renderMarkdown(text) {
+  // Escape HTML first
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+  return (
+    escaped
+      // Bold: **text**
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      // Italic: *text*
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      // Bullet lists: lines starting with - or *
+      .replace(/^[-*]\s+(.+)/gm, '<li>$1</li>')
+      .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+      // Numbered lists: lines starting with 1. 2. etc
+      .replace(/^\d+\.\s+(.+)/gm, '<li>$1</li>')
+      // Line breaks
+      .replace(/\n/g, '<br>')
+      // Clean up double BRs in lists
+      .replace(/<br><\/li>/g, '</li>')
+      .replace(/<br><ul>/g, '<ul>')
+      .replace(/<\/ul><br>/g, '</ul>')
+  );
+}
+
+// ============================================
+// Typing indicator
+// ============================================
+function showTypingIndicator() {
+  const indicator = document.createElement('div');
+  indicator.className = 'typing-indicator';
+  indicator.id = 'typingIndicator';
+  indicator.innerHTML =
+    '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+  chatContainer.appendChild(indicator);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+  return indicator;
+}
+
+function removeTypingIndicator() {
+  document.getElementById('typingIndicator')?.remove();
+}
 
 // Parse URL params and restore session
 function init() {
@@ -129,7 +312,11 @@ function restoreSession() {
     for (const msg of state.history) {
       const div = document.createElement('div');
       div.className = `message ${msg.role === 'user' ? 'user' : 'bot'}`;
-      div.textContent = msg.text;
+      if (msg.role === 'model') {
+        div.innerHTML = renderMarkdown(msg.text);
+      } else {
+        div.textContent = msg.text;
+      }
       if (msg.time) appendTimestamp(div, msg.time);
       if (msg.role === 'model') {
         addFeedbackButtons(div, msg.text);
@@ -164,6 +351,7 @@ verifyBtn.addEventListener('click', async () => {
   verifyBtn.disabled = true;
   verifyBtn.textContent = t('chat.verifying');
   verifyError.textContent = '';
+  haptic('light');
 
   try {
     const res = await fetch(`${API_BASE}/api/verify`, {
@@ -184,6 +372,7 @@ verifyBtn.addEventListener('click', async () => {
       state.sessionToken = data.data?.sessionToken || null;
       state.hostEmail = data.data?.hostEmail || null;
 
+      haptic('medium');
       verifyScreen.classList.add('hidden');
       chatScreen.classList.add('active');
 
@@ -217,21 +406,17 @@ chatForm.addEventListener('submit', async (e) => {
   if (!message) return;
   lastUserMessage = message;
 
+  haptic('light');
   addMessage(message, 'user');
   state.history.push({ role: 'user', text: message, time: Date.now() });
   messageInput.value = '';
+  messageInput.style.height = 'auto';
+  charCount.classList.remove('visible');
+  charCurrent.textContent = '0';
   sendBtn.disabled = true;
 
-  // Create streaming bot message element
-  const botEl = document.createElement('div');
-  botEl.className = 'message bot';
-  botEl.textContent = '';
-  chatContainer.appendChild(botEl);
-
-  // Add a blinking cursor while streaming
-  const cursor = document.createElement('span');
-  cursor.className = 'streaming-cursor';
-  botEl.appendChild(cursor);
+  // Show typing indicator
+  showTypingIndicator();
 
   try {
     // Abort fetch if server hangs (60s timeout)
@@ -254,9 +439,24 @@ chatForm.addEventListener('submit', async (e) => {
 
     clearTimeout(fetchTimeout);
 
+    // Remove typing indicator, create bot message
+    removeTypingIndicator();
+
+    // Create streaming bot message element
+    const botEl = document.createElement('div');
+    botEl.className = 'message bot streaming';
+    botEl.textContent = '';
+    chatContainer.appendChild(botEl);
+
+    // Add a blinking cursor while streaming
+    const cursor = document.createElement('span');
+    cursor.className = 'streaming-cursor';
+    botEl.appendChild(cursor);
+
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
       cursor.remove();
+      botEl.classList.remove('streaming');
 
       // Handle session expiration — show re-verification UI
       if (res.status === 401) {
@@ -322,14 +522,14 @@ chatForm.addEventListener('submit', async (e) => {
               fullText += event.text;
               // Remove cursor, update text, re-add cursor
               cursor.remove();
-              botEl.textContent = fullText;
+              botEl.innerHTML = renderMarkdown(fullText);
               botEl.appendChild(cursor);
               chatContainer.scrollTop = chatContainer.scrollHeight;
             } else if (event.type === 'replace') {
               // Server corrected the response (hallucination fix or filter)
               fullText = event.text;
               cursor.remove();
-              botEl.textContent = fullText;
+              botEl.innerHTML = renderMarkdown(fullText);
               botEl.appendChild(cursor);
             } else if (event.type === 'error') {
               fullText = event.message || t('chat.error_generic');
@@ -348,9 +548,15 @@ chatForm.addEventListener('submit', async (e) => {
         }
       }
 
-      // Ensure cursor is removed
+      // Ensure cursor is removed & finalize
       if (cursor.parentNode) cursor.remove();
+      botEl.classList.remove('streaming');
+      botEl.innerHTML = renderMarkdown(fullText);
       appendTimestamp(botEl);
+
+      // Play notification sound
+      playNotifSound();
+      haptic('light');
 
       state.history.push({ role: 'model', text: fullText, time: Date.now() });
       addFeedbackButtons(botEl, message);
@@ -358,9 +564,10 @@ chatForm.addEventListener('submit', async (e) => {
       // Fallback: non-streaming JSON response
       const data = await res.json();
       cursor.remove();
+      botEl.classList.remove('streaming');
 
       if (data.success && data.data?.answer) {
-        botEl.textContent = data.data.answer;
+        botEl.innerHTML = renderMarkdown(data.data.answer);
         appendTimestamp(botEl);
         state.history.push({ role: 'model', text: data.data.answer, time: Date.now() });
 
@@ -372,6 +579,8 @@ chatForm.addEventListener('submit', async (e) => {
           )();
         }
 
+        playNotifSound();
+        haptic('light');
         addFeedbackButtons(botEl, message);
       } else {
         botEl.textContent = t('chat.error_generic');
@@ -380,11 +589,14 @@ chatForm.addEventListener('submit', async (e) => {
       }
     }
   } catch (err) {
-    if (cursor.parentNode) cursor.remove();
-    botEl.textContent = t('chat.error_connection');
-    appendTimestamp(botEl);
-    addRetryButton(botEl);
-    state.history.push({ role: 'model', text: botEl.textContent, time: Date.now() });
+    removeTypingIndicator();
+    const errEl = document.createElement('div');
+    errEl.className = 'message bot';
+    errEl.textContent = t('chat.error_connection');
+    appendTimestamp(errEl);
+    addRetryButton(errEl);
+    chatContainer.appendChild(errEl);
+    state.history.push({ role: 'model', text: errEl.textContent, time: Date.now() });
   }
 
   saveSession();
@@ -404,22 +616,29 @@ function addFeedbackButtons(messageEl, question) {
   upBtn.className = 'feedback-btn';
   upBtn.textContent = '\u{1F44D}';
   upBtn.title = t('chat.feedback_helpful');
-  upBtn.addEventListener('click', () => submitFeedback(question, 'positive', wrapper));
+  upBtn.addEventListener('click', () => {
+    haptic('light');
+    submitFeedback(question, 'positive', wrapper);
+  });
 
   const downBtn = document.createElement('button');
   downBtn.className = 'feedback-btn';
   downBtn.textContent = '\u{1F44E}';
   downBtn.title = t('chat.feedback_not_helpful');
-  downBtn.addEventListener('click', () => submitFeedback(question, 'negative', wrapper));
+  downBtn.addEventListener('click', () => {
+    haptic('light');
+    submitFeedback(question, 'negative', wrapper);
+  });
 
   const copyBtn = document.createElement('button');
   copyBtn.className = 'copy-btn';
   copyBtn.textContent = '\u{1F4CB}';
   copyBtn.title = 'Copy';
   copyBtn.addEventListener('click', () => {
-    const msgText = messageEl.firstChild?.textContent || '';
+    const msgText = messageEl.firstChild?.textContent || messageEl.textContent || '';
     navigator.clipboard.writeText(msgText).then(() => {
       copyBtn.textContent = '\u2713';
+      haptic('light');
       setTimeout(() => {
         copyBtn.textContent = '\u{1F4CB}';
       }, 1500);
@@ -498,6 +717,7 @@ document.querySelectorAll('.quick-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
     const question = btn.dataset.question;
     if (question) {
+      haptic('light');
       messageInput.value = question;
       chatForm.dispatchEvent(new Event('submit'));
       quickActions.classList.add('hidden');
@@ -516,6 +736,7 @@ function addRetryButton(botEl) {
   retryBtn.className = 'retry-btn';
   retryBtn.textContent = 'Try again';
   retryBtn.addEventListener('click', () => {
+    haptic('light');
     botEl.remove();
     if (state.history.length > 0 && state.history[state.history.length - 1].role === 'model') {
       state.history.pop();

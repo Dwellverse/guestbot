@@ -266,6 +266,7 @@
   "chat.error_generic": "抱歉，未能获取答案。请重试。",
   "chat.error_empty": "抱歉，未能生成回复。请重试。",
   "chat.error_connection": "连接错误。请重试。",
+  "chat.error_session_expired": "您的会话已过期。请重新验证。",
   "chat.feedback_positive": "✅ 谢谢！",
   "chat.feedback_negative": "📝 感谢您的反馈",
   "chat.feedback_helpful": "有帮助",

@@ -52,10 +52,12 @@
         --dark: #0a0a0a;
         --dark-2: #111111;
         --dark-3: #1a1a1a;
+        --dark-4: #222222;
         --white: #ffffff;
         --gray-400: #a3a3a3;
         --gray-500: #737373;
         --accent: #10b981;
+        --accent-glow: rgba(16, 185, 129, 0.15);
         --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       }
 
@@ -525,6 +527,378 @@
       .lang-option.active {
         color: var(--accent);
       }
+
+      /* ===== PREMIUM ANIMATIONS ===== */
+
+      /* Message entrance animations */
+      .message {
+        animation: msgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      .message.bot {
+        transform-origin: left center;
+      }
+
+      .message.user {
+        transform-origin: right center;
+      }
+
+      @keyframes msgIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Animated typing indicator (3 bouncing dots) */
+      .typing-indicator {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 16px 20px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 16px;
+        border-bottom-left-radius: 4px;
+        align-self: flex-start;
+        animation: msgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--gray-500);
+        border-radius: 50%;
+        animation: typingBounce 1.4s ease-in-out infinite;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes typingBounce {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+          background: var(--gray-500);
+        }
+        30% {
+          transform: translateY(-6px);
+          background: var(--accent);
+        }
+      }
+
+      /* Auto-growing textarea */
+      .input-field {
+        resize: none;
+        min-height: 48px;
+        max-height: 120px;
+        overflow-y: auto;
+        line-height: 1.4;
+      }
+
+      /* Voice input button */
+      .voice-btn {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 12px;
+        color: var(--gray-400);
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      .voice-btn:hover {
+        border-color: var(--accent);
+        color: var(--white);
+      }
+
+      .voice-btn.listening {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--white);
+        animation: voicePulse 1.5s ease-in-out infinite;
+      }
+
+      .voice-btn.hidden {
+        display: none;
+      }
+
+      @keyframes voicePulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+        }
+      }
+
+      /* Scroll to bottom FAB */
+      .scroll-bottom-btn {
+        position: absolute;
+        bottom: 80px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background: var(--dark-2);
+        border: 1px solid var(--dark-3);
+        border-radius: 50%;
+        color: var(--gray-400);
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .scroll-bottom-btn.visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .scroll-bottom-btn:hover {
+        border-color: var(--accent);
+        color: var(--white);
+        background: var(--dark-3);
+      }
+
+      /* Character count */
+      .char-count {
+        font-size: 11px;
+        color: var(--gray-500);
+        text-align: right;
+        padding: 4px 20px 0;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .char-count.visible {
+        opacity: 1;
+      }
+
+      .char-count.warning {
+        color: #f59e0b;
+      }
+
+      .char-count.danger {
+        color: #ef4444;
+      }
+
+      /* Shimmer effect on streaming messages */
+      .message.streaming {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .message.streaming::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.04), transparent);
+        animation: shimmer 2s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        to {
+          left: 100%;
+        }
+      }
+
+      /* Enhanced quick actions with staggered entrance */
+      .quick-btn {
+        opacity: 0;
+        animation: quickFadeIn 0.4s ease forwards;
+      }
+
+      .quick-btn:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .quick-btn:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .quick-btn:nth-child(3) {
+        animation-delay: 0.15s;
+      }
+      .quick-btn:nth-child(4) {
+        animation-delay: 0.2s;
+      }
+      .quick-btn:nth-child(5) {
+        animation-delay: 0.25s;
+      }
+      .quick-btn:nth-child(6) {
+        animation-delay: 0.3s;
+      }
+
+      @keyframes quickFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Verification screen entrance */
+      .verify-screen {
+        animation: verifyIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      @keyframes verifyIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .verify-btn {
+        transition: all 0.2s;
+      }
+
+      .verify-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      }
+
+      .verify-btn:active {
+        transform: translateY(0);
+      }
+
+      /* Send button animation */
+      .send-btn {
+        transition: all 0.2s;
+      }
+
+      .send-btn:not(:disabled):hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      }
+
+      .send-btn:not(:disabled):active {
+        transform: scale(0.96);
+      }
+
+      /* Header online indicator */
+      .header-status {
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 6px var(--accent);
+        animation: statusPulse 3s ease-in-out infinite;
+      }
+
+      @keyframes statusPulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Rich text in bot messages */
+      .message.bot strong {
+        font-weight: 600;
+        color: var(--white);
+      }
+
+      .message.bot a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .message.bot a:hover {
+        text-decoration: underline;
+      }
+
+      .message.bot ul,
+      .message.bot ol {
+        margin: 6px 0 6px 16px;
+        padding: 0;
+      }
+
+      .message.bot li {
+        margin-bottom: 2px;
+      }
+
+      /* Feedback button animations */
+      .feedback-btn {
+        transition: all 0.2s;
+      }
+
+      .feedback-btn:active {
+        transform: scale(0.9);
+      }
+
+      /* Chat screen transition */
+      .chat-screen.active {
+        animation: chatReveal 0.3s ease both;
+      }
+
+      @keyframes chatReveal {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Smooth scrollbar */
+      .chat-container::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .chat-container::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .chat-container::-webkit-scrollbar-thumb {
+        background: var(--dark-3);
+        border-radius: 4px;
+      }
+
+      .chat-container::-webkit-scrollbar-thumb:hover {
+        background: var(--gray-500);
+      }
+
+      /* Input area safe area for notch devices */
+      .input-area {
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+      }
     </style>
   </head>
   <body>
@@ -553,6 +927,7 @@
     <div class="chat-screen" id="chatScreen">
       <header class="header">
         <span class="header-icon"><img src="/logo.svg" alt="GuestBot" width="24" height="24" /></span>
+        <span class="header-status" aria-hidden="true"></span>
         <span class="header-title" data-i18n="chat.header_title">GuestBot</span>
         <span class="header-context" id="contextBadge" data-i18n="chat.context_general">General</span>
         <div class="lang-switcher">
@@ -578,6 +953,8 @@
           Hi! I'm your AI concierge. Ask me anything about your stay.
         </div>
       </div>
+
+      <button class="scroll-bottom-btn" id="scrollBottomBtn" aria-label="Scroll to bottom">&#x2193;</button>
 
       <div class="quick-actions" id="quickActions" role="group" aria-label="Quick questions">
         <button class="quick-btn" data-question="What's the WiFi password?" data-i18n-question="chat.quick_wifi_q">
@@ -606,17 +983,19 @@
 
       <div class="input-area">
         <form class="input-form" id="chatForm">
-          <input
-            type="text"
+          <textarea
             class="input-field"
             id="messageInput"
             placeholder="Ask a question..."
             autocomplete="off"
             maxlength="500"
+            rows="1"
             data-i18n-placeholder="chat.input_placeholder"
-          />
+          ></textarea>
+          <button type="button" class="voice-btn" id="voiceBtn" aria-label="Voice input">&#x1F3A4;</button>
           <button type="submit" class="send-btn" id="sendBtn" data-i18n="chat.send">Send</button>
         </form>
+        <div class="char-count" id="charCount"><span id="charCurrent">0</span>/500</div>
       </div>
     </div>
 

@@ -266,6 +266,7 @@
   "chat.error_generic": "Spiacente, non sono riuscito a ottenere una risposta. Riprova.",
   "chat.error_empty": "Spiacente, non sono riuscito a generare una risposta. Riprova.",
   "chat.error_connection": "Errore di connessione. Riprova.",
+  "chat.error_session_expired": "La sessione è scaduta. Si prega di verificare di nuovo.",
   "chat.feedback_positive": "✅ Grazie!",
   "chat.feedback_negative": "📝 Grazie per il feedback",
   "chat.feedback_helpful": "Utile",

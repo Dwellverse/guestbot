@@ -2623,6 +2623,156 @@
       .lang-option.active {
         color: var(--accent);
       }
+
+      /* ===== SCROLL REVEAL ANIMATIONS ===== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Staggered children animation */
+      .reveal-stagger > * {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal-stagger.visible > *:nth-child(1) {
+        transition-delay: 0s;
+      }
+      .reveal-stagger.visible > *:nth-child(2) {
+        transition-delay: 0.08s;
+      }
+      .reveal-stagger.visible > *:nth-child(3) {
+        transition-delay: 0.16s;
+      }
+      .reveal-stagger.visible > *:nth-child(4) {
+        transition-delay: 0.24s;
+      }
+      .reveal-stagger.visible > *:nth-child(5) {
+        transition-delay: 0.32s;
+      }
+      .reveal-stagger.visible > *:nth-child(6) {
+        transition-delay: 0.4s;
+      }
+      .reveal-stagger.visible > *:nth-child(7) {
+        transition-delay: 0.48s;
+      }
+      .reveal-stagger.visible > *:nth-child(8) {
+        transition-delay: 0.56s;
+      }
+      .reveal-stagger.visible > *:nth-child(9) {
+        transition-delay: 0.64s;
+      }
+      .reveal-stagger.visible > *:nth-child(10) {
+        transition-delay: 0.72s;
+      }
+      .reveal-stagger.visible > *:nth-child(11) {
+        transition-delay: 0.8s;
+      }
+      .reveal-stagger.visible > *:nth-child(12) {
+        transition-delay: 0.88s;
+      }
+
+      .reveal-stagger.visible > * {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Scale-up reveal for pricing card */
+      .reveal-scale {
+        opacity: 0;
+        transform: scale(0.95);
+        transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal-scale.visible {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* Hero-specific entrance */
+      .hero-text {
+        animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+      }
+
+      .hero-visual {
+        animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+      }
+
+      @keyframes heroIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Nav reveal */
+      .nav {
+        animation: navSlide 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      @keyframes navSlide {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Smooth stat counter pulse */
+      .stat-value.counting {
+        color: var(--white);
+        transition: color 0.3s;
+      }
+
+      .stat-value.counted {
+        color: var(--accent);
+      }
+
+      /* Feature card hover lift */
+      .feature-card {
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px rgba(16, 185, 129, 0.1);
+      }
+
+      /* CTA button pulse animation */
+      .cta .btn-primary {
+        animation: ctaPulse 3s ease-in-out infinite;
+      }
+
+      @keyframes ctaPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
+        }
+      }
     </style>
   </head>
   <body>
@@ -2729,7 +2879,7 @@
 
       <!-- STATS -->
       <section class="stats-bar">
-        <div class="stats-grid">
+        <div class="stats-grid reveal-stagger">
           <div class="stat">
             <div class="stat-value">80%</div>
             <div class="stat-label" data-i18n="stats.fewer_messages">Fewer Guest Messages</div>
@@ -2774,14 +2924,14 @@
       <!-- TESTIMONIALS -->
       <section class="testimonials" id="testimonials">
         <div class="container">
-          <div class="testimonials-header">
+          <div class="testimonials-header reveal">
             <span class="section-tag" data-i18n="testimonials.tag">Testimonials</span>
             <h2 class="section-title" data-i18n="testimonials.title">Loved by Hosts Everywhere</h2>
             <p class="section-subtitle" data-i18n="testimonials.subtitle">
               See why property managers are switching to GuestBot for their guest communication.
             </p>
           </div>
-          <div class="testimonials-grid">
+          <div class="testimonials-grid reveal-stagger">
             <div class="testimonial-card">
               <div class="testimonial-stars">★★★★★</div>
               <p class="testimonial-text" data-i18n="testimonials.review1">
@@ -2831,7 +2981,7 @@
       <!-- FEATURES -->
       <section class="features" id="features">
         <div class="container">
-          <div class="features-header">
+          <div class="features-header reveal">
             <span class="section-tag" data-i18n="features.tag">Features</span>
             <h2 class="section-title" data-i18n="features.title">Everything Your Guests Need</h2>
             <p class="section-subtitle" data-i18n="features.subtitle">
@@ -2839,7 +2989,7 @@
               information — all powered by AI.
             </p>
           </div>
-          <div class="features-grid">
+          <div class="features-grid reveal-stagger">
             <div class="feature-card">
               <div class="feature-icon">📱</div>
               <h3 class="feature-title" data-i18n="features.qr_title">Context-Aware QR Codes</h3>
@@ -3070,14 +3220,14 @@
       <!-- HOW IT WORKS -->
       <section class="how-it-works" id="how-it-works">
         <div class="container">
-          <div class="how-header">
+          <div class="how-header reveal">
             <span class="section-tag" data-i18n="how.tag">How It Works</span>
             <h2 class="section-title" data-i18n="how.title">Simple for You, Seamless for Guests</h2>
             <p class="section-subtitle" data-i18n="how.subtitle">
               Set up once, help guests forever. Three easy steps to transform your guest experience.
             </p>
           </div>
-          <div class="steps">
+          <div class="steps reveal-stagger">
             <div class="step">
               <div class="step-number">1</div>
               <h3 class="step-title" data-i18n="how.step1_title">Add Your Property</h3>
@@ -3106,7 +3256,7 @@
       <!-- INTEGRATIONS -->
       <section class="integrations" id="integrations">
         <div class="container">
-          <div class="integrations-header">
+          <div class="integrations-header reveal">
             <span class="section-tag" data-i18n="integrations.tag">Integrations</span>
             <h2 class="section-title" data-i18n="integrations.title">Syncs With Your Booking Platforms</h2>
             <p class="section-subtitle" data-i18n="integrations.subtitle">
@@ -3145,14 +3295,14 @@
       <!-- USE CASES -->
       <section class="use-cases">
         <div class="container">
-          <div class="use-header">
+          <div class="use-header reveal">
             <span class="section-tag" data-i18n="usecases.tag">QR Placements</span>
             <h2 class="section-title" data-i18n="usecases.title">QR Codes Everywhere</h2>
             <p class="section-subtitle" data-i18n="usecases.subtitle">
               Each location gets its own QR code with context-aware responses.
             </p>
           </div>
-          <div class="cases-grid">
+          <div class="cases-grid reveal-stagger">
             <div class="case">
               <div class="case-icon">🚪</div>
               <div class="case-title" data-i18n="usecases.front_door">Front Door</div>
@@ -3192,7 +3342,7 @@
       <!-- BENEFITS -->
       <section class="benefits">
         <div class="container">
-          <div class="benefits-content">
+          <div class="benefits-content reveal">
             <div class="benefits-text">
               <span class="section-tag" data-i18n="benefits.tag">Benefits</span>
               <h2 class="section-title" data-i18n="benefits.title">Why Hosts Love GuestBot</h2>
@@ -3262,7 +3412,7 @@
       <!-- BEFORE/AFTER COMPARISON -->
       <section class="comparison" id="comparison">
         <div class="container">
-          <div class="comparison-header">
+          <div class="comparison-header reveal">
             <span class="section-tag" data-i18n="comparison.tag">The Difference</span>
             <h2 class="section-title" data-i18n="comparison.title">Before & After GuestBot</h2>
             <p class="section-subtitle" data-i18n="comparison.subtitle">
@@ -3348,7 +3498,7 @@
       <!-- SECURITY -->
       <section class="security" id="security">
         <div class="container">
-          <div class="security-header">
+          <div class="security-header reveal">
             <span class="section-tag" data-i18n="security.tag">Trust & Security</span>
             <h2 class="section-title" data-i18n="security.title">Your Data is Protected</h2>
             <p class="section-subtitle" data-i18n="security.subtitle">
@@ -3356,7 +3506,7 @@
               protection regulations.
             </p>
           </div>
-          <div class="security-grid">
+          <div class="security-grid reveal-stagger">
             <div class="security-card">
               <div class="security-icon">🔒</div>
               <h3 class="security-title" data-i18n="security.encrypted_title">Encrypted Data</h3>
@@ -3457,7 +3607,7 @@
       <!-- PRICING -->
       <section class="pricing" id="pricing">
         <div class="container">
-          <div class="pricing-header">
+          <div class="pricing-header reveal">
             <span class="section-tag" data-i18n="pricing.tag">Pricing</span>
             <h2 class="section-title" data-i18n="pricing.title">One Simple Price. Everything Included.</h2>
             <p class="section-subtitle" data-i18n="pricing.subtitle">
@@ -3475,7 +3625,7 @@
               <span class="pricing-save-badge" id="pricingSaveBadge" data-i18n="pricing.save_badge">Save 20%</span>
             </div>
           </div>
-          <div class="pricing-single">
+          <div class="pricing-single reveal-scale">
             <div class="pricing-single-left">
               <div class="pricing-single-price">
                 <span class="pricing-currency">$</span>
@@ -3546,7 +3696,7 @@
       <!-- CONTACT -->
       <section class="contact" id="contact">
         <div class="container">
-          <div class="contact-content">
+          <div class="contact-content reveal">
             <div class="contact-info">
               <span class="section-tag" data-i18n="contact.tag">Contact</span>
               <h2 class="section-title" data-i18n="contact.title">Get in Touch</h2>

@@ -266,6 +266,7 @@
   "chat.error_generic": "申し訳ありません。回答を取得できませんでした。もう一度お試しください。",
   "chat.error_empty": "申し訳ありません。回答を生成できませんでした。もう一度お試しください。",
   "chat.error_connection": "接続エラーです。もう一度お試しください。",
+  "chat.error_session_expired": "セッションの有効期限が切れました。もう一度認証してください。",
   "chat.feedback_positive": "✅ ありがとうございます！",
   "chat.feedback_negative": "📝 フィードバックありがとうございます",
   "chat.feedback_helpful": "役に立った",

@@ -201,3 +201,84 @@ if (pricingToggle) {
 
 // Set initial CTA link
 updatePricingCta(false);
+
+// ============================================
+// Scroll-triggered reveal animations
+// ============================================
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+);
+
+document.querySelectorAll('.reveal, .reveal-stagger, .reveal-scale').forEach((el) => {
+  revealObserver.observe(el);
+});
+
+// ============================================
+// Animated stat counters
+// ============================================
+function animateCounter(el, target, suffix = '', prefix = '') {
+  const duration = 1800;
+  const start = performance.now();
+  const isFloat = String(target).includes('.');
+
+  el.classList.add('counting');
+
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = eased * target;
+
+    el.textContent = prefix + (isFloat ? current.toFixed(1) : Math.round(current)) + suffix;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      el.classList.remove('counting');
+      el.classList.add('counted');
+    }
+  }
+
+  requestAnimationFrame(update);
+}
+
+const statsObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const statValues = entry.target.querySelectorAll('.stat-value');
+        statValues.forEach((el) => {
+          const text = el.textContent.trim();
+          // Parse formats like "80%", "24/7", "8", "5min", "4.9"
+          if (text.includes('/')) {
+            // Skip fraction-like stats (24/7) — just reveal
+            return;
+          }
+          const match = text.match(/^([<>~]?)(\d+\.?\d*)\s*(.*)$/);
+          if (match) {
+            const prefix = match[1];
+            const num = parseFloat(match[2]);
+            const suffix = match[3];
+            animateCounter(el, num, suffix, prefix);
+          }
+        });
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.3 }
+);
+
+const statsGrid = document.querySelector('.stats-grid');
+if (statsGrid) {
+  statsObserver.observe(statsGrid);
+}

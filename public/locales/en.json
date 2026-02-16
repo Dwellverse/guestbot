@@ -316,6 +316,7 @@
   "chat.error_generic": "Sorry, I couldn't get an answer. Please try again.",
   "chat.error_empty": "Sorry, I couldn't generate a response. Please try again.",
   "chat.error_connection": "Connection error. Please try again.",
+  "chat.error_session_expired": "Your session has expired. Please verify again.",
   "chat.feedback_positive": "✅ Thanks!",
   "chat.feedback_negative": "📝 Thanks for the feedback",
   "chat.feedback_helpful": "Helpful",
